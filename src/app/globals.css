@@ -2,32 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════
+   DESIGN TOKENS — Pokéball White Theme
+   Fondo blanco total. Rojo y negro solo como acentos.
+══════════════════════════════════════════════════════════════ */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  /* ── shadcn/ui tokens (light) ─────────────────── */
+  --background: 0 0% 100%;
+  /* #fff  blanco puro    */
+  --foreground: 0 0% 8%;
+  /* #141414 texto negro  */
+  --card: 0 0% 100%;
+  /* blanco               */
+  --card-foreground: 0 0% 8%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 8%;
+  --primary: 0 84% 44%;
+  /* #CC0000 pokéball red */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 95%;
+  --secondary-foreground: 0 0% 8%;
+  --muted: 0 0% 95%;
+  --muted-foreground: 0 0% 45%;
+  --accent: 0 84% 44%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 84% 44%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 88%;
+  /* gris claro           */
+  --input: 0 0% 88%;
+  --ring: 0 84% 44%;
+  --radius: 0.5rem;
+
+  /* ── Pokéball custom tokens (light) ──────────────
+     Referenciados desde tailwind.config como
+     bg-poke-surface, bg-poke-border etc.           */
+  --poke-surface-val: 255 255 255;
+  /* white                */
+  --poke-border-val: 229 231 235;
+  /* gray-200             */
+  --poke-darker-val: 17 17 17;
+  /* near-black           */
+  --poke-dark-val: 249 249 249;
+  /* gray-50 (page bg)    */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.dark {
+  /* ── shadcn/ui tokens (dark) ─────────────────── */
+  --background: 0 0% 6%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 11%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 84% 44%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 58%;
+  --accent: 0 84% 44%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 62% 34%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 18%;
+  --input: 0 0% 18%;
+  --ring: 0 84% 44%;
+
+  /* ── Pokéball custom tokens (dark) ────────────── */
+  --poke-surface-val: 26 26 26;
+  /* #1a1a1a              */
+  --poke-border-val: 42 42 42;
+  /* #2a2a2a              */
+  --poke-darker-val: 0 0 0;
+  /* pure black           */
+  --poke-dark-val: 13 13 13;
+  /* #0d0d0d              */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+/* ─── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CC0000;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #990000;
 }
