@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { motion } from "framer-motion"
 import { apiClient } from "@/lib/api/client"
 import { Disc, Zap } from "lucide-react"
-import { MoveCard } from "../moves/move-card"
+import { MoveCard } from "../../moves/move-card"
 
 interface Props {
     item: any

@@ -1,13 +1,15 @@
 import React, { memo } from "react";
 import { cn } from "@/lib/utils/cn";
 
-export const PokeBallSVG = memo(({ className }: { className?: string }) => {
+export const PokeBallSVG = memo(({ className, size = 100 }: { className?: string; size?: number }) => {
     return (
         <svg
             viewBox="0 0 100 100"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className={cn("w-full h-full", className)}
+            className={cn(className)}
+            width={size}
+            height={size}
         >
             <path d="M50 5C25.147 5 5 25.147 5 50H40C40 44.477 44.477 40 50 40C55.523 40 60 44.477 60 50H95C95 25.147 74.853 5 50 5Z" fill="currentColor" />
             <path d="M50 95C74.853 95 95 74.853 95 50H60C60 55.523 55.523 60 50 60C44.477 60 40 55.523 40 50H5C5 74.853 25.147 95 50 95Z" fill="currentColor" />

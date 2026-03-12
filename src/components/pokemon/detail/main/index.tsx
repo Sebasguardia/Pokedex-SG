@@ -1,7 +1,7 @@
 "use client";
 
 // Orchestrator for the Pokemon detail page
-export { HeroSection } from "./hero-section";
+export { HeroSection } from "../identity/hero-section";
 export { StatsTab } from "./stats-tab";
 export { AbilitiesTab } from "./abilities-tab";
 export { MovesTab } from "./moves-tab";

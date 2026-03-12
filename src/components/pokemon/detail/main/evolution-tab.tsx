@@ -1,6 +1,6 @@
 "use client";
 
-import { EvolutionChain } from "@/components/pokemon/evolution-chain";
+import { EvolutionChain } from "@/components/pokemon/detail/content/evolution-chain";
 import { FlatEvolution } from "@/lib/utils/evolution.utils";
 
 interface EvolutionTabProps {

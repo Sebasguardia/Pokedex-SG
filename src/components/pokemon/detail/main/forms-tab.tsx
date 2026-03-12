@@ -1,7 +1,7 @@
 "use client";
 
 import { PokemonSprite } from "@/components/shared/pokemon-sprite";
-import { TypeBadge } from "@/components/pokemon/type-badge";
+import { TypeBadge } from "@/components/pokemon/shared/type-badge";
 import { formatPokemonId, formatPokemonName, getIdFromUrl } from "@/lib/utils/pokemon.utils";
 
 interface FormsTabProps {

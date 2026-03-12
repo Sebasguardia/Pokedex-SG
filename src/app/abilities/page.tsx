@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useQueryState } from "nuqs"
 import NumberFlow from "@number-flow/react"
 import { GiEyeTarget } from "react-icons/gi"
+import { Suspense } from "react"
 
 import { useAbilitiesList } from "@/lib/hooks/useAbilitiesList"
 import { AbilityCard } from "@/components/abilities/ability-card"
@@ -11,7 +12,7 @@ import { AbilityFilterBar } from "@/components/abilities/ability-filter-bar"
 import { PageTransitionAbilities } from "@/components/shared/page-transition-abilities"
 import { AbilityCategoryBadge } from "@/components/abilities/ability-category-badge"
 
-export default function AbilitiesPage() {
+function AbilitiesContent() {
     const [search, setSearch] = useQueryState("q")
     const [gen, setGen] = useQueryState("gen")
     const [type, setType] = useQueryState("type") // "hidden" | "main" | null
@@ -159,5 +160,13 @@ export default function AbilitiesPage() {
                 </div>
             </motion.main>
         </>
+    )
+}
+
+export default function AbilitiesPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-[#111111] animate-pulse" />}>
+            <AbilitiesContent />
+        </Suspense>
     )
 }

@@ -3,7 +3,7 @@
 import { useItem } from "@/lib/hooks/useItem"
 import { usePokemonByHeldItem } from "@/lib/hooks/usePokemonByHeldItem"
 import { inferItemPocket } from "@/lib/utils/item.utils"
-import { PocketDetailRouter } from "@/components/items/detail-layouts/pocket-detail-router"
+import { PocketDetailRouter } from "@/components/items/detail/layouts/pocket-detail-router"
 import { PageTransitionItem } from "@/components/shared/page-transition-item"
 import { POCKET_COLORS } from "@/lib/constants/items.constants"
 import { Loader2 } from "lucide-react"

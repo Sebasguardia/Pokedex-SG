@@ -3,7 +3,7 @@
 import { useFavorites } from "@/lib/hooks/useFavorites";
 import { SectionHeader } from "@/components/ui/section-header";
 import { EmptyState } from "@/components/ui/empty-state";
-import { PokemonGrid } from "@/components/pokemon/pokemon-grid";
+import { PokemonGrid } from "@/components/pokemon/list/pokemon-grid";
 import { Button } from "@/components/ui/button";
 import { Heart, Trash2 } from "lucide-react";
 import Link from "next/link";

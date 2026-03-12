@@ -1,14 +1,14 @@
 "use client"
 // Refreshing module imports
 
-import { MedicineDetailLayout } from "@/components/items/detail-layouts/medicine-detail-layout"
-import { PokeballDetailLayout } from "@/components/items/detail-layouts/pokeball-detail-layout"
-import { BattleDetailLayout } from "@/components/items/detail-layouts/battle-detail-layout"
-import { BerryDetailLayout } from "@/components/items/detail-layouts/berry-detail-layout"
-import { MailDetailLayout } from "@/components/items/detail-layouts/mail-detail-layout"
-import { MachineDetailLayout } from "@/components/items/detail-layouts/machine-detail-layout"
-import { KeyItemDetailLayout } from "@/components/items/detail-layouts/key-item-detail-layout"
-import { MiscDetailLayout } from "@/components/items/detail-layouts/misc-detail-layout"
+import { MedicineDetailLayout } from "@/components/items/detail/layouts/medicine-detail-layout"
+import { PokeballDetailLayout } from "@/components/items/detail/layouts/pokeball-detail-layout"
+import { BattleDetailLayout } from "@/components/items/detail/layouts/battle-detail-layout"
+import { BerryDetailLayout } from "@/components/items/detail/layouts/berry-detail-layout"
+import { MailDetailLayout } from "@/components/items/detail/layouts/mail-detail-layout"
+import { MachineDetailLayout } from "@/components/items/detail/layouts/machine-detail-layout"
+import { KeyItemDetailLayout } from "@/components/items/detail/layouts/key-item-detail-layout"
+import { MiscDetailLayout } from "@/components/items/detail/layouts/misc-detail-layout"
 
 interface Props {
     pocket: string

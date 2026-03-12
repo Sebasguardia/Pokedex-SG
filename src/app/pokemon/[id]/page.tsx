@@ -18,42 +18,43 @@ import { useFilterStore } from "@/lib/store/filter.store"
 import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
 import { getIdFromUrl } from "@/lib/utils/pokemon.utils"
 import { cn } from "@/lib/utils/cn"
+import { PageTransitionPokemon } from "@/components/shared/page-transition-pokemon"
 
 // Hero column components (compact — no data)
-import { SpriteStage } from "@/components/pokemon/sprite-stage"
-import { PokemonIdentity } from "@/components/pokemon/pokemon-identity"
-import { ActionButtons } from "@/components/pokemon/action-buttons"
-import { NavigationArrows } from "@/components/pokemon/navigation-arrows"
+import { SpriteStage } from "@/components/pokemon/detail/identity/sprite-stage"
+import { PokemonIdentity } from "@/components/pokemon/detail/identity/pokemon-identity"
+import { ActionButtons } from "@/components/pokemon/detail/identity/action-buttons"
+import { NavigationArrows } from "@/components/pokemon/detail/identity/navigation-arrows"
 
 // Tab: Información
-import { FlavorTextCarousel } from "@/components/pokemon/flavor-text-carousel"
-import { PokedexDataGrid } from "@/components/pokemon/pokedex-data-grid"
-import { TrainingSection } from "@/components/pokemon/training-section"
-import { BreedingSection } from "@/components/pokemon/breeding-section"
+import { FlavorTextCarousel } from "@/components/pokemon/detail/info/flavor-text-carousel"
+import { PokedexDataGrid } from "@/components/pokemon/detail/info/pokedex-data-grid"
+import { TrainingSection } from "@/components/pokemon/detail/info/training-section"
+import { BreedingSection } from "@/components/pokemon/detail/info/breeding-section"
 
 // Tab: Estadísticas
-import { StatBars } from "@/components/pokemon/stat-bars"
-import { StatRadar } from "@/components/pokemon/stat-radar"
+import { StatBars } from "@/components/pokemon/detail/visuals/stat-bars"
+import { StatRadar } from "@/components/pokemon/detail/visuals/stat-radar"
 
 // Tab: Habilidades (new)
-import { AbilitiesDetail } from "@/components/pokemon/abilities-detail"
+import { AbilitiesDetail } from "@/components/pokemon/detail/content/abilities-detail"
 
 // Tab: Movimientos (updated)
-import { MovesTable } from "@/components/pokemon/moves-table"
+import { MovesTable } from "@/components/pokemon/detail/content/moves-table"
 
 // Tab: Evolución
-import { EvolutionChain } from "@/components/pokemon/evolution-chain"
+import { EvolutionChain } from "@/components/pokemon/detail/content/evolution-chain"
 
 // Tab: Más (new)
-import { FormsGallery } from "@/components/pokemon/forms-gallery"
-import { SpritesGallery } from "@/components/pokemon/sprites-gallery"
-import { GameLocations } from "@/components/pokemon/game-locations"
+import { FormsGallery } from "@/components/pokemon/detail/content/forms-gallery"
+import { SpritesGallery } from "@/components/pokemon/detail/content/sprites-gallery"
+import { GameLocations } from "@/components/pokemon/detail/content/game-locations"
 
 // Footer
-import { RelatedPokemon } from "@/components/pokemon/related-pokemon"
+import { RelatedPokemon } from "@/components/pokemon/detail/content/related-pokemon"
 
 // Skeleton
-import { DetailSkeleton } from "@/components/pokemon/DetailSkeleton"
+import { DetailSkeleton } from "@/components/pokemon/detail/visuals/DetailSkeleton"
 
 type SpriteMode = "front" | "back"
 
@@ -139,14 +140,11 @@ export default function PokemonDetailPage() {
 
     return (
         <>
-            {/* Page flash transition — uses type color */}
+            {/* Page transition — uses type color and sprite */}
             {!prefersRM && (
-                <motion.div
-                    className="fixed inset-0 pointer-events-none z-[999]"
-                    style={{ backgroundColor: typeColor }}
-                    initial={{ opacity: 0.55 }}
-                    animate={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
+                <PageTransitionPokemon 
+                    spriteSrc={currentSprite ?? ""} 
+                    typeColor={typeColor} 
                 />
             )}
 
@@ -154,7 +152,7 @@ export default function PokemonDetailPage() {
                 className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1, duration: 0.4, ease: "easeOut" }}
+                transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
             >
                 {/* Breadcrumb */}
                 <nav className="flex items-center gap-1 mb-6 font-['Nunito'] text-[12px]">

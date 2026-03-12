@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import { PokemonSprite } from "@/components/shared/pokemon-sprite";
-import { TypeBadge } from "@/components/pokemon/type-badge";
+import { TypeBadge } from "@/components/pokemon/shared/type-badge";
 import { FavoriteButton } from "@/components/shared/favorite-button";
-import { CryButton } from "@/components/pokemon/cry-button";
+import { CryButton } from "@/components/pokemon/shared/cry-button";
 import { GenerationBadge } from "@/components/shared/generation-badge";
 import { formatPokemonId, formatPokemonName } from "@/lib/utils/pokemon.utils";
 import { Pokemon } from "@/types/api/pokemon.types";

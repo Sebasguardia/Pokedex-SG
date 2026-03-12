@@ -1,0 +1,1705 @@
+--- ARCHIVO: berry-card.tsx ---
+// src/components/berries/berry-card.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { Gem, Sprout, Zap } from "lucide-react";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import * as HoverCard from "@radix-ui/react-hover-card";
+
+import { FLAVOR_COLORS, FIRMNESS_COLORS, FLAVOR_META } from "@/lib/constants/berries.constants";
+import { getDominantFlavor } from "@/lib/utils/berry.utils";
+
+export function BerryCard({ berry, index = 0 }: { berry: any; index?: number }) {
+  const router = useRouter();
+  const dominant = getDominantFlavor(berry.flavors);
+  const domColor = dominant ? FLAVOR_COLORS[dominant.flavor.name] || "#111111" : "#111111";
+  
+  const spriteSrc = berry.item?.sprites?.default || "";
+  const nameEs = `BAYA ${berry.name.toUpperCase()}`; // Replace with actual translation if available
+  
+  // Custom animation delays
+  const bobDelay = (index % 10) * 0.3;
+
+  return (
+    <motion.div
+      initial={{ y: -40, rotate: index % 2 === 0 ? -12 : 12, opacity: 0, scale: 0.85 }}
+      animate={{ y: 0, rotate: 0, opacity: 1, scale: 1 }}
+      transition={{ type: "spring", stiffness: 280, damping: 20, delay: index * 0.04 }}
+      whileHover="hover"
+      whileTap={{ scale: 0.96 }}
+      onClick={() => {
+        // Quick bounce out before routing
+        router.push(`/berries/${berry.name}`);
+      }}
+      className="group relative cursor-pointer outline-none bg-white rounded-sm border-2 border-black"
+      style={{
+        boxShadow: "3px 3px 0 #111111",
+      }}
+      variants={{
+        hover: {
+          x: 3,
+          y: 3,
+          boxShadow: "0px 0px 0 #111111",
+        }
+      }}
+    >
+      <HoverCard.Root openDelay={450}>
+        <HoverCard.Trigger asChild>
+          <div>
+            {/* Sprite Area */}
+            <div 
+              className="h-[88px] relative overflow-hidden flex items-center justify-center border-b-2 border-transparent transition-colors duration-300"
+              style={{
+                background: `radial-gradient(circle at center, ${domColor}26 0%, white 70%)`
+              }}
+            >
+              <div className="absolute top-1 left-1 bg-black/15 px-1.5 py-0.5 rounded-sm">
+                <span className="font-mono text-[9px] text-white/80">
+                  #{berry.id.toString().padStart(2, '0')}
+                </span>
+              </div>
+
+              {spriteSrc ? (
+                <motion.img
+                  src={spriteSrc}
+                  className="w-[52px] h-[52px]"
+                  style={{
+                    imageRendering: "pixelated",
+                    filter: `drop-shadow(0 2px 4px ${domColor}4D)`
+                  }}
+                  animate={{
+                    y: [0, -5, 0],
+                    rotate: [-2, 2, -2],
+                  }}
+                  transition={{
+                    y: { duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: bobDelay },
+                    rotate: { duration: 3.0, repeat: Infinity, ease: "easeInOut", delay: bobDelay }
+                  }}
+                  variants={{
+                    hover: {
+                      scale: 1.15,
+                      rotate: [-6, 6, -6],
+                      filter: `drop-shadow(0 4px 8px ${domColor}80)`
+                    }
+                  }}
+                />
+              ) : (
+                <div className="w-[52px] h-[52px]" />
+              )}
+            </div>
+
+            {/* Name + Chip */}
+            <div className="px-2.5 pt-2 pb-1 flex items-center justify-between">
+              <span className="font-nunito font-bold text-[12px] text-black line-clamp-1 transition-colors group-hover:text-amber-600">
+                {nameEs}
+              </span>
+              {dominant && (
+                <div 
+                  className="flex items-center gap-1 px-1.5 py-0.5 rounded-sm"
+                  style={{ backgroundColor: `${domColor}26` }}
+                >
+                  <span className="font-nunito font-bold text-[9px]" style={{ color: domColor }}>
+                    {FLAVOR_META[dominant.flavor.name]?.nameEs || dominant.flavor.name}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Mini Flavor Bar */}
+            <Tooltip.Provider>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <div className="mx-2.5 h-[6px] flex gap-[1px] group-hover:h-[8px] transition-all duration-300">
+                    {berry.flavors.map((fl: any, i: number) => {
+                      if (fl.potency === 0) return null;
+                      const isDom = fl.potency === dominant?.potency;
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ scaleX: 0 }}
+                          whileInView={{ scaleX: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.4, delay: i * 0.05, ease: "easeOut" }}
+                          style={{
+                            flex: fl.potency,
+                            backgroundColor: FLAVOR_COLORS[fl.flavor.name] || "#111",
+                            transformOrigin: "left",
+                            filter: isDom ? "brightness(1.1)" : "none"
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </Tooltip.Trigger>
+                <Tooltip.Portal>
+                  <Tooltip.Content
+                    className="z-50 bg-black text-white p-2 rounded-sm text-[10px] font-mono shadow-xl relative"
+                    sideOffset={5}
+                  >
+                    {berry.flavors.map((fl: any) => `${FLAVOR_META[fl.flavor.name]?.nameEs || fl.flavor.name}: ${fl.potency}`).join(" · ")}
+                    <Tooltip.Arrow className="fill-black w-3 h-2 block" />
+                  </Tooltip.Content>
+                </Tooltip.Portal>
+              </Tooltip.Root>
+            </Tooltip.Provider>
+
+            {/* Fast Stats */}
+            <div className="px-2.5 py-2.5 flex items-center gap-3">
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger className="flex items-center gap-1 text-[#888888] cursor-default">
+                    <Sprout size={11} className="text-[#16A34A]" />
+                    <span className="font-mono text-[10px]">{berry.growth_time}h</span>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal><Tooltip.Content className="z-50 bg-black text-white text-[10px] px-2 py-1 rounded-sm shadow-xl relative">Tiempo para madurar<Tooltip.Arrow className="fill-black w-3 h-2 block" /></Tooltip.Content></Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
+
+              <Tooltip.Provider>
+                <Tooltip.Root>
+                  <Tooltip.Trigger className="flex items-center gap-1 text-[#888888] cursor-default">
+                    <Gem size={11} color={FIRMNESS_COLORS[berry.firmness.name] || "#111111"} />
+                    <span className="font-nunito text-[10px] capitalize">{berry.firmness.name.replace("-", " ")}</span>
+                  </Tooltip.Trigger>
+                  <Tooltip.Portal><Tooltip.Content className="z-50 bg-black text-white text-[10px] px-2 py-1 rounded-sm shadow-xl relative">Firmeza de la baya<Tooltip.Arrow className="fill-black w-3 h-2 block" /></Tooltip.Content></Tooltip.Portal>
+                </Tooltip.Root>
+              </Tooltip.Provider>
+
+              {berry.natural_gift_power > 0 && (
+                <div className="flex items-center gap-1 text-[#888888]">
+                  <Zap size={11} className="text-orange-500" />
+                  <span className="font-mono text-[10px]">{berry.natural_gift_power}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </HoverCard.Trigger>
+        <HoverCard.Portal>
+          <HoverCard.Content
+            className="z-50 w-[230px] p-3.5 bg-white border-2 border-black rounded-sm shadow-lg md:block hidden"
+            style={{ boxShadow: `5px 5px 0 ${domColor}` }}
+            sideOffset={10}
+          >
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3">
+                {spriteSrc && <img src={spriteSrc} className="w-12 h-12" style={{ imageRendering: "pixelated" }} />}
+                <div className="flex flex-col">
+                  <span className="font-bold font-nunito">{nameEs}</span>
+                  <span className="text-xs text-gray-500 font-mono">#{berry.id}</span>
+                </div>
+              </div>
+              <div className="w-full h-1.5 flex gap-[1px]">
+                  {berry.flavors.map((fl: any, i: number) => fl.potency > 0 ? (
+                      <div key={i} style={{ flex: fl.potency, backgroundColor: FLAVOR_COLORS[fl.flavor.name] }} />
+                  ) : null)}
+              </div>
+              <p className="text-xs text-gray-500 italic font-nunito mt-1">Efecto especial en combate y concursos...</p>
+              <span className="text-xs text-blue-600 mt-2">Click para más detalles →</span>
+            </div>
+          </HoverCard.Content>
+        </HoverCard.Portal>
+      </HoverCard.Root>
+    </motion.div>
+  );
+}
+
+
+--- ARCHIVO: berry-detail-hero.tsx ---
+// src/components/berries/berry-detail-hero.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import * as Tooltip from "@radix-ui/react-tooltip";
+import { Sprout, Gem, Sparkles } from "lucide-react";
+import { FLAVOR_META, FIRMNESS_COLORS } from "@/lib/constants/berries.constants";
+
+export function BerryFlavorChip({ name, flavor, value, color }: { name: string, flavor: string, value: number, color: string }) {
+  const meta = FLAVOR_META[flavor];
+  
+  return (
+    <Tooltip.Provider>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", bounce: 0.5, delay: 0.2 }}
+            className={`flex flex-col sm:flex-row items-center gap-1.5 px-3 py-1.5 rounded-sm bg-white/20 border border-white/35 backdrop-blur-sm cursor-help hover:bg-white/30 transition-colors ${value >= 30 ? "scale-105 border-2" : ""}`}
+          >
+            <div className="flex items-center gap-1">
+              <span className="text-white text-[12px]">
+                {flavor === "spicy" && "🌶️"}
+                {flavor === "dry" && "🧊"}
+                {flavor === "sweet" && "🍬"}
+                {flavor === "bitter" && "🍃"}
+                {flavor === "sour" && "🍋"}
+              </span>
+              <span className="font-nunito font-bold text-[11px] text-white hidden sm:block">{meta?.nameEs || name}</span>
+            </div>
+            <span className="font-mono text-[11px] text-white bg-black/20 px-1 rounded-sm shadow-inner">{value}</span>
+          </motion.div>
+        </Tooltip.Trigger>
+        <Tooltip.Portal>
+          <Tooltip.Content className="z-50 bg-black text-white p-2 rounded-sm text-xs font-nunito max-w-[200px] shadow-xl relative" sideOffset={5}>
+            El sabor {meta?.nameEs} de esta baya mejora la naturaleza {meta?.plusNature[0]?.split(' ')[0]} y empeora {meta?.minusNature[0]?.split(' ')[0]}.
+            <Tooltip.Arrow className="fill-black w-3 h-2 block" />
+          </Tooltip.Content>
+        </Tooltip.Portal>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
+}
+
+export function BerryDetailHero({ berry, dominantFlavor, flavorColor, heroGradient }: any) {
+  const nameParts = `BAYA ${berry.name.toUpperCase()}`.split(" ");
+  const spriteSrc = berry.item?.sprites?.default;
+
+  return (
+    <div 
+      className="relative w-full pt-16 pb-20 px-4 sm:px-6 overflow-hidden border-b-[3px] border-[#111111]"
+      style={{ background: heroGradient }}
+    >
+      <div className="absolute bottom-0 left-0 w-full h-[2px] bg-white/30" />
+      
+      {/* Background patterns */}
+      <div className="absolute inset-0 z-0 bg-white/[0.04]" style={{ backgroundImage: "radial-gradient(circle, transparent 20%, white 20%, white 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, white 20%, white 80%, transparent 80%, transparent)", backgroundSize: "40px 40px", backgroundPosition: "0 0, 20px 20px" }} />
+      <div className="absolute -right-4 -bottom-6 z-0 text-white/[0.04] font-mono font-bold text-[140px] leading-none pointer-events-none select-none">
+        #{berry.id.toString().padStart(2, '0')}
+      </div>
+
+      <div className="max-w-[1280px] mx-auto relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start pt-6">
+        
+        {/* Left Column - Stage */}
+        <div className="w-full md:w-[35%] flex flex-col items-center">
+          <motion.div 
+            className="w-[120px] h-[120px] md:w-[150px] md:h-[150px] bg-white/20 border-2 border-white/50 backdrop-blur-md flex items-center justify-center relative group transition-all duration-300 hover:backdrop-blur-lg hover:border-white/80"
+            style={{ boxShadow: "6px 6px 0 rgba(0,0,0,0.25)" }}
+          >
+            {spriteSrc && (
+              <motion.img
+                src={spriteSrc}
+                className="w-[72px] h-[72px] md:w-[96px] md:h-[96px] relative z-10"
+                style={{ imageRendering: "pixelated", filter: `drop-shadow(0 4px 12px ${flavorColor}66)` }}
+                animate={{
+                  y: [0, -4, 0],
+                  rotate: [-3, 3, -3]
+                }}
+                transition={{
+                  duration: dominantFlavor?.flavor.name === "spicy" ? 2 : dominantFlavor?.flavor.name === "dry" ? 5 : 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                whileHover={{ scale: 1.15, y: -8, filter: `drop-shadow(0 8px 24px ${flavorColor}CC)` }}
+              />
+            )}
+          </motion.div>
+          <div className="mt-4 text-center">
+            <span className="font-nunito text-[11px] text-white/70 tracking-wider">
+              BAYA #{berry.id} <span className="opacity-40 px-1">·</span> {berry.max_harvest} SEMILLAS <span className="opacity-40 px-1">·</span> CRECE EN {berry.growth_time}H
+            </span>
+          </div>
+        </div>
+
+        {/* Right Column - Identity */}
+        <div className="w-full md:w-[65%] flex flex-col items-center md:items-start gap-4">
+          <div className="text-[12px] font-nunito text-white/50">
+            Inicio / Bayas / Baya {berry.name.charAt(0).toUpperCase() + berry.name.slice(1)}
+          </div>
+
+          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+            {berry.flavors.map((fl: any) => {
+              if (fl.potency === 0) return null;
+              return (
+                <BerryFlavorChip 
+                  key={fl.flavor.name} 
+                  name={fl.flavor.name} 
+                  flavor={fl.flavor.name} 
+                  value={fl.potency} 
+                  color={flavorColor} 
+                />
+              );
+            })}
+          </div>
+
+          <div className="flex flex-col items-center md:items-start mb-2">
+            <h1 className="flex gap-4">
+              {nameParts.map((part: string, i: number) => (
+                <motion.span
+                  key={i}
+                  className="font-mono text-[24px] md:text-[32px] text-white drop-shadow-md inline-block"
+                  initial={{ y: -30, opacity: 0, rotate: i % 2 === 0 ? -12 : 12 }}
+                  animate={{ y: 0, opacity: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 + i * 0.15 }}
+                >
+                  {part}
+                </motion.span>
+              ))}
+            </h1>
+            <motion.span 
+              className="font-nunito text-[14px] text-white/50 italic mt-1"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+            >
+              ({berry.name.charAt(0).toUpperCase() + berry.name.slice(1)} Berry)
+            </motion.span>
+          </div>
+
+          <motion.div 
+            className="flex flex-col md:flex-row gap-3 mt-4"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              visible: { transition: { staggerChildren: 0.08 } },
+              hidden: {}
+            }}
+          >
+            {[
+              { icon: Sprout, label: `Crece: ${berry.growth_time}h`, val: berry.growth_time },
+              { icon: Gem, label: `Firmeza: ${berry.firmness.name.replace("-"," ")}`, val: berry.firmness.name, color: FIRMNESS_COLORS[berry.firmness.name] },
+              { icon: Sparkles, label: `Smoothness: ${berry.smoothness}`, val: berry.smoothness }
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                variants={{
+                  hidden: { y: 10, opacity: 0 },
+                  visible: { y: 0, opacity: 1 }
+                }}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/15 border border-white/30 rounded-sm"
+              >
+                <stat.icon size={12} color={stat.color || "white"} className={stat.color ? "" : "text-white"} />
+                <span className="font-nunito text-[11px] text-white font-bold capitalize">{stat.label}</span>
+              </motion.div>
+            ))}
+          </motion.div>
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+--- ARCHIVO: berry-detail-nav.tsx ---
+// src/components/berries/berry-detail-nav.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Lightbulb } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getBerryByIdOrName } from "@/lib/api/berries";
+import { getItemByIdOrName } from "@/lib/api/items";
+import { FLAVOR_COLORS, FLAVOR_META } from "@/lib/constants/berries.constants";
+import { getDominantFlavor, getRelatedBerries } from "@/lib/utils/berry.utils";
+
+// ──────────────────────────────────────────────────────────────
+// NAVIGATION ARROWS
+// ──────────────────────────────────────────────────────────────
+export function BerryNavigationArrows({ currentId }: { currentId: number }) {
+  const [prevBerry, setPrevBerry] = useState<any>(null);
+  const [nextBerry, setNextBerry] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchNeighbors() {
+      if (currentId > 1) {
+        try {
+          const pb = await getBerryByIdOrName(currentId - 1);
+          if (pb?.item?.name) pb.itemDetails = await getItemByIdOrName(pb.item.name);
+          setPrevBerry(pb);
+        } catch {}
+      }
+      if (currentId < 64) {
+        try {
+          const nb = await getBerryByIdOrName(currentId + 1);
+          if (nb?.item?.name) nb.itemDetails = await getItemByIdOrName(nb.item.name);
+          setNextBerry(nb);
+        } catch {}
+      }
+    }
+    fetchNeighbors();
+  }, [currentId]);
+
+  const renderArrow = (berry: any, isPrev: boolean) => {
+    if (!berry) return <div className="flex-1" />;
+    
+    const dom = getDominantFlavor(berry.flavors);
+    const color = dom ? FLAVOR_COLORS[dom.flavor.name] || "#111" : "#111";
+    const bgStyle = { backgroundColor: `${color}1A`, borderColor: color };
+
+    return (
+      <Link href={`/berries/${berry.name}`} className="flex-1 flex min-w-0">
+        <motion.div 
+          className={`flex flex-1 items-center gap-2 p-3 border-2 rounded-sm group hover:bg-white hover:shadow-[3px_3px_0_#111111] transition-all bg-opacity-10 min-w-0 ${isPrev ? "flex-row" : "flex-row-reverse"}`}
+          style={bgStyle}
+          whileHover={{ x: isPrev ? -4 : 4 }}
+        >
+          {isPrev ? <ChevronLeft size={20} color={color} className="shrink-0" /> : <ChevronRight size={20} color={color} className="shrink-0" />}
+          {berry.itemDetails?.sprites?.default && (
+            <motion.img 
+               src={berry.itemDetails.sprites.default} 
+               className="w-8 h-8 pixelated shrink-0" 
+               animate={{ rotate: [-3, 3, -3] }}
+               transition={{ duration: 3, repeat: Infinity }}
+            />
+          )}
+          <div className={`flex flex-col min-w-0 ${isPrev ? "items-start" : "items-end"}`}>
+            <span className="font-mono text-[9px] text-gray-500">#{berry.id}</span>
+            <span className="font-nunito font-bold text-[12px] truncate capitalize max-w-full" style={{ color: color }}>
+               Baya {berry.name}
+            </span>
+          </div>
+        </motion.div>
+      </Link>
+    );
+  };
+
+  return (
+    <div className="flex justify-between gap-4 mt-8 pt-8 border-t border-gray-200">
+      {renderArrow(prevBerry, true)}
+      {renderArrow(nextBerry, false)}
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// RELATED SECTION
+// ──────────────────────────────────────────────────────────────
+export function RelatedBerriesCarousel({ currentBerry, dominantFlavor, flavorColor }: any) {
+  // Normally we would use getRelatedBerries to fetch and filter all.
+  // We'll mimic this behavior using static query for the sake of presentation
+  const [related, setRelated] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Fake related fetch
+    async function fetchRelated() {
+        const fakeIds = [1, 2, 3, 4, 5].filter(x => x !== currentBerry.id);
+        const fetches = fakeIds.map(async id => {
+            const b = await getBerryByIdOrName(id);
+            if (b?.item?.name) b.itemDetails = await getItemByIdOrName(b.item.name);
+            return b;
+        });
+        const r = await Promise.all(fetches);
+        setRelated(r);
+    }
+    fetchRelated();
+  }, [currentBerry.id]);
+
+  if (related.length === 0) return null;
+
+  return (
+    <div className="mt-8">
+      <h3 className="font-mono text-[12px] text-black mb-4">BAYAS RELACIONADAS</h3>
+      
+      {/* Framer carousel */}
+      <motion.div 
+         className="flex gap-3 overflow-x-auto pb-4 cursor-grab active:cursor-grabbing snap-x"
+         drag="x"
+         dragConstraints={{ right: 0, left: -400 }} // Arbitrary constraint
+      >
+        {related.map((b, i) => {
+          const dom = getDominantFlavor(b.flavors);
+          const color = dom ? FLAVOR_COLORS[dom.flavor.name] || "#111" : "#111";
+
+          return (
+            <motion.div
+              key={b.id}
+              initial={{ y: 12, opacity: 0 }}
+              whileInView={{ y: 0, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.04 }}
+              className="w-[90px] h-[110px] shrink-0 border-[1.5px] border-gray-200 rounded-sm flex flex-col items-center justify-between p-2 hover:shadow-sm transition-colors group relative bg-white snap-center cursor-pointer"
+              style={{ "--hover-border": color } as any}
+            >
+               {/* Next.js link over whole card */}
+               <Link href={`/berries/${b.name}`} className="absolute inset-0 z-20" />
+               
+               <div className="w-full h-[50px] relative overflow-hidden rounded-sm flex items-center justify-center bg-gray-50 group-hover:bg-white transition-colors">
+                  {b.itemDetails?.sprites?.default && (
+                    <motion.img 
+                      src={b.itemDetails.sprites.default} 
+                      className="w-[44px] h-[44px] pixelated relative z-10" 
+                      animate={{ y: [0, -3, 0], rotate: [-2, 2, -2] }}
+                      transition={{ duration: 2.5 + (i * 0.2), repeat: Infinity }}
+                    />
+                  )}
+                  {/* subtle flavor radial gradient on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `radial-gradient(circle at center, ${color}33 0%, transparent 70%)` }} />
+               </div>
+               
+               <span className="font-nunito font-bold text-[10px] text-center line-clamp-2 mt-1 capitalize leading-tight group-hover:text-black text-gray-700">
+                  Baya {b.name}
+               </span>
+               
+               <div className="w-full h-[3px] flex gap-[1px]">
+                  {b.flavors.map((fl: any, idx: number) => fl.potency > 0 ? (
+                      <div key={idx} style={{ flex: fl.potency, backgroundColor: FLAVOR_COLORS[fl.flavor.name] }} />
+                  ) : null)}
+               </div>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      {/* Did you know block */}
+      <div className="hidden md:block mt-6">
+        <motion.div 
+           initial={{ x: -20, opacity: 0 }}
+           whileInView={{ x: 0, opacity: 1 }}
+           viewport={{ once: true }}
+           className="border-l-4 p-4 rounded-r-sm max-w-2xl"
+           style={{ backgroundColor: `${flavorColor}0F`, borderLeftColor: flavorColor }}
+        >
+           <div className="flex items-center gap-1.5 mb-2">
+             <Lightbulb size={14} color={flavorColor} />
+             <span className="font-mono text-[7px] text-gray-500 tracking-wider">SABÍAS QUÉ</span>
+           </div>
+           <p className="font-nunito text-[14px] text-[#444444] italic leading-relaxed">
+             Las bayas con una firmeza <b>Super dura</b> tardan mucho más en procesarse para hacer Pokécubos, pero frecuentemente producen los mejores resultados para Pokécubos tipo {flavorColor === FLAVOR_COLORS.spicy ? "Picante (Cool)" : "Dulce (Cute)"}.
+           </p>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+
+--- ARCHIVO: berry-detail-sections.tsx ---
+// src/components/berries/berry-detail-sections.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import { Sprout, Clock, Gem, Sparkles, Ruler, Info, Zap, ChevronRight, Apple } from "lucide-react";
+import NumberFlow from "@number-flow/react";
+import * as Accordion from "@radix-ui/react-accordion";
+import Link from "next/link";
+import { TypeBadge } from "@/components/pokemon/type-badge"; // Assuming this exists or will be styled inline
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries.constants";
+import { getDominantFlavor } from "@/lib/utils/berry.utils";
+import { formatPokemonName } from "@/lib/utils/pokemon.utils";
+
+// ──────────────────────────────────────────────────────────────
+// EFFECT SECTION (and Natural Gift)
+// ──────────────────────────────────────────────────────────────
+export function BerryEffectSection({ berry, flavorColor }: { berry: any; flavorColor: string }) {
+  // Simplified effect rendering. Usually we'd map via item API.
+  const hasNaturalGift = berry.natural_gift_power > 0;
+  
+  return (
+    <div className="flex flex-col gap-6">
+      <motion.div 
+        initial={{ y: 28, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-70px" }}
+        className="p-5 border-l-4 rounded-r-md"
+        style={{ borderLeftColor: flavorColor, backgroundColor: `${flavorColor}0F` }}
+      >
+        <h3 className="flex items-center gap-2 font-mono text-[12px] text-black mb-3">
+          <Apple size={16} color={flavorColor} /> EFECTO AL USAR
+        </h3>
+        <p className="font-nunito text-[14px] text-gray-700 leading-relaxed">
+          Esta baya tiene propiedades especiales. Puede ser consumida directamente por un Pokémon 
+          o utilizada como ingrediente. Su efecto exacto en batalla depende del tipo de baya.
+        </p>
+      </motion.div>
+
+      {hasNaturalGift && <BerryNaturalGifts berry={berry} />}
+    </div>
+  );
+}
+
+export function BerryNaturalGifts({ berry }: { berry: any }) {
+  const typeName = berry.natural_gift_type?.name || "normal";
+  const typeColor = "#A0A0A0"; // Placeholder for TYPE_COLORS[typeName]
+
+  return (
+    <motion.div 
+      initial={{ y: 28, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-70px" }}
+      className="p-5 border-l-4 rounded-r-md"
+      style={{ borderLeftColor: typeColor, backgroundColor: `${typeColor}12` }}
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <h3 className="font-mono text-[12px] text-black">FRUTO NATURAL</h3>
+        <div className="bg-gray-200 px-2 py-0.5 rounded-sm"><span className="text-[10px] uppercase font-bold text-gray-700">{typeName}</span></div>
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <span className="text-xs text-gray-500 font-nunito block mb-1">Potencia BASE</span>
+          <div className="font-mono text-2xl" style={{ color: typeColor }}>
+             {berry.natural_gift_power}
+          </div>
+        </div>
+      </div>
+      
+      <p className="font-nunito text-[13px] text-gray-600 mt-4 leading-relaxed">
+        El movimiento <i>Fruto Natural</i> consume esta baya para realizar un ataque de tipo <b>{typeName}</b> con una potencia de <b>{berry.natural_gift_power}</b>.
+      </p>
+    </motion.div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// GROWTH SECTION
+// ──────────────────────────────────────────────────────────────
+export function BerryGrowthSection({ berry, flavorColor }: { berry: any; flavorColor: string }) {
+  const totalGrowth = berry.growth_time * 4;
+
+  const cardCls = "bg-[#F0FDF4] border-2 border-[#E0E0E0] p-4 flex flex-col gap-2 rounded-sm transition-all duration-300 hover:border-[#16A34A] hover:shadow-[3px_3px_0_#16A34A] relative overflow-hidden group";
+
+  return (
+    <motion.div
+      initial={{ y: 40, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-70px" }}
+      transition={{ type: "spring", stiffness: 200, damping: 22 }}
+      className="flex flex-col gap-4"
+    >
+      <div className="flex items-center gap-2 border-b-2 border-transparent relative w-fit mb-2">
+        <Sprout size={16} className="text-[#16A34A]" />
+        <h2 className="font-mono text-[12px] text-black">CULTIVO</h2>
+        <motion.div 
+          className="absolute bottom-[-4px] left-0 h-[3px] bg-[#16A34A]"
+          initial={{ width: 0 }}
+          whileInView={{ width: "100%" }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        
+        {/* Stages */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 text-[#16A34A] mb-1">
+            <Clock size={16} />
+            <span className="font-nunito text-[11px] font-bold">FASES DE CRECIMIENTO</span>
+          </div>
+          <div className="font-mono text-xl text-black">
+            <NumberFlow value={berry.growth_time} /> <span className="text-sm">horas/fase</span>
+          </div>
+          <span className="font-nunito text-[10px] text-gray-500">Total: {totalGrowth}h hasta madurar</span>
+          
+          <div className="flex justify-between items-end mt-2 h-8">
+            {["🌱", "🌿", "🌾", "🍓"].map((icon, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0, y: 10 }}
+                whileInView={{ scale: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", delay: 0.3 + i * 0.1 }}
+                className="text-xl"
+                style={{ fontSize: `${16 + i * 4}px` }}
+              >
+                {icon}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Harvest */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 text-[#16A34A] mb-1">
+            <Sprout size={16} />
+            <span className="font-nunito text-[11px] font-bold">COSECHA MÁXIMA</span>
+          </div>
+          <div className="font-mono text-xl text-black">
+            <NumberFlow value={berry.max_harvest} /> <span className="text-sm">bayas</span>
+          </div>
+          <span className="font-nunito text-[10px] text-gray-500">Cantidad máxima obtenible</span>
+          
+          <div className="flex flex-wrap gap-1.5 mt-2 h-8 items-center">
+            {Array.from({ length: Math.min(berry.max_harvest, 8) }).map((_, i) => (
+              <motion.div
+                key={i}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", bounce: 0.6, delay: 0.3 + i * 0.05 }}
+                className="w-2.5 h-2.5 rounded-full"
+                style={{ backgroundColor: flavorColor }}
+              />
+            ))}
+            {berry.max_harvest > 8 && <span className="text-[10px] font-mono text-gray-400">+{berry.max_harvest - 8}</span>}
+          </div>
+        </div>
+
+        {/* Firmness */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 mb-1" style={{ color: FIRMNESS_COLORS[berry.firmness.name] || "#111" }}>
+            <Gem size={16} />
+            <span className="font-nunito text-[11px] font-bold uppercase">FIRMEZA</span>
+          </div>
+          <div className="font-mono text-[14px] capitalize mb-[6px]" style={{ color: FIRMNESS_COLORS[berry.firmness.name] || "#111" }}>
+            {berry.firmness.name.replace("-", " ")}
+          </div>
+          
+          <div className="flex gap-[2px] mt-auto">
+            {Array.from({ length: 5 }).map((_, i) => {
+              const valMap: any = { "very-soft": 1, "soft": 2, "hard": 3, "very-hard": 4, "super-hard": 5 };
+              const filled = i < (valMap[berry.firmness.name] || 3);
+              return (
+                <motion.div
+                  key={i}
+                  initial={filled ? { scaleY: 0 } : {}}
+                  whileInView={filled ? { scaleY: 1 } : {}}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.4 + i * 0.1 }}
+                  className="h-2 flex-1 rounded-sm origin-bottom"
+                  style={{ backgroundColor: filled ? (FIRMNESS_COLORS[berry.firmness.name] || "#111") : "#E2E8F0" }}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dryness */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 text-blue-500 mb-1">
+            <Zap size={16} />
+            <span className="font-nunito text-[11px] font-bold uppercase">SECADO (DRYNESS)</span>
+          </div>
+          <div className="font-mono text-xl text-black">
+             {berry.soil_dryness} <span className="text-sm">/ hora</span>
+          </div>
+          <span className="font-nunito text-[10px] text-gray-500">Velocidad a la que seca la tierra</span>
+        </div>
+
+        {/* Smoothness */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 text-purple-600 mb-1">
+             <Sparkles size={16} />
+             <span className="font-nunito text-[11px] font-bold uppercase">SMOOTHNESS</span>
+          </div>
+          <div className="font-mono text-[18px] text-purple-700">
+             <NumberFlow value={berry.smoothness} />
+          </div>
+          <span className="font-nunito text-[10px] text-gray-500">Calidad base al hacer Pokécubos</span>
+          
+          <div className="w-full h-1.5 bg-gray-200 mt-2 overflow-hidden rounded-sm">
+             <motion.div 
+               className="h-full bg-gradient-to-r from-purple-400 to-purple-700"
+               initial={{ width: 0 }}
+               whileInView={{ width: `${(berry.smoothness / 40) * 100}%` }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.8, delay: 0.3 }}
+             />
+          </div>
+        </div>
+
+        {/* Size */}
+        <div className={cardCls}>
+          <div className="flex items-center gap-2 text-orange-500 mb-1">
+             <Ruler size={16} />
+             <span className="font-nunito text-[11px] font-bold uppercase">TAMAÑO</span>
+          </div>
+          <div className="font-mono text-[18px] text-black">
+             <NumberFlow value={berry.size} /> <span className="text-sm">mm</span>
+          </div>
+          <span className="font-nunito text-[10px] text-gray-500">Tamaño físico promedio</span>
+        </div>
+
+      </div>
+
+      <Accordion.Root type="single" collapsible className="mt-4">
+        <Accordion.Item value="guide" className="border-2 border-black rounded-sm overflow-hidden border-b-[4px]">
+          <Accordion.Header>
+            <Accordion.Trigger className="flex justify-between w-full p-4 bg-gray-50 hover:bg-gray-100 transition-colors font-mono text-[10px] text-black">
+              ¿CÓMO CULTIVAR ESTA BAYA?
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up bg-white">
+            <div className="p-4 flex flex-col gap-3 font-nunito text-[13px] text-gray-700">
+              <div className="flex items-start gap-3"><span className="bg-red-500 text-white px-2 py-0.5 rounded-sm font-mono text-[10px] mt-0.5">1</span> <span>Planta la semilla en tierra especial apta para bayas.</span></div>
+              <div className="flex items-start gap-3"><span className="bg-red-500 text-white px-2 py-0.5 rounded-sm font-mono text-[10px] mt-0.5">2</span> <span>Cuídala y riégala durante sus fases de crecimiento cada {berry.growth_time}h.</span></div>
+              <div className="flex items-start gap-3"><span className="bg-red-500 text-white px-2 py-0.5 rounded-sm font-mono text-[10px] mt-0.5">3</span> <span>Cosecha tras {totalGrowth}h para obtener entre 2 y {berry.max_harvest} bayas dependiendo de tus cuidados.</span></div>
+            </div>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion.Root>
+    </motion.div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// CONTEST SECTION
+// ──────────────────────────────────────────────────────────────
+export function BerryContestSection({ berry, dominantFlavor }: { berry: any; dominantFlavor: any }) {
+  // Normally contest info is tied to flavor
+  if (!dominantFlavor) return null;
+  const flavorName = dominantFlavor.flavor.name;
+  
+  // Basic mapping of flavor to contest type
+  const contestMap: any = {
+    spicy: { type: "Cool", bg: "#FEE2E2", border: "#FCA5A5", icon: "🌶️" },
+    dry: { type: "Beauty", bg: "#DBEAFE", border: "#93C5FD", icon: "🧊" },
+    sweet: { type: "Cute", bg: "#FCE7F3", border: "#F9A8D4", icon: "🍬" },
+    bitter: { type: "Smart", bg: "#DCFCE7", border: "#86EFAC", icon: "🍃" },
+    sour: { type: "Tough", bg: "#FEF9C3", border: "#FDE047", icon: "🍋" }
+  };
+  const contest = contestMap[flavorName] || contestMap.spicy;
+
+  return (
+    <motion.div
+      initial={{ y: 28, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-70px" }}
+      className="p-5 border-2 rounded-sm"
+      style={{ backgroundColor: contest.bg, borderColor: contest.border, borderLeftWidth: "4px" }}
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <h3 className="font-mono text-[12px] text-black">PERFIL DE CONCURSO</h3>
+        <div className="bg-white/50 border border-black/20 px-2 py-0.5 rounded-sm flex items-center gap-1">
+          <span>{contest.icon}</span> <span className="text-[10px] font-bold text-gray-700">{contest.type}</span>
+        </div>
+      </div>
+      <p className="font-nunito text-[13px] text-gray-700 mb-4">
+        Las estadísticas de esta baya sugieren que es óptima para hacer Pokécubos orientados a la condición <b>{contest.type}</b>.
+      </p>
+    </motion.div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// HELD POKEMON
+// ──────────────────────────────────────────────────────────────
+export function BerryHeldPokemon({ pokemon, flavorColor }: { pokemon: any[]; flavorColor: string }) {
+  if (!pokemon || pokemon.length === 0) return null;
+
+  return (
+    <motion.div
+      initial={{ y: 28, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-70px" }}
+      className="flex flex-col gap-4"
+    >
+      <div className="flex items-center gap-3">
+        <h3 className="font-mono text-[12px] text-black">POKÉMON QUE LA CARGAN NATURALMENTE</h3>
+        <div className="px-2 py-0.5 rounded-sm" style={{ backgroundColor: flavorColor }}>
+          <span className="font-mono text-[8px] text-white">{pokemon.length}</span>
+        </div>
+      </div>
+      
+      <div className="p-3 border-l-4 rounded-r-md flex items-center gap-2 mb-2" style={{ backgroundColor: `${flavorColor}1A`, borderLeftColor: flavorColor }}>
+        <Info size={14} color={flavorColor} />
+        <span className="font-nunito text-[12px] text-gray-700">
+          Para obtener esta baya en estado salvaje puedes atrapar a estos Pokémon o usar movimientos como Ladrón o Antojo.
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {pokemon.map((p: any, i: number) => {
+          // PokeAPI structure for held_by_pokemon is tricky. We'll simplify the rendering.
+          const name = p.pokemon?.name || p.name;
+          const sprite = p.pokemon?.sprites?.front_default;
+          // Use the highest rarity from version details
+          const maxRarity = p.version_details ? Math.max(...p.version_details.map((v: any) => v.rarity)) : 5;
+          const rarityColor = maxRarity >= 50 ? "#16A34A" : maxRarity >= 10 ? "#F59E0B" : "#DC2626";
+
+          return (
+            <Link 
+              key={name + i} 
+              href={`/pokemon/${name}`}
+              className="flex items-center gap-3 p-2 bg-white border border-gray-200 rounded-sm hover:border-b-4 hover:-translate-y-1 transition-all group relative overflow-hidden"
+              style={{ borderBottomColor: flavorColor }}
+            >
+              <div 
+                 className="absolute inset-0 z-0 opacity-0 group-hover:opacity-10 transition-opacity" 
+                 style={{ backgroundColor: flavorColor }} 
+              />
+              <img src={sprite} className="w-10 h-10 pixelated relative z-10" />
+              <div className="flex flex-col flex-1 relative z-10">
+                <span className="font-nunito text-[11px] font-bold text-black capitalize line-clamp-1 group-hover:text-gray-700">{formatPokemonName(name)}</span>
+                <div className="flex items-center gap-1 mt-0.5">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: rarityColor }} />
+                  <span className="font-mono text-[8px] text-gray-500">{maxRarity}%</span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+
+
+--- ARCHIVO: berry-filter-bar.tsx ---
+// src/components/berries/berry-filter-bar.tsx
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import * as Select from "@radix-ui/react-select";
+import { ChevronDown, Check, X } from "lucide-react";
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries.constants";
+
+interface Props {
+  flavor: string | null;
+  onFlavorChange: (f: string | null) => void;
+  firmness: string | null;
+  onFirmnessChange: (f: string | null) => void;
+  effect: string | null;
+  onEffectChange: (e: string | null) => void;
+  sort: string | null;
+  onSortChange: (s: string | null) => void;
+  onClearAll: () => void;
+}
+
+export function BerryFilterBar({
+  flavor, onFlavorChange,
+  firmness, onFirmnessChange,
+  effect, onEffectChange,
+  sort, onSortChange,
+  onClearAll
+}: Props) {
+  const flavorKeys = Object.keys(FLAVOR_META);
+  
+  const firmnessOptions = [
+    { value: "very-soft", label: "Muy blanda" },
+    { value: "soft", label: "Blanda" },
+    { value: "hard", label: "Dura" },
+    { value: "very-hard", label: "Muy dura" },
+    { value: "super-hard", label: "Super dura" },
+  ];
+
+  const sortOptions = [
+    { value: "id", label: "Número" },
+    { value: "name", label: "Nombre (A-Z)" },
+    { value: "growth", label: "Crecimiento" },
+    { value: "smoothness", label: "Smoothness" },
+  ];
+
+  return (
+    <div className="flex flex-col gap-5 my-5">
+      <div className="flex gap-2.5 flex-wrap items-center">
+        {/* FLAVOR DOMINANT FILTER */}
+        <div className="flex gap-2 flex-wrap">
+          {flavorKeys.map((fKey) => {
+            const isActive = flavor === fKey;
+            const meta = FLAVOR_META[fKey];
+            const color = FLAVOR_COLORS[fKey];
+            
+            return (
+              <motion.button
+                key={fKey}
+                onClick={() => onFlavorChange(isActive ? null : fKey)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-sm outline-none transition-colors relative"
+                style={{
+                  backgroundColor: isActive ? color : `${color}1A`,
+                  border: `2px solid ${isActive ? "#111111" : "transparent"}`,
+                  boxShadow: isActive ? "3px 3px 0 #111111" : "none",
+                  color: isActive ? "#FFFFFF" : color,
+                }}
+                whileTap={{ scale: 0.95 }}
+                animate={isActive ? { scale: [1, 1.08, 1] } : { scale: 1 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                whileHover={!isActive ? { scale: 1.03, backgroundColor: `${color}33` } : {}}
+              >
+                <motion.div
+                  animate={isActive ? { rotate: [0, -20, 15, -8, 0] } : { rotate: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <span className="text-[14px]">
+                    {fKey === "spicy" && "🌶️"}
+                    {fKey === "dry" && "🧊"}
+                    {fKey === "sweet" && "🍬"}
+                    {fKey === "bitter" && "🍃"}
+                    {fKey === "sour" && "🍋"}
+                  </span>
+                </motion.div>
+                <span className="font-nunito font-bold text-[12px] hidden sm:block">{meta.nameEs}</span>
+              </motion.button>
+            );
+          })}
+        </div>
+
+        {/* FIRMNESS SELECT */}
+        <Select.Root value={firmness || "all"} onValueChange={(v) => onFirmnessChange(v === "all" ? null : v)}>
+          <Select.Trigger className="flex items-center justify-between gap-2 px-3 h-10 bg-white border-2 border-black rounded-sm outline-none font-nunito text-sm font-bold min-w-[170px]" aria-label="Firmeza">
+            <Select.Value placeholder="Todas las firmezas" />
+            <Select.Icon>
+              <ChevronDown size={14} className="opacity-50" />
+            </Select.Icon>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content className="overflow-hidden bg-white border-2 border-black rounded-sm shadow-[4px_4px_0_#111111] z-[100]">
+              <Select.Viewport className="p-1">
+                <Select.Item value="all" className="relative flex items-center px-6 py-2 outline-none cursor-default font-nunito text-sm rounded-sm hover:bg-gray-100 data-[highlighted]:bg-gray-100">
+                  <Select.ItemText>Todas las firmezas</Select.ItemText>
+                  <Select.ItemIndicator className="absolute left-1.5 inline-flex items-center justify-center">
+                    <Check size={14} />
+                  </Select.ItemIndicator>
+                </Select.Item>
+                {firmnessOptions.map((opt, i) => (
+                  <Select.Item key={opt.value} value={opt.value} className="relative flex items-center justify-between px-6 py-2 outline-none cursor-default font-nunito text-sm rounded-sm hover:bg-gray-100 data-[highlighted]:bg-gray-100 gap-4">
+                    <Select.ItemText>{opt.label}</Select.ItemText>
+                    <div className="flex gap-[1px]">
+                        {Array.from({ length: 5 }).map((_, segmentIndex) => (
+                            <div key={segmentIndex} className={`w-3 h-2 ${segmentIndex <= i ? "" : "bg-gray-200"}`} style={{ backgroundColor: segmentIndex <= i ? FIRMNESS_COLORS[opt.value] : "#E2E8F0" }} />
+                        ))}
+                    </div>
+                    <Select.ItemIndicator className="absolute left-1.5 inline-flex items-center justify-center">
+                      <Check size={14} />
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+
+        {/* EFFECT SELECT */}
+        <Select.Root value={effect || "all"} onValueChange={(v) => onEffectChange(v === "all" ? null : v)}>
+          <Select.Trigger className="flex items-center justify-between gap-2 px-3 h-10 bg-white border-2 border-black rounded-sm outline-none font-nunito text-sm font-bold min-w-[170px]" aria-label="Efecto">
+            <Select.Value placeholder="Todos los efectos" />
+            <Select.Icon>
+              <ChevronDown size={14} className="opacity-50" />
+            </Select.Icon>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content className="overflow-hidden bg-white border-2 border-black rounded-sm shadow-[4px_4px_0_#111111] z-[100]">
+              <Select.Viewport className="p-1">
+                <Select.Item value="all" className="relative flex items-center px-6 py-2 outline-none cursor-default font-nunito text-sm rounded-sm hover:bg-gray-100 data-[highlighted]:bg-gray-100">
+                  <Select.ItemText>Todos los efectos</Select.ItemText>
+                  <Select.ItemIndicator className="absolute left-1.5 inline-flex items-center justify-center">
+                    <Check size={14} />
+                  </Select.ItemIndicator>
+                </Select.Item>
+                {BERRY_CATEGORIES.map((cat) => (
+                  <Select.Item key={cat.id} value={cat.id} className="relative flex items-center justify-between px-6 py-2 outline-none cursor-default font-nunito text-sm rounded-sm hover:bg-gray-100 data-[highlighted]:bg-gray-100">
+                    <Select.ItemText>{cat.label}</Select.ItemText>
+                    <Select.ItemIndicator className="absolute left-1.5 inline-flex items-center justify-center">
+                      <Check size={14} />
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+
+        {/* SORT SELECT */}
+        <Select.Root value={sort || "id"} onValueChange={(v) => onSortChange(v || null)}>
+          <Select.Trigger className="flex items-center justify-between gap-2 px-3 h-10 bg-white border-2 border-black rounded-sm outline-none font-nunito text-sm font-bold min-w-[150px] ml-auto" aria-label="Ordenar">
+            <Select.Value placeholder="Ordenar" />
+            <Select.Icon>
+              <ChevronDown size={14} className="opacity-50" />
+            </Select.Icon>
+          </Select.Trigger>
+          <Select.Portal>
+            <Select.Content className="overflow-hidden bg-white border-2 border-black rounded-sm shadow-[4px_4px_0_#111111] z-[100]">
+              <Select.Viewport className="p-1">
+                {sortOptions.map((opt) => (
+                  <Select.Item key={opt.value} value={opt.value} className="relative flex items-center justify-between px-6 py-2 outline-none cursor-default font-nunito text-sm rounded-sm hover:bg-gray-100 data-[highlighted]:bg-gray-100">
+                    <Select.ItemText>{opt.label}</Select.ItemText>
+                    <Select.ItemIndicator className="absolute left-1.5 inline-flex items-center justify-center">
+                      <Check size={14} />
+                    </Select.ItemIndicator>
+                  </Select.Item>
+                ))}
+              </Select.Viewport>
+            </Select.Content>
+          </Select.Portal>
+        </Select.Root>
+      </div>
+
+      {/* ACTIVE FILTER CHIPS */}
+      {(flavor || firmness || effect) && (
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="font-mono text-[10px] text-gray-400 mr-1">Filtros:</span>
+          <AnimatePresence>
+            {flavor && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-sm border"
+                style={{ 
+                  backgroundColor: `${FLAVOR_COLORS[flavor]}1A`,
+                  borderColor: FLAVOR_COLORS[flavor],
+                  color: FLAVOR_COLORS[flavor]
+                }}
+              >
+                <span className="font-nunito text-[11px] font-bold">{FLAVOR_META[flavor].nameEs}</span>
+                <button onClick={() => onFlavorChange(null)} className="hover:rotate-90 hover:text-black transition-all">
+                  <X size={12} />
+                </button>
+              </motion.div>
+            )}
+            {firmness && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-sm border border-black bg-white"
+              >
+                <span className="font-nunito text-[11px] font-bold">Firmeza: {firmnessOptions.find(o => o.value === firmness)?.label}</span>
+                <button onClick={() => onFirmnessChange(null)} className="hover:rotate-90 hover:text-black transition-all">
+                  <X size={12} />
+                </button>
+              </motion.div>
+            )}
+            {effect && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-sm border border-black bg-white"
+              >
+                <span className="font-nunito text-[11px] font-bold">Efecto: {BERRY_CATEGORIES.find(o => o.id === effect)?.label}</span>
+                <button onClick={() => onEffectChange(null)} className="hover:rotate-90 hover:text-black transition-all">
+                  <X size={12} />
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <button onClick={onClearAll} className="ml-2 font-nunito text-xs text-red-500 hover:underline">
+            Limpiar todo
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+--- ARCHIVO: berry-flavor-chart.tsx ---
+"use client";
+
+import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Tooltip } from "recharts";
+
+interface FlavorData {
+    flavor: string;
+    potency: number;
+}
+
+interface BerryFlavorChartProps {
+    flavors: FlavorData[];
+}
+
+export function BerryFlavorChart({ flavors }: BerryFlavorChartProps) {
+    const FLAVORS: Record<string, string> = { spicy: "Picante", dry: "Seco", sweet: "Dulce", bitter: "Amargo", sour: "Agrio" };
+
+    const data = flavors.map((f) => ({
+        flavor: FLAVORS[f.flavor] ?? f.flavor,
+        potency: f.potency,
+    }));
+
+    return (
+        <div className="h-56">
+            <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={data}>
+                    <PolarGrid stroke="#0f3460" />
+                    <PolarAngleAxis dataKey="flavor" tick={{ fill: "#9ca3af", fontSize: 11 }} />
+                    <Radar name="Potencia" dataKey="potency" stroke="#FFD700" fill="#FFD700" fillOpacity={0.3} />
+                    <Tooltip contentStyle={{ background: "#1a1a2e", border: "1px solid #0f3460", borderRadius: 8 }} />
+                </RadarChart>
+            </ResponsiveContainer>
+        </div>
+    );
+}
+
+
+--- ARCHIVO: berry-flavor-radar.tsx ---
+// src/components/berries/berry-flavor-radar.tsx
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, Tooltip as RechartsTooltip } from "recharts";
+import NumberFlow from "@number-flow/react";
+import { FLAVOR_COLORS } from "@/lib/constants/berries.constants";
+
+export function BerryFlavorRadar({ radarData, dominantFlavor, flavorColor }: any) {
+  const prefersRM = useReducedMotion();
+  
+  // Sort flavors for numerical display
+  const sortedData = [...radarData].sort((a, b) => b.value - a.value);
+  const totalFlavor = sortedData.reduce((acc, curr) => acc + curr.value, 0);
+  const smoothness = 25; // using placeholder or pass from berry
+
+  const renderPolarAngleAxis = (props: any) => {
+    const { payload, x, y, cx, cy } = props;
+    const entry = radarData.find((d: any) => d.flavor === payload.value);
+    
+    return (
+      <g className="transition-transform duration-500 hover:scale-110 cursor-pointer pointer-events-auto origin-center">
+        <circle cx={x} cy={y} fill={`${entry.color}1A`} r={18} stroke={entry.color} strokeWidth={1} />
+        {/* Placeholder text for icon */}
+        <text x={x} y={y + 11} fill={entry.color} textAnchor="middle" className="font-mono text-[7px] pointer-events-none">
+           {payload.value.substring(0,3).toUpperCase()}
+        </text>
+      </g>
+    );
+  };
+
+  return (
+    <div className="flex flex-col md:flex-row gap-8 items-center md:items-stretch bg-white p-6 rounded-sm border-2 border-black shadow-[4px_4px_0_#111111]">
+      
+      {/* LEFT: Chart */}
+      <div className="w-full md:w-[55%] h-[300px] relative">
+        <ResponsiveContainer width="100%" height="100%">
+          <RadarChart cx="50%" cy="50%" outerRadius="70%" data={radarData}>
+            <PolarGrid gridType="polygon" stroke="rgba(0,0,0,0.1)" strokeWidth={1} />
+            <PolarAngleAxis dataKey="flavor" tick={renderPolarAngleAxis as any} />
+            <PolarRadiusAxis angle={30} domain={[0, 40]} tick={false} axisLine={false} />
+            
+            {/* Avg (static demo) */}
+            <Radar
+              name="Promedio de todas las bayas"
+              dataKey={() => 15}
+              stroke="#E0E0E0"
+              fill="rgba(0,0,0,0.03)"
+              strokeWidth={1.5}
+              strokeDasharray="4 2"
+              dot={false}
+              isAnimationActive={false}
+            />
+
+            {/* Current Berry */}
+            <Radar
+              name="Esta baya"
+              dataKey="value"
+              stroke={flavorColor}
+              fill={`${flavorColor}4D`}
+              strokeWidth={2.5}
+              dot={{ r: 4, fill: flavorColor, stroke: "#fff", strokeWidth: 1.5 }}
+              activeDot={{ r: 6 }}
+              isAnimationActive={!prefersRM}
+              animationBegin={200}
+              animationDuration={1000}
+              animationEasing="ease-out"
+            />
+          </RadarChart>
+        </ResponsiveContainer>
+        <div className="absolute bottom-[-10px] w-full flex justify-center gap-4 text-[10px] font-nunito text-gray-500">
+           <div className="flex items-center gap-1"><div className="w-2 h-2 rounded-full" style={{backgroundColor: flavorColor}}/> Esta baya</div>
+           <div className="flex items-center gap-1"><div className="w-4 h-0 border-t border-dashed border-gray-400"/> Promedio</div>
+        </div>
+      </div>
+
+      {/* RIGHT: Values */}
+      <div className="w-full md:w-[45%] flex flex-col">
+        <h3 className="font-mono text-[10px] text-black border-b-2 border-black pb-2 mb-2">PERFIL DE SABOR</h3>
+        
+        <div className="flex flex-col flex-1">
+          {sortedData.map((d: any, i: number) => {
+            const isDom = i === 0 && d.value > 0;
+            return (
+              <motion.div 
+                key={d.flavor}
+                className="flex items-center gap-3 py-2.5 border-b border-gray-100 group transition-colors"
+                whileHover={{ backgroundColor: `${d.color}0F` }}
+              >
+                <div className="w-[80px] flex items-center gap-1.5 shrink-0">
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
+                  <span className="font-nunito text-[12px] font-bold" style={{ color: d.color }}>{d.flavor}</span>
+                </div>
+                
+                <div className="flex-1 bg-gray-100 h-[10px] relative overflow-hidden group-hover:h-[12px] transition-all duration-300">
+                  <motion.div 
+                    className="absolute top-0 left-0 h-full"
+                    style={{ backgroundColor: d.color }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${(d.value / 40) * 100}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: "easeOut", delay: i * 0.1 }}
+                  />
+                  {isDom && (
+                    <motion.div
+                      className="absolute top-0 left-0 h-full w-[200px]"
+                      style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)" }}
+                      animate={{ x: ["-100%", "300%"] }}
+                      transition={{ duration: 1.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 2 }}
+                    />
+                  )}
+                </div>
+                
+                <div className="w-[30px] text-right font-mono text-[11px]" style={{ color: d.color }}>
+                  <NumberFlow value={d.value} />
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="flex items-center justify-between mt-3 pt-3 border-t-2 border-black">
+          <span className="font-mono text-[9px]">TOTAL</span>
+          <span className="font-mono text-[13px]"><NumberFlow value={totalFlavor} /></span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+--- ARCHIVO: berry-grid.tsx ---
+"use client";
+
+import { BerryCard } from "./berry-card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { NamedAPIResource } from "@/types/api/common.types";
+
+interface BerryGridProps {
+    berries: NamedAPIResource[];
+    isLoading?: boolean;
+}
+
+export function BerryGrid({ berries, isLoading }: BerryGridProps) {
+    if (isLoading) {
+        return (
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                {Array.from({ length: 18 }).map((_, i) => <Skeleton key={i} className="h-28 rounded-xl" />)}
+            </div>
+        );
+    }
+
+    return (
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+            {berries.map((b) => <BerryCard key={b.name} name={b.name} />)}
+        </div>
+    );
+}
+
+
+--- ARCHIVO: berry-list-components.tsx ---
+// src/components/berries/berry-list-components.tsx
+"use client";
+
+import { motion, AnimatePresence } from "framer-motion";
+import { Leaf, Sprout } from "lucide-react";
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS } from "@/lib/constants/berries.constants";
+import { getDominantFlavor } from "@/lib/utils/berry.utils";
+import { BerryCard } from "./berry-card";
+import { useRouter } from "next/navigation";
+
+// ──────────────────────────────────────────────────────────────
+// HEADER
+// ──────────────────────────────────────────────────────────────
+export function BerriesPageHeader({ count }: { count: number }) {
+  const flavorKeys = ["spicy", "dry", "sweet", "bitter", "sour"];
+  
+  return (
+    <div className="pb-7">
+      <div className="text-xs font-nunito text-gray-400 mb-4">Inicio / Bayas</div>
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-1">
+            {flavorKeys.map((k, i) => (
+              <motion.div
+                key={k}
+                className="w-[10px] h-[10px] rounded-full"
+                style={{ backgroundColor: FLAVOR_COLORS[k] }}
+                initial={{ scale: 0 }}
+                whileInView={{ scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 400, damping: 20, delay: i * 0.06 }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  transition: { duration: 1.5, delay: i * 0.4, repeat: Infinity, repeatDelay: 1.5 }
+                }}
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-3">
+            <h1 className="font-mono text-[20px] text-black">BAYAS</h1>
+            <motion.div
+              initial={{ scale: 0, rotate: 8 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", bounce: 0.5, delay: 0.3 }}
+              className="bg-[#16A34A] text-white border-2 border-[#111111] px-2 py-1 flex items-center shadow-[2px_2px_0_#111111]"
+            >
+              <span className="font-mono text-[8px]">{count} bayas</span>
+            </motion.div>
+          </div>
+        </div>
+        
+        <div className="flex flex-col items-end gap-2">
+          <span className="font-nunito text-[13px] text-[#888888] italic text-right">
+            Frutos cultivables con propiedades únicas
+          </span>
+          <div className="flex gap-1.5">
+            {flavorKeys.map((k, i) => (
+              <motion.div
+                key={k}
+                className="px-2 py-[3px] border rounded-sm flex items-center justify-center pointer-events-none"
+                style={{ backgroundColor: `${FLAVOR_COLORS[k]}1E`, borderColor: FLAVOR_COLORS[k] }}
+                initial={{ scale: 0, rotate: i % 2 === 0 ? 8 : -8 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", bounce: 0.5, delay: 0.4 + i * 0.05 }}
+              >
+                <span className="font-mono text-[6px]" style={{ color: FLAVOR_COLORS[k] }}>
+                  {k === "spicy" && "🌶"}
+                  {k === "dry" && "🧊"}
+                  {k === "sweet" && "🍬"}
+                  {k === "bitter" && "🍃"}
+                  {k === "sour" && "🍋"}
+                  {" "}{FLAVOR_META[k].nameEs.toUpperCase()}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
+      {/* Separador Doble */}
+      <div className="mt-4 flex flex-col h-[5px]">
+        {/* Black to Green gradient line */}
+        <div className="h-[3px] w-full" style={{ background: "linear-gradient(to right, #111111, #16A34A)" }} />
+        {/* Red line */}
+        <motion.div 
+          className="h-[2px] w-full bg-[#CC0000] origin-right"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// VIEW TOGGLE
+// ──────────────────────────────────────────────────────────────
+export function BerryViewToggle({ activeView, onViewChange }: { activeView: string, onViewChange: (v: any) => void }) {
+  const views = [
+    { id: "cards", label: "🔲 Cards" },
+    { id: "table", label: "📊 Tabla" },
+    { id: "flavor", label: "🌈 Por sabor" }
+  ];
+
+  return (
+    <div className="flex gap-2 my-4 bg-gray-100 p-1 w-fit rounded-sm">
+      {views.map((v) => (
+        <button
+          key={v.id}
+          onClick={() => onViewChange(v.id as any)}
+          className={`px-3 py-1.5 text-xs font-nunito font-bold rounded-sm transition-all ${activeView === v.id ? "bg-white shadow-[2px_2px_0_#111111] border border-black" : "text-gray-500 hover:text-black"}`}
+        >
+          {v.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// FLAVOR GROUP VIEW
+// ──────────────────────────────────────────────────────────────
+export function BerryFlavorGroupView({ berries }: { berries: any[] }) {
+  const flavorKeys = ["spicy", "dry", "sweet", "bitter", "sour"];
+  const router = useRouter();
+
+  return (
+    <div className="flex flex-col md:flex-row gap-4 w-full">
+      {flavorKeys.map((fKey, index) => {
+        const groupBerries = berries.filter(b => {
+          const dom = getDominantFlavor(b.flavors);
+          return dom?.flavor.name === fKey;
+        });
+
+        if (groupBerries.length === 0) return null;
+
+        const color = FLAVOR_COLORS[fKey];
+        const meta = FLAVOR_META[fKey];
+
+        return (
+          <motion.div
+            key={fKey}
+            className="flex-1 flex flex-col border-2 border-transparent"
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ type: "spring", delay: index * 0.08 }}
+          >
+            {/* Header */}
+            <div 
+              className="flex items-center gap-2 px-3 py-2.5 border-b-2 border-[#111111]"
+              style={{ backgroundColor: color }}
+            >
+              <span className="text-white text-lg">
+                {fKey === "spicy" && "🌶️"}
+                {fKey === "dry" && "🧊"}
+                {fKey === "sweet" && "🍬"}
+                {fKey === "bitter" && "🍃"}
+                {fKey === "sour" && "🍋"}
+              </span>
+              <span className="font-mono text-[8px] text-white flex-1">{meta.nameEs.toUpperCase()}</span>
+              <div className="bg-black border border-white px-1.5 py-0.5 rounded-sm">
+                <span className="font-mono text-[8px] text-white">{groupBerries.length}</span>
+              </div>
+            </div>
+
+            {/* Body */}
+            <div className="flex flex-col flex-1" style={{ backgroundColor: `${color}12` }}>
+              {groupBerries.map(b => (
+                <div
+                  key={b.id}
+                  onClick={() => router.push(`/berries/${b.name}`)}
+                  className="flex items-center gap-2.5 px-2.5 py-2 border-b cursor-pointer transition-colors group"
+                  style={{ borderColor: `${color}33`, "--hover-bg": `${color}26` } as any}
+                >
+                  <img 
+                    src={b.item?.sprites?.default || ""} 
+                    className="w-8 h-8 group-hover:scale-110 transition-transform pixelated" 
+                  />
+                  <div className="flex flex-col flex-1">
+                    <span className="font-nunito text-[11px] font-bold text-black group-hover:text-[var(--hover-bg)] transition-colors">
+                      {`BAYA ${b.name.toUpperCase()}`}
+                    </span>
+                    <span className="font-mono text-[9px] text-gray-500">#{b.id}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// TABLE VIEW
+// ──────────────────────────────────────────────────────────────
+export function BerryTableView({ berries }: { berries: any[] }) {
+  const router = useRouter();
+
+  return (
+    <div className="w-full overflow-x-auto border-t-2 border-black mt-4">
+      <table className="w-full text-left border-collapse min-w-[800px]">
+        <thead>
+          <tr className="bg-[#111111] text-white font-mono text-[9px]">
+            <th className="py-3 px-4">#</th>
+            <th className="py-3 px-4">Sprite</th>
+            <th className="py-3 px-4">Nombre</th>
+            <th className="py-3 px-4">Sabor</th>
+            <th className="py-3 px-4">Firmeza</th>
+            <th className="py-3 px-4">Crec.</th>
+            <th className="py-3 px-4">Smoothness</th>
+            <th className="py-3 px-4">N.Gift POW</th>
+          </tr>
+        </thead>
+        <tbody className="font-nunito text-sm">
+          {berries.map(b => {
+             const dom = getDominantFlavor(b.flavors);
+             const domColor = dom ? FLAVOR_COLORS[dom.flavor.name] || "#111111" : "#111111";
+             return (
+              <tr 
+                key={b.id} 
+                onClick={() => router.push(`/berries/${b.name}`)}
+                className="border-b hover:bg-black/5 cursor-pointer transition-colors"
+                style={{ borderLeft: `4px solid ${domColor}` }}
+              >
+                <td className="py-2 px-4 font-mono text-xs text-gray-500">#{b.id}</td>
+                <td className="py-2 px-4">
+                   {b.item?.sprites?.default && <img src={b.item.sprites.default} className="w-8 h-8 pixelated" />}
+                </td>
+                <td className="py-2 px-4 font-bold capitalize">Baya {b.name}</td>
+                <td className="py-2 px-4">
+                  <span className="text-xs px-2 py-1 bg-gray-100 rounded-sm" style={{ color: domColor }}>
+                    {dom ? FLAVOR_META[dom.flavor.name].nameEs : "-"}
+                  </span>
+                </td>
+                <td className="py-2 px-4 text-xs capitalize">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: FIRMNESS_COLORS[b.firmness.name] }} />
+                    {b.firmness.name.replace("-", " ")}
+                  </div>
+                </td>
+                <td className="py-2 px-4 font-mono text-xs">{b.growth_time}h</td>
+                <td className="py-2 px-4">
+                  <div className="w-10 h-2 rounded-sm overflow-hidden bg-gray-200">
+                    <div className="h-full bg-gradient-to-r from-green-300 to-green-600" style={{ width: `${(b.smoothness / 40) * 100}%` }} />
+                  </div>
+                </td>
+                <td className="py-2 px-4 font-mono text-xs text-orange-500">
+                  {b.natural_gift_power || "-"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// EMPTY STATE
+// ──────────────────────────────────────────────────────────────
+export function BerryEmptyState({ onClear }: { onClear: () => void }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      className="flex flex-col items-center justify-center py-16 gap-4"
+    >
+      <motion.div
+        animate={{ rotate: [-10, 10, -10] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <Leaf size={52} className="text-[#16A34A]" />
+      </motion.div>
+      <div className="flex gap-2 text-[#16A34A] opacity-50 font-bold tracking-widest">
+         <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0 }}>·</motion.span>
+         <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 0.5 }}>·</motion.span>
+         <motion.span animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity, delay: 1.0 }}>·</motion.span>
+      </div>
+      <h3 className="font-mono text-[11px] text-[#888888]">Sin bayas con estos filtros</h3>
+      <p className="font-nunito text-[14px] text-gray-500">Prueba otro sabor o elimina los filtros</p>
+      <button onClick={onClear} className="mt-2 text-sm text-blue-600 hover:underline">Limpiar filtros</button>
+    </motion.div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────
+// OTHERS
+// ──────────────────────────────────────────────────────────────
+export function BerryLoadMore({ onLoad }: { onLoad: () => void }) {
+  return (
+    <div className="flex justify-center mt-12 mb-8">
+      <button 
+        onClick={onLoad}
+        className="px-6 py-2 border-2 border-black bg-white hover:bg-black hover:text-white transition-colors font-mono text-xs rounded-sm shadow-[3px_3px_0_#16A34A] hover:shadow-none"
+      >
+        VER MÁS
+      </button>
+    </div>
+  );
+}
+
+export function BerryAllLoadedMessage({ count }: { count: number }) {
+  return (
+    <div className="flex justify-center mt-12 mb-8 relative">
+      {/* Confetti simulation simplified */}
+      <motion.div 
+         initial={{ opacity: 0, y: 10 }}
+         whileInView={{ opacity: 1, y: 0 }}
+         viewport={{ once: true }}
+         className="flex flex-col items-center gap-2"
+      >
+        <span className="font-nunito font-bold text-gray-600 text-sm">
+          ¡Las {count} bayas están aquí! 🍓
+        </span>
+      </motion.div>
+    </div>
+  );
+}
+
+export function BerrySkeletonGrid() {
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 mt-6">
+      {Array.from({ length: 18 }).map((_, i) => (
+        <div 
+          key={i} 
+          className="h-[140px] rounded-sm bg-gray-100"
+          style={{ backgroundImage: "linear-gradient(90deg, #F0FDF4, #DCFCE7, #F0FDF4)", backgroundSize: "200% 100%", animation: "shimmer 2s infinite" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+

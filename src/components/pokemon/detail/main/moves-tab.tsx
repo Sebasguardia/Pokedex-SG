@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TypeBadge } from "@/components/pokemon/type-badge";
+import { TypeBadge } from "@/components/pokemon/shared/type-badge";
 import { formatPokemonName } from "@/lib/utils/pokemon.utils";
 
 interface PokemonMove {

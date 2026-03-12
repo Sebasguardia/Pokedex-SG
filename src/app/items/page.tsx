@@ -4,20 +4,20 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useQueryState, parseAsString, parseAsInteger } from "nuqs"
 import { useItemsList } from "@/lib/hooks/useItemsList"
 import { POCKET_META } from "@/lib/constants/items.constants"
-import { ItemCard } from "@/components/items/item-card"
-import { PokeballCard } from "@/components/items/pokeball-card"
-import { TMCard } from "@/components/items/tm-card"
-import { ItemPocketTabs } from "@/components/items/item-pocket-tabs"
-import { ItemPocketHeader } from "@/components/items/item-pocket-header"
-import { ItemPocketSearchBar } from "@/components/items/item-pocket-search-bar"
-import { ItemsEmptyState } from "@/components/items/items-empty-state"
+import { ItemCard } from "@/components/items/list/item-card"
+import { PokeballCard } from "@/components/items/list/pokeball-card"
+import { TMCard } from "@/components/items/list/tm-card"
+import { ItemPocketTabs } from "@/components/items/list/item-pocket-tabs"
+import { ItemPocketHeader } from "@/components/items/list/item-pocket-header"
+import { ItemPocketSearchBar } from "@/components/items/list/item-pocket-search-bar"
+import { ItemsEmptyState } from "@/components/items/list/items-empty-state"
 import { Pagination } from "@/components/shared/pagination"
 import { PageTransitionItems } from "@/components/shared/page-transition-items"
 import { useFilterStore } from "@/lib/store/filter.store"
 import { cn } from "@/lib/utils/cn"
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 
-export default function ItemsPage() {
+function ItemsContent() {
     // URL state with nuqs
     const [pocket, setPocket] = useQueryState("pocket", parseAsString.withDefault("medicine"))
     const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""))
@@ -169,5 +169,13 @@ export default function ItemsPage() {
                 </div>
             </main>
         </>
+    )
+}
+
+export default function ItemsPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+            <ItemsContent />
+        </Suspense>
     )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import { LayoutGrid, Table2, GripVertical } from "lucide-react"
 import { GiPunchBlast } from "react-icons/gi"
@@ -17,7 +17,7 @@ import { Circle } from "lucide-react"
 
 const ITEMS_PER_PAGE = 60
 
-export default function MovesPage() {
+function MovesContent() {
     const prefersRM = useReducedMotion()
     const {
         viewMode, setViewMode,
@@ -301,5 +301,13 @@ export default function MovesPage() {
                 )}
             </motion.main>
         </>
+    )
+}
+
+export default function MovesPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-white animate-pulse" />}>
+            <MovesContent />
+        </Suspense>
     )
 }

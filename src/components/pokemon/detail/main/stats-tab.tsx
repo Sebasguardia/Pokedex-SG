@@ -1,6 +1,6 @@
 "use client";
 
-import { StatBar } from "@/components/pokemon/stat-bar";
+import { StatBar } from "@/components/pokemon/shared/stat-bar";
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, Tooltip } from "recharts";
 import { PokemonStat } from "@/types/api/pokemon.types";
 import { getStatLabel } from "@/lib/utils/stat.utils";

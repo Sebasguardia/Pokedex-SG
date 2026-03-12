@@ -3,15 +3,15 @@
 import { useState, useMemo, Suspense, useEffect, useCallback } from "react"
 import { useQueryState } from "nuqs"
 import { AnimatePresence, motion } from "framer-motion"
-import { PokedexHeader } from "@/components/pokemon/pokedex-header"
-import { SearchBar } from "@/components/pokemon/search-bar"
-import { FilterSidebar } from "@/components/pokemon/filter-sidebar"
-import { MobileFilterDrawer, MobileFilterButton } from "@/components/pokemon/mobile-filter-drawer"
-import { ActiveFilterChips } from "@/components/pokemon/active-filter-chips"
-import { PokemonGrid } from "@/components/pokemon/pokemon-grid"
-import { PokemonTable } from "@/components/pokemon/pokemon-table"
+import { PokedexHeader } from "@/components/pokemon/list/pokedex-header"
+import { SearchBar } from "@/components/pokemon/list/search-bar"
+import { FilterSidebar } from "@/components/pokemon/list/filter-sidebar"
+import { MobileFilterDrawer, MobileFilterButton } from "@/components/pokemon/list/mobile-filter-drawer"
+import { ActiveFilterChips } from "@/components/pokemon/list/active-filter-chips"
+import { PokemonGrid } from "@/components/pokemon/list/pokemon-grid"
+import { PokemonTable } from "@/components/pokemon/list/pokemon-table"
 import { Pagination } from "@/components/shared/pagination"
-import { PageTransition } from "@/components/shared/page-transition"
+import { PageTransitionPokemons } from "@/components/shared/page-transition-pokemons"
 import { usePokemonList } from "@/lib/hooks/usePokemonList"
 import { useTypesData } from "@/lib/hooks/useTypesData"
 import { getPokemonByIdOrName } from "@/lib/api/pokemon"
@@ -293,7 +293,12 @@ function PokedexPageContent() {
     }, [sortedItems, offset, limit])
 
     return (
-        <div className="min-h-screen bg-white text-[#111111] overflow-x-hidden selection:bg-[#CC0000] selection:text-white">
+        <motion.div 
+            className="min-h-screen bg-white text-[#111111] overflow-x-hidden selection:bg-[#CC0000] selection:text-white"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+        >
             <main className="max-w-[1440px] mx-auto px-4 md:px-8 py-6 md:py-10 flex flex-col lg:flex-row gap-8 relative">
 
                 {/* DESKTOP SIDEBAR */}
@@ -379,14 +384,14 @@ function PokedexPageContent() {
                     />
                 </div>
             </main>
-        </div>
+        </motion.div>
     )
 }
 
 export default function PokemonPage() {
     return (
         <>
-            <PageTransition />
+            <PageTransitionPokemons />
             <Suspense fallback={<div className="min-h-screen bg-white" />}>
                 <PokedexPageContent />
             </Suspense>

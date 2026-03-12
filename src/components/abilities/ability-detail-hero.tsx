@@ -111,7 +111,7 @@ export function AbilityDetailHero({ ability, category, isHidden }: Props) {
                     </div>
 
                     <h1 className="font-press-start text-3xl sm:text-5xl text-white tracking-widest flex flex-wrap gap-x-[0.2em]">
-                        {letters.map((char, i) => (
+                        {letters.map((char: string, i: number) => (
                             <motion.span
                                 key={i}
                                 initial={{ opacity: 0, filter: "blur(6px)", scale: 0.8 }}

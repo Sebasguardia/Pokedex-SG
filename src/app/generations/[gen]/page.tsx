@@ -3,7 +3,7 @@
 import { notFound } from "next/navigation";
 import { useGeneration } from "@/lib/hooks/useGenerations";
 import { Spinner } from "@/components/ui/spinner";
-import { PokemonGrid } from "@/components/pokemon/pokemon-grid";
+import { PokemonGrid } from "@/components/pokemon/list/pokemon-grid";
 import { SectionHeader } from "@/components/ui/section-header";
 import { formatPokemonName } from "@/lib/utils/pokemon.utils";
 import { GENERATIONS } from "@/lib/constants/generations.constants";
