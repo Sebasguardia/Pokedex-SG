@@ -54,8 +54,8 @@ export function PageTransitionPokemons() {
              <motion.div
                className="w-40 h-40 bg-[#111111] rounded-full border-8 border-white flex items-center justify-center relative z-20 shadow-2xl"
                initial={{ scale: 1, rotate: 0 }}
-               animate={{ scale: [1, 1.2, 0], rotate: 180 }}
-               transition={{ duration: 0.8, delay: 0.4, ease: "backIn" }}
+               animate={{ scale: [1, 1.2, 0], rotate: 720 }}
+               transition={{ duration: 0.8, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
              >
                 <div className="text-white opacity-20">
                    <PokeBallSVG size={80} />

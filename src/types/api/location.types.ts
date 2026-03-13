@@ -1,5 +1,6 @@
 import { NamedAPIResource, Name } from "./common.types";
 
+// ── Ya existía ────────────────────────────────────────────────────
 export interface Location {
     id: number;
     name: string;
@@ -61,4 +62,23 @@ export interface Region {
     names: Name[];
     pokedexes: NamedAPIResource[];
     version_groups: NamedAPIResource[];
+}
+
+// ── NUEVO ─────────────────────────────────────────────────────────
+
+/** Pokédex regional — GET /pokedex/{name} */
+export interface RegionalPokedex {
+    id: number;
+    name: string;
+    is_main_series: boolean;
+    descriptions: { description: string; language: NamedAPIResource }[];
+    names: Name[];
+    region: NamedAPIResource | null;
+    pokemon_entries: RegionalPokedexEntry[];
+    version_groups: NamedAPIResource[];
+}
+
+export interface RegionalPokedexEntry {
+    entry_number: number;                // número en el dex REGIONAL (diferente al nacional)
+    pokemon_species: NamedAPIResource;   // url contiene el ID nacional
 }

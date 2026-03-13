@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import {
     Search, Heart, Scale, Sun, Moon, ChevronRight, X,
-    Gamepad2, Dna, Swords, Zap, Backpack, Cherry,
+    Gamepad2, Dna, Swords, Zap, Backpack, Cherry, Sparkles,
 } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
 import { useCompareStore } from "@/lib/store/compare.store";
@@ -37,6 +37,7 @@ const NAV_LINKS = [
     { href: "/abilities", label: "Habilidades", icon: <Zap size={18} />, count: "300+", description: "Habilidades" },
     { href: "/items", label: "Objetos", icon: <Backpack size={18} />, count: "800+", description: "Items" },
     { href: "/berries", label: "Bayas", icon: <Cherry size={18} />, count: "64", description: "64 bayas" },
+    { href: "/natures", label: "Naturalezas", icon: <Sparkles size={18} />, count: "25", description: "25 naturalezas" },
     { href: "/compare", label: "Comparador", icon: <Scale size={18} />, count: null, description: "Compara Pokémon" },
 ] as const;
 
