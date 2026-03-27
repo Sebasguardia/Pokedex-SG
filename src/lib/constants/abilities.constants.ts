@@ -56,18 +56,22 @@ export const ABILITY_SLOT_LABELS = {
 
 export const ABILITY_KEYWORDS = {
     offensive: [
-        "Ataque", "daño", "crítico", "potencia", "aumenta el", "golpe", "físico", "especial",
-        "Ataque Especial", "Atq. Esp.", "Atq.", "potencia los movimientos", "doble de daño"
+        "ataque", "daño", "crítico", "potencia", "aumenta el", "golpe", "físico", "especial",
+        "ataque especial", "atq. esp.", "atq.", "potencia los movimientos", "doble de daño",
+        "attack", "damage", "critical", "power", "boost", "strike", "physical", "special", "sp. atk", "damage-dealing", "inflict"
     ],
     defensive: [
-        "Defensa", "Inmune", "no afecta", "reduce", "mitad", "resistencia", "Defensa Especial",
-        "Def. Esp.", "Def.", "protege", "evita", "baja el daño", "inmune a"
+        "defensa", "inmune", "no afecta", "reduce", "mitad", "resistencia", "defensa especial",
+        "def. esp.", "def.", "protege", "evita", "baja el daño", "inmune a",
+        "defense", "immune", "protect", "reduce", "half", "resist", "sp. def", "prevent", "takes no damage", "nullifies", "evasion"
     ],
     support: [
         "clima", "terreno", "estadística", "paralizado", "quemado", "aliados", "equipo", "sol",
-        "lluvia", "arena", "granizo", "nieve", "ps", "recupera", "cura", "aliado"
+        "lluvia", "arena", "granizo", "nieve", "ps", "recupera", "cura", "aliado",
+        "weather", "terrain", "stat", "paralyze", "burn", "ally", "team", "sun", "rain", "sand", "hail", "snow", "hp", "recover", "heal", "status", "poison"
     ],
     overworld: [
-        "campo", "salvaje", "encuentro", "pasos", "mochila", "fuera de combate", "encabezar"
+        "campo", "salvaje", "encuentro", "pasos", "mochila", "fuera de combate", "encabezar",
+        "overworld", "wild", "encounter", "steps", "party", "outside of battle", "lead"
     ]
 }

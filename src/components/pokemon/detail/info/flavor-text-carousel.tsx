@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react"
 
 interface FlavorEntry {
     flavor_text: string
@@ -48,13 +48,13 @@ function TypewriterText({ text, prefersRM }: { text: string; prefersRM: boolean 
 
     return (
         <span className="relative">
-            <span className="font-['Nunito'] text-[15px] leading-[1.8] text-[#444444] italic">
+            <span className="font-['Press_Start_2P'] text-[11px] leading-[2.2] text-[#111111] uppercase break-words font-black">
                 {displayed}
                 {!done && (
                     <motion.span
                         animate={{ opacity: [1, 0, 1] }}
                         transition={{ duration: 0.8, repeat: Infinity }}
-                        className="inline-block w-[1px] h-[1em] bg-[#CC0000] ml-[1px] align-text-bottom"
+                        className="inline-block w-[8px] h-[12px] bg-[#CC0000] ml-[4px] align-baseline"
                     />
                 )}
             </span>
@@ -97,59 +97,62 @@ export function FlavorTextCarousel({ flavors }: Props) {
     }
 
     return (
-        <div className="mb-8">
-            <div className="border-l-[4px] border-[#CC0000] bg-[#F8F8F8] p-5 relative overflow-hidden">
+        <div className="mb-10">
+            <div className="flex items-center justify-between mb-6">
+                <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] flex items-center gap-3">
+                    <span className="w-3 h-3 bg-[#111111]" />
+                    ENTRADA POKÉDEX
+                </h3>
+                <div className="relative group">
+                    <select
+                        value={index}
+                        onChange={(e) => {
+                            const newIdx = Number(e.target.value)
+                            setDir(newIdx > index ? 1 : -1)
+                            setIndex(newIdx)
+                        }}
+                        className="font-['Press_Start_2P'] text-[8px] text-[#111111] bg-[#FFFFFF] border-2 border-[#111111] px-4 py-2 outline-none cursor-pointer shadow-[3px_3px_0_#111111] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_#111111] transition-all appearance-none pr-10"
+                    >
+                        {entries.map((entry, i) => (
+                            <option key={i} value={i}>
+                                {GAME_LABELS[entry.version.name]?.toUpperCase() ?? entry.version.name.toUpperCase()}
+                            </option>
+                        ))}
+                    </select>
+                    <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <ChevronDown size={14} strokeWidth={3} />
+                    </div>
+                </div>
+            </div>
+
+            <div className="border-[3px] border-[#111111] bg-white p-8 relative overflow-hidden shadow-[6px_6px_0_#111111]">
+                {/* Decorative dots in corners */}
+                <div className="absolute top-2 left-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
+                <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
+                <div className="absolute bottom-2 left-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
+                <div className="absolute bottom-2 right-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
                 <AnimatePresence mode="wait" custom={dir}>
                     <motion.div
                         key={index}
                         custom={dir}
-                        initial={{ opacity: 0, x: dir * 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: dir * -20 }}
-                        transition={{ duration: 0.2 }}
-                        className="min-h-[72px]"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 1.05 }}
+                        transition={{ duration: 0.15 }}
+                        className="min-h-[85px]"
                     >
                         <TypewriterText text={cleanText} prefersRM={prefersRM} />
                     </motion.div>
                 </AnimatePresence>
-                <div className="mt-3 flex justify-end">
-                    <span className="font-['Nunito'] text-[11px] text-[#888888]">
-                        Pokémon {GAME_LABELS[current.version.name] ?? current.version.name}
-                    </span>
-                </div>
-            </div>
-
-            {/* Navigation */}
-            <div className="flex items-center justify-between mt-3 px-1">
-                <button
-                    onClick={() => go(-1)}
-                    disabled={index === 0}
-                    className="w-7 h-7 flex items-center justify-center border border-[#E0E0E0] disabled:opacity-30 hover:border-[#111111] transition-colors"
-                >
-                    <ChevronLeft size={14} />
-                </button>
-
-                {/* Dots */}
-                <div className="flex items-center gap-[6px]">
-                    {entries.map((_, i) => (
-                        <motion.button
-                            key={i}
-                            onClick={() => { setDir(i > index ? 1 : -1); setIndex(i) }}
-                            animate={{ width: i === index ? 16 : 6, backgroundColor: i === index ? "#CC0000" : "#E0E0E0" }}
-                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                            className="h-[6px] rounded-full"
-                            layoutId={`dot-${i}`}
-                        />
-                    ))}
-                </div>
-
-                <button
-                    onClick={() => go(1)}
-                    disabled={index === entries.length - 1}
-                    className="w-7 h-7 flex items-center justify-center border border-[#E0E0E0] disabled:opacity-30 hover:border-[#111111] transition-colors"
-                >
-                    <ChevronRight size={14} />
-                </button>
+                
+                {/* LCD Scanline effect overlay */}
+                <div 
+                    className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20" 
+                    style={{ 
+                        backgroundImage: "linear-gradient(rgba(0,0,0,0) 50%, rgba(0,0,0,0.25) 50%)", 
+                        backgroundSize: "100% 4px" 
+                    }} 
+                />
             </div>
         </div>
     )

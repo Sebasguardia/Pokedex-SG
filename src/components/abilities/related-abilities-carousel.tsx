@@ -14,10 +14,10 @@ export function RelatedAbilitiesCarousel({ currentAbilityName }: Props) {
     const prefersRM = useReducedMotion()
     const carouselRef = useRef<HTMLDivElement>(null)
     const [width, setWidth] = useState(0)
+    const { data } = useAbilitiesList({ sort: "name" })
 
-    const { data } = useAbilitiesList({ limit: 15, page: 1, sort: "name" })
-
-    const related = data?.results.filter((a: any) => a.name !== currentAbilityName) || []
+    const firstPageResults = data?.pages?.[0]?.results || []
+    const related = firstPageResults.filter((a: any) => a.name !== currentAbilityName).slice(0, 15)
 
     useEffect(() => {
         if (carouselRef.current && related.length > 0) {

@@ -45,6 +45,8 @@ function SoundRing({ delay }: { delay: number }) {
     )
 }
 
+const BOUNCE_Y = [0, -8, 0]
+
 export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
     sprite,
     typeColor = "#CC0000",
@@ -60,7 +62,6 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
 }, ref) => {
     const prefersRM = useReducedMotion()
     const [showShimmer, setShowShimmer] = useState(false)
-    const [hovering, setHovering] = useState(false)
     const [shinyParticles, setShinyParticles] = useState(false)
     const [imgError, setImgError] = useState(false)
 
@@ -79,37 +80,33 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
             {/* Stage */}
             <motion.div
                 ref={ref}
-                className="relative overflow-hidden"
+                className="relative overflow-hidden group"
                 style={{
                     aspectRatio: "1/1",
                     border: "2px solid #111111",
                     boxShadow: "6px 6px 0 #111111",
                     backgroundColor: `${typeColor}14`
                 }}
-                onHoverStart={() => setHovering(true)}
-                onHoverEnd={() => setHovering(false)}
                 role="img"
                 aria-label={`Sprite de ${pokemonName}`}
             >
                 {/* Layer 1: Type-tinted background — already set on container */}
 
                 {/* Layer 2: Radial light circle */}
-                <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                        background: `radial-gradient(circle at center, white 0%, ${typeColor}0A 70%, transparent 100%)`
-                    }}
-                    animate={hovering ? { scale: 1.2 } : { scale: [1, 1.05, 1] }}
-                    transition={hovering
-                        ? { type: "spring", stiffness: 200, damping: 20 }
-                        : { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                    }
-                />
+                <div className="absolute inset-0 pointer-events-none transition-transform duration-500 group-hover:scale-[1.15]">
+                    <motion.div
+                        className="w-full h-full"
+                        style={{
+                            background: `radial-gradient(circle at center, white 0%, ${typeColor}0A 70%, transparent 100%)`
+                        }}
+                        animate={{ scale: [1, 1.05, 1] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                </div>
 
                 {/* Layer 3: Grid pattern */}
-                <motion.div
-                    className="absolute inset-0 pointer-events-none"
-                    animate={{ opacity: hovering ? 0.1 : 0.06 }}
+                <div
+                    className="absolute inset-0 pointer-events-none transition-opacity duration-500 opacity-[0.06] group-hover:opacity-10"
                     style={{
                         backgroundImage: `url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h24v1H0zm0 23h24v1H0zM0 0v24h1V0zm23 0v24h1V0z' fill='${encodeURIComponent(typeColor)}' fill-opacity='1'%3E%3C/path%3E%3C/svg%3E")`,
                     }}
@@ -117,9 +114,9 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
 
                 {/* Layer 4: Pokéball watermark */}
                 <motion.div
-                    className="absolute inset-0 flex items-center justify-end pointer-events-none"
+                    className="absolute inset-0 flex items-center justify-end pointer-events-none transition-opacity duration-500 group-hover:opacity-10"
                     style={{ color: typeColor, opacity: 0.05, transform: "translateY(10%)", fontSize: "70%" }}
-                    animate={hovering ? { rotate: 0 } : { rotate: prefersRM ? 0 : [0, 360] }}
+                    animate={{ rotate: prefersRM ? 0 : [0, 360] }}
                     transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
                 >
                     <div
@@ -149,18 +146,27 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
                             key={`${isShiny}-${spriteMode}`}
                             initial={{ scale: 0, rotate: 15, opacity: 0 }}
                             animate={{
-                                scale: 1, rotate: 0, opacity: 1,
-                                y: prefersRM ? 0 : [0, -8, 0]
+                                scale: 1, rotate: 0, opacity: 1
                             }}
                             exit={{ scale: 0, rotate: -15, opacity: 0 }}
                             transition={{
                                 scale: { type: "spring", stiffness: 350, damping: 25 },
                                 rotate: { type: "spring", stiffness: 350, damping: 25 },
-                                opacity: { duration: 0.2 },
-                                y: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                                opacity: { duration: 0.2 }
                             }}
-                            whileHover={hovering ? { scale: 1.08 } : {}}
+                            className="w-full h-full absolute inset-0 flex justify-center items-center"
                         >
+                            <div className="w-full h-full flex justify-center items-center transition-transform duration-300 group-hover:scale-[1.08]">
+                                <style>{`
+                                    @keyframes float-sprite {
+                                        0%, 100% { transform: translateY(0); }
+                                        50% { transform: translateY(-8px); }
+                                    }
+                                    .animate-float-sprite {
+                                        animation: float-sprite 3s ease-in-out infinite;
+                                    }
+                                `}</style>
+                                <div className={`relative flex justify-center items-center ${prefersRM ? "" : "animate-float-sprite"}`}>
                             {/* Sound rings when crying */}
                             {isCrying && !prefersRM && (
                                 <div className="absolute inset-0 pointer-events-none" style={{ color: typeColor }}>
@@ -169,18 +175,17 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
                                     <SoundRing delay={0.5} />
                                 </div>
                             )}
-                            {sprite && !imgError ? (
-                                <Image
-                                    src={sprite}
-                                    alt={pokemonName}
-                                    width={160}
-                                    height={160}
+                            {pokemonId ? (
+                                <PokemonSprite
+                                    id={pokemonId}
+                                    name={pokemonName}
+                                    size={160}
+                                    shiny={isShiny}
+                                    back={spriteMode === "back"}
+                                    className="!w-[160px] !h-[160px] relative z-10"
                                     style={{
-                                        imageRendering: sprite?.includes("official-artwork") ? "auto" : "pixelated",
                                         filter: `drop-shadow(0 2px 6px ${typeColor}55)`,
                                     }}
-                                    priority
-                                    onError={() => setImgError(true)}
                                 />
                             ) : (
                                 <div className="w-[130px] h-[130px] bg-[#F2F2F2] flex flex-col items-center justify-center gap-2" style={{ border: "1px solid #E0E0E0", borderRadius: "8px" }}>
@@ -188,6 +193,8 @@ export const SpriteStage = forwardRef<HTMLDivElement, Props>(({
                                     <span className="font-['Nunito'] text-[10px] text-[#AAAAAA] text-center px-4">No es un error, el Pokémon actual no posee imagen.</span>
                                 </div>
                             )}
+                                </div>
+                            </div>
                         </motion.div>
                     </AnimatePresence>
                 </div>

@@ -66,73 +66,69 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
 
     return (
         <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.15, type: "spring", stiffness: 200, damping: 25 }}
-            className="mb-4"
-            style={{ border: "2px solid #111111", boxShadow: "4px 4px 0 #111111" }}
+            transition={{ delay: index * 0.1, duration: 0.4 }}
+            className="mb-6 bg-white overflow-hidden"
+            style={{ 
+                border: "3px solid #111111", 
+                boxShadow: "6px 6px 0 rgba(17,17,17,1)",
+                borderRadius: "8px"
+            }}
         >
             {/* Header */}
-            <div className="flex items-center justify-between p-5 pb-3">
-                <span className="font-['Press_Start_2P'] text-[11px] text-[#111111]">{displayName}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 gap-3 border-b-2 border-[#111111]">
+                <div className="flex items-center gap-3">
+                    <span className="font-['Press_Start_2P'] text-[12px] text-[#111111] uppercase tracking-tighter">
+                        {displayName}
+                    </span>
+                </div>
                 {abilitySlot.is_hidden ? (
                     <div
-                        className="flex items-center gap-1 font-['Press_Start_2P'] text-[7px] px-2 py-[3px] text-white cursor-help"
-                        style={{ backgroundColor: "#111111", boxShadow: "2px 2px 0 #CC0000" }}
-                        title="Las habilidades ocultas solo se obtienen por métodos especiales como la Poké Radar o transferencias"
+                        className="flex items-center gap-1.5 font-['Press_Start_2P'] text-[8px] px-3 py-1.5 text-white w-fit"
+                        style={{ backgroundColor: "#111111", boxShadow: "4px 4px 0 #CC0000" }}
                     >
-                        <EyeOff size={8} />
-                        Habilidad Oculta
+                        <EyeOff size={10} strokeWidth={3} />
+                        HABILIDAD OCULTA
                     </div>
                 ) : (
                     <span
-                        className="font-['Press_Start_2P'] text-[7px] px-2 py-[3px]"
-                        style={{ backgroundColor: "#F2F2F2", border: "1px solid #E0E0E0", color: "#444444" }}
+                        className="font-['Press_Start_2P'] text-[8px] px-3 py-1.5 w-fit border-2 border-[#111111] shadow-[2px_2px_0_#111111]"
+                        style={{ backgroundColor: "#FFFFFF", color: "#111111" }}
                     >
-                        {slotLabel}
+                        {slotLabel.toUpperCase()}
                     </span>
                 )}
             </div>
 
-            {/* Divider */}
-            <motion.div
-                className="mx-5 mb-3"
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                style={{ transformOrigin: "left", height: 3, backgroundColor: "#111111" }}
-                transition={{ delay: index * 0.15 + 0.1, duration: 0.3 }}
-            />
-            <div
-                className="mx-5 mb-3"
-                style={{ height: 2, backgroundColor: "#CC0000" }}
-            />
+            {/* Divider Accent (Removed redundant ones) */}
 
             {isLoading ? (
-                <div className="px-5 pb-5">
-                    <div className="h-4 bg-[#F2F2F2] animate-pulse mb-2" />
-                    <div className="h-4 bg-[#F2F2F2] animate-pulse w-3/4" />
+                <div className="p-6">
+                    <div className="h-5 bg-[#F8F8F8] border border-[#E0E0E0] animate-pulse mb-3" />
+                    <div className="h-5 bg-[#F8F8F8] border border-[#E0E0E0] animate-pulse w-3/4" />
                 </div>
             ) : (
-                <div className="px-5 pb-5 space-y-4">
-                    {/* Main Effect — Spanish preferred */}
+                <div className="p-6 space-y-6">
+                    {/* Main Effect */}
                     {mainText && (
-                        <div>
-                            <p className="font-['Nunito'] text-[14px] text-[#444444] leading-[1.8]">
+                        <div className="relative p-5 bg-[#F9F9F9] border-2 border-[#111111] shadow-inner mt-4">
+                            <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#111111] font-['Press_Start_2P'] text-[8px] text-[#111111] shadow-[2px_2px_0_#111111]">EFECTO</span>
+                            <p className="font-['Nunito'] text-[15px] font-black text-[#111111] leading-[1.6]">
                                 {mainText}
                             </p>
                             {mainIsFallback && (
-                                <span className="inline-block mt-1 font-['Nunito'] text-[8px] px-1 py-[1px] bg-[#F2F2F2] border border-[#E0E0E0] text-[#888888]">EN</span>
+                                <span className="absolute bottom-2 right-2 font-['Press_Start_2P'] text-[6px] px-1 py-[2px] bg-[#111111] text-white">EN</span>
                             )}
                         </div>
                     )}
 
-                    {/* Short effect (only when no Spanish flavor text available) */}
+                    {/* Short effect */}
                     {showShortEffect && (
-                        <div className="border-l-[3px] border-[#CC0000] pl-3 py-1 bg-[#F8F8F8]">
-                            <p className="font-['Nunito'] text-[10px] font-bold uppercase text-[#888888] mb-1">Resumen</p>
-                            <p className="font-['Nunito'] text-[13px] italic text-[#555555]">{shortEffectEntry.text}</p>
+                        <div className="relative p-5 border-l-4 border-[#CC0000] bg-[#FFF5F5] border-y border-r border-[#111111] shadow-[2px_2px_0_rgba(204,0,0,0.1)] mt-8">
+                            <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#CC0000] font-['Press_Start_2P'] text-[8px] text-[#CC0000] shadow-[2px_2px_0_rgba(204,0,0,0.1)]">RESUMEN</span>
+                            <p className="font-['Nunito'] text-[14px] font-bold italic text-[#333333]">{shortEffectEntry.text}</p>
                         </div>
                     )}
 
@@ -141,21 +137,25 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
 
                         {/* Flavor texts */}
                         {flavorByVersion.length > 0 && (
-                            <Accordion.Item value="flavor" className="border-t border-[#F2F2F2]">
-                                <Accordion.Trigger className="flex w-full items-center justify-between py-2 font-['Nunito'] text-[12px] text-[#888888] hover:text-[#111111] transition-colors">
-                                    Descripción por juego
-                                    <motion.div animate={{ rotate: open === "flavor" ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                                        <ChevronDown size={14} />
+                            <Accordion.Item value="flavor" className="border-t-2 border-[#111111]">
+                                <Accordion.Trigger className="flex w-full items-center justify-between py-4 font-['Press_Start_2P'] text-[9px] text-[#111111] hover:text-[#CC0000] transition-colors group">
+                                    APARICIÓN EN JUEGOS
+                                    <motion.div 
+                                        animate={{ rotate: open === "flavor" ? 180 : 0 }} 
+                                        transition={{ duration: 0.2 }}
+                                        className="p-1 border border-[#111111] group-hover:bg-[#111111] group-hover:text-white"
+                                    >
+                                        <ChevronDown size={12} />
                                     </motion.div>
                                 </Accordion.Trigger>
-                                <Accordion.Content>
-                                    <div className="pb-3 space-y-2">
+                                <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+                                    <div className="pb-4 space-y-3">
                                         {flavorByVersion.map(([ver, data]) => (
-                                            <div key={ver} className="flex gap-3 items-start">
-                                                <span className="font-['Press_Start_2P'] text-[7px] px-2 py-1 bg-[#F2F2F2] border border-[#E0E0E0] text-[#888888] whitespace-nowrap capitalize">
+                                            <div key={ver} className="flex gap-4 items-start p-3 bg-white border border-[#E0E0E0] shadow-[2px_2px_0_#E0E0E0]">
+                                                <span className="font-['Press_Start_2P'] text-[7px] px-2 py-1 bg-[#111111] text-white whitespace-nowrap capitalize">
                                                     {ver.replace(/-/g, " ")}
                                                 </span>
-                                                <p className="font-['Nunito'] text-[12px] text-[#444444] italic">{data.text}</p>
+                                                <p className="font-['Nunito'] text-[13px] text-[#333333] font-bold italic leading-relaxed">{data.text}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -165,15 +165,19 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
 
                         {/* Pokemon list */}
                         {pokemonWithAbility.length > 0 && (
-                            <Accordion.Item value="pokemon" className="border-t border-[#F2F2F2]">
-                                <Accordion.Trigger className="flex w-full items-center justify-between py-2 font-['Nunito'] text-[12px] text-[#888888] hover:text-[#111111] transition-colors">
-                                    Pokémon con esta habilidad ({ability?.pokemon?.length ?? 0})
-                                    <motion.div animate={{ rotate: open === "pokemon" ? 180 : 0 }} transition={{ duration: 0.2 }}>
-                                        <ChevronDown size={14} />
+                            <Accordion.Item value="pokemon" className="border-t-2 border-[#111111]">
+                                <Accordion.Trigger className="flex w-full items-center justify-between py-4 font-['Press_Start_2P'] text-[9px] text-[#111111] hover:text-[#CC0000] transition-colors group">
+                                    POKÉMON CON ESTA HABILIDAD ({ability?.pokemon?.length ?? 0})
+                                    <motion.div 
+                                        animate={{ rotate: open === "pokemon" ? 180 : 0 }} 
+                                        transition={{ duration: 0.2 }}
+                                        className="p-1 border border-[#111111] group-hover:bg-[#111111] group-hover:text-white"
+                                    >
+                                        <ChevronDown size={12} />
                                     </motion.div>
                                 </Accordion.Trigger>
-                                <Accordion.Content>
-                                    <div className="pb-3 flex flex-wrap gap-2">
+                                <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
+                                    <div className="pb-4 flex flex-wrap gap-3">
                                         {pokemonWithAbility.map((p: any) => {
                                             const id = getIdFromUrl(p.pokemon.url)
                                             const isCurrentPokemon = id === pokemonId
@@ -181,34 +185,34 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
                                                 <Link
                                                     key={p.pokemon.name}
                                                     href={`/pokemon/${id}`}
-                                                    className="flex flex-col items-center gap-1 group"
+                                                    className="flex flex-col items-center gap-1.5 group"
                                                 >
                                                     <motion.div
-                                                        className="relative"
+                                                        className="relative bg-white"
                                                         style={{
-                                                            border: isCurrentPokemon ? "2px solid #CC0000" : "1px solid #E0E0E0",
-                                                            padding: 4,
-                                                            backgroundColor: "#F8F8F8"
+                                                            border: isCurrentPokemon ? "3px solid #CC0000" : "2px solid #111111",
+                                                            padding: 2,
+                                                            boxShadow: isCurrentPokemon ? "3px 3px 0 rgba(204,0,0,0.2)" : "3px 3px 0 rgba(0,0,0,0.1)"
                                                         }}
-                                                        whileHover={{ scale: 1.08, borderColor: "#111111" }}
+                                                        whileHover={{ scale: 1.1, translateY: -2, boxShadow: "4px 4px 0 #111111" }}
                                                     >
                                                         <Image
                                                             src={getPokemonSpriteUrl(id)}
                                                             alt={p.pokemon.name}
-                                                            width={40}
-                                                            height={40}
+                                                            width={48}
+                                                            height={48}
                                                             style={{ imageRendering: "pixelated" }}
                                                         />
                                                     </motion.div>
-                                                    <span className="font-['Nunito'] text-[9px] text-[#888888] capitalize group-hover:text-[#111111] transition-colors text-center max-w-[48px] truncate">
-                                                        {p.pokemon.name}
+                                                    <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] capitalize group-hover:text-[#111111] transition-colors text-center max-w-[56px] truncate">
+                                                        {p.pokemon.name.replace(/-/g, " ")}
                                                     </span>
                                                 </Link>
                                             )
                                         })}
                                         {(ability?.pokemon?.length ?? 0) > 20 && (
-                                            <div className="flex items-center justify-center text-[#888888] font-['Nunito'] text-[11px] italic">
-                                                y {(ability!.pokemon!.length) - 20} más...
+                                            <div className="flex items-center justify-center text-[#888888] font-['Press_Start_2P'] text-[7px] italic border-2 border-dashed border-[#E0E0E0] px-3 py-2">
+                                                +{(ability!.pokemon!.length) - 20}
                                             </div>
                                         )}
                                     </div>
@@ -233,11 +237,17 @@ export function AbilitiesDetail({ abilities, pokemonId }: Props) {
     }
 
     return (
-        <div>
-            <h3 className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-5 tracking-wide">HABILIDADES</h3>
-            {abilities.map((a, i) => (
-                <AbilityCard key={a.ability.name} abilitySlot={a} pokemonId={pokemonId} index={i} />
-            ))}
+        <div className="space-y-4">
+            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] mb-6 flex items-center gap-3">
+                <span className="w-3 h-3 bg-[#111111]" />
+                HABILIDADES
+                <span className="flex-1 h-[2px] bg-[#E0E0E0]" />
+            </h3>
+            <div className="grid grid-cols-1 gap-4">
+                {abilities.map((a, i) => (
+                    <AbilityCard key={a.ability.name} abilitySlot={a} pokemonId={pokemonId} index={i} />
+                ))}
+            </div>
         </div>
     )
 }

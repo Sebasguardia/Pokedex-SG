@@ -12,14 +12,15 @@ import { useQueryState } from "nuqs"
 import { usePokemon } from "@/lib/hooks/usePokemon"
 import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
 import { FavoriteButton } from "@/components/shared/favorite-button"
+import { TypeIcon } from "@/components/shared/type-icon"
+import { useRouter } from "next/navigation"
 
 // Componente para Fila Individual para poder fetchear la data
 function PokemonTableRow({ p, index }: { p: NamedAPIResource, index: number }) {
     const id = getIdFromUrl(p.url)
     const { shinyMode } = useUIStore()
     const { data: details, isLoading } = usePokemon(id)
-
-    const delay = index < 20 ? index * 0.03 : 0
+    const router = useRouter()
     const primaryType = details?.types?.[0]?.type?.name || "normal"
     const color = TYPE_CONSTANTS[primaryType]?.color || "#111111"
 
@@ -28,11 +29,9 @@ function PokemonTableRow({ p, index }: { p: NamedAPIResource, index: number }) {
 
     return (
         <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.3, delay }}
+            onClick={() => router.push(`/pokemon/${id}`)}
             whileHover="hover"
-            className="group relative flex items-center bg-white border-2 border-[#111111] mb-2 px-4 py-2 hover:border-[#CC0000] hover:translate-x-[2px] transition-all duration-300 h-[64px]"
+            className="group relative flex items-center bg-white border-2 border-[#111111] mb-2 px-4 py-2 hover:border-[#CC0000] hover:translate-x-[2px] cursor-pointer transition-all duration-300 h-[64px]"
             style={{ boxShadow: "3px 3px 0 #111111" }}
             variants={{
                 hover: { boxShadow: "4px 4px 0 #CC0000" }
@@ -58,11 +57,10 @@ function PokemonTableRow({ p, index }: { p: NamedAPIResource, index: number }) {
             </div>
             <div className="w-[120px] hidden sm:flex gap-[4px] items-center">
                 {details?.types?.map((t: any) => (
-                    <div
+                    <TypeIcon
                         key={t.type.name}
-                        className="w-[20px] h-[20px] rounded-full border border-[#111111] flex items-center justify-center opacity-80"
-                        style={{ backgroundColor: TYPE_CONSTANTS[t.type.name]?.color || "#111111" }}
-                        title={t.type.name.toUpperCase()}
+                        type={t.type.name}
+                        size={20}
                     />
                 ))}
             </div>

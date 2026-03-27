@@ -22,8 +22,8 @@ export function PokemonCard({ name, url, index = 0 }: PokemonCardProps) {
     const { shinyMode } = useUIStore()
     const { data: details, isLoading } = usePokemon(id)
 
-    // Stagger animation constraint max 20
-    const delay = index < 20 ? index * 0.04 : 0
+    // No stagger delay — virtualizer remounts cards on scroll,
+    // causing the delay to replay. Hover+CSS transitions handle all feel.
 
     const primaryType = details?.types?.[0]?.type?.name || "normal"
     const secondaryType = details?.types?.[1]?.type?.name
@@ -37,9 +37,6 @@ export function PokemonCard({ name, url, index = 0 }: PokemonCardProps) {
     const CardBody = (
         <Link href={`/pokemon/${id}`} className="block h-full w-full outline-none group cursor-pointer">
             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay, type: "spring", stiffness: 200, damping: 20 }}
                 whileHover="hover"
                 className="relative w-full h-[220px] bg-white border-2 border-[#111111] flex flex-col justify-between transition-colors duration-300"
                 variants={{
@@ -78,7 +75,7 @@ export function PokemonCard({ name, url, index = 0 }: PokemonCardProps) {
                         variants={{ hover: { scale: 1.15, y: -5 } }}
                         transition={{ type: "spring", stiffness: 300, damping: 15 }}
                     >
-                        <PokemonSprite id={id} name={name} shiny={shinyMode} size={100} useArtwork={true} className="drop-shadow-none" />
+                        <PokemonSprite id={id} name={name} shiny={shinyMode} size={90} useArtwork={false} className="drop-shadow-none" />
                     </motion.div>
                 </div>
 
@@ -91,10 +88,9 @@ export function PokemonCard({ name, url, index = 0 }: PokemonCardProps) {
                         <span className="font-pixel text-[6px] text-[#444444] min-w-[14px]">HP</span>
                         <div className="flex-1 h-[4px] bg-[#E0E0E0] rounded-full overflow-hidden">
                             <motion.div
-                                className="h-full bg-green-500 rounded-full"
-                                initial={{ width: 0 }}
+                                className="h-full rounded-full"
                                 animate={{ width: `${hpPercentage}%` }}
-                                transition={{ duration: 0.8, delay: delay + 0.2 }}
+                                transition={{ duration: 0.6 }}
                                 style={{ backgroundColor: hpPercentage < 20 ? "#CC0000" : hpPercentage < 50 ? "#F59E0B" : "#10B981" }}
                             />
                         </div>

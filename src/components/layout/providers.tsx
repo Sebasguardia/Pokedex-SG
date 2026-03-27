@@ -10,10 +10,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
             new QueryClient({
                 defaultOptions: {
                     queries: {
-                        staleTime: 1000 * 60 * 60, // 1 hour
-                        gcTime: 1000 * 60 * 60 * 24, // 24 hours
+                        staleTime: Infinity,           // PokéAPI data never changes
+                        gcTime: 1000 * 60 * 60 * 24,  // Keep in memory 24 hours
                         retry: 2,
                         refetchOnWindowFocus: false,
+                        refetchOnMount: false,         // Never refetch if data exists
+                        refetchOnReconnect: false,     // Never refetch on reconnect
                     },
                 },
             })

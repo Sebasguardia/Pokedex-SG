@@ -7,5 +7,6 @@ export function usePokemonSpecies(idOrName: string | number) {
         queryKey: pokemonKeys.species(idOrName),
         queryFn: () => getPokemonSpecies(idOrName),
         enabled: !!idOrName,
+        staleTime: Infinity,
     });
 }

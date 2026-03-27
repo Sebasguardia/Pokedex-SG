@@ -1,5 +1,3 @@
-"use client"
-
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
@@ -8,7 +6,7 @@ import { usePokemon } from "@/lib/hooks/usePokemon"
 import { formatPokemonId, formatPokemonName } from "@/lib/utils/pokemon.utils"
 import { useQueryClient } from "@tanstack/react-query"
 import { pokemonKeys } from "@/lib/constants/query-keys"
-import { getPokemonByIdOrName } from "@/lib/api/pokemon"
+import { getPokemonByIdOrName, getPokemonSpecies } from "@/lib/api/pokemon"
 
 interface Props {
     currentId?: number
@@ -21,11 +19,21 @@ function ArrowCard({ id, direction }: { id: number, direction: "prev" | "next" }
     const { data } = usePokemon(id)
 
     const handleMouseEnter = () => {
-        queryClient.prefetchQuery({
-            queryKey: pokemonKeys.detail(id),
-            queryFn: () => getPokemonByIdOrName(id),
-            staleTime: 1000 * 60 * 60
-        })
+        // Prefetch pokemon + species so navigating is instant
+        if (!queryClient.getQueryData(pokemonKeys.detail(id))) {
+            queryClient.prefetchQuery({
+                queryKey: pokemonKeys.detail(id),
+                queryFn: () => getPokemonByIdOrName(id),
+                staleTime: Infinity
+            })
+        }
+        if (!queryClient.getQueryData(pokemonKeys.species(id))) {
+            queryClient.prefetchQuery({
+                queryKey: pokemonKeys.species(id),
+                queryFn: () => getPokemonSpecies(id),
+                staleTime: Infinity
+            })
+        }
     }
 
     if (!data) return <div className="flex-1" />

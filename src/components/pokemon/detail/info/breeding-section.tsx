@@ -15,9 +15,12 @@ interface Props {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex items-center gap-3 mt-6 mb-4">
-            <span className="font-['Press_Start_2P'] text-[9px] text-[#888888] tracking-wide">{children}</span>
-            <div className="flex-1 h-[1px] bg-[#E0E0E0]" />
+        <div className="flex items-center gap-3 mt-10 mb-6">
+            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
+                <span className="w-3 h-3 bg-[#CC0000]" />
+                {children}
+            </h3>
+            <div className="flex-1 h-[2px] bg-[#E0E0E0]" />
         </div>
     )
 }
@@ -25,9 +28,9 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function GenderBar({ genderRate }: { genderRate: number }) {
     if (genderRate === -1) {
         return (
-            <div className="flex items-center gap-1 text-[#888888]">
-                <Minus size={12} />
-                <span className="font-['Nunito'] text-[13px]">Sin género</span>
+            <div className="flex items-center gap-2 text-[#888888] font-['Press_Start_2P']">
+                <Minus size={12} strokeWidth={3} />
+                <span className="text-[8px] uppercase">Sin género</span>
             </div>
         )
     }
@@ -35,15 +38,15 @@ function GenderBar({ genderRate }: { genderRate: number }) {
     const malePercent = 100 - femalePercent
     return (
         <div className="space-y-1">
-            <div className="flex items-center gap-3 text-[12px] font-['Nunito']">
+            <div className="flex items-center gap-4 text-[8px] font-['Press_Start_2P']">
                 {malePercent > 0 && (
-                    <span className="flex items-center gap-1 text-[#3B82F6]">
-                        <Mars size={12} /> {malePercent.toFixed(0)}%
+                    <span className="flex items-center gap-2 text-[#3B82F6]">
+                        <Mars size={12} strokeWidth={3} /> {malePercent.toFixed(0)}%
                     </span>
                 )}
                 {femalePercent > 0 && (
-                    <span className="flex items-center gap-1 text-[#EC4899]">
-                        <Venus size={12} /> {femalePercent.toFixed(0)}%
+                    <span className="flex items-center gap-2 text-[#EC4899]">
+                        <Venus size={12} strokeWidth={3} /> {femalePercent.toFixed(0)}%
                     </span>
                 )}
             </div>
@@ -55,7 +58,7 @@ function GenderBar({ genderRate }: { genderRate: number }) {
                 style={{ transformOrigin: "left" }}
                 transition={{ delay: 0.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-                {malePercent > 0 && <div style={{ width: `${malePercent}%`, backgroundColor: "#3B82F6" }} />}
+                {malePercent > 0 && <div style={{ width: `${malePercent}%`, backgroundColor: "#3B82F6" }} className="border-r border-white/20" />}
                 {femalePercent > 0 && <div style={{ width: `${femalePercent}%`, backgroundColor: "#EC4899" }} />}
             </motion.div>
         </div>
@@ -75,80 +78,96 @@ export function BreedingSection({ species }: Props) {
     return (
         <div className="mb-6">
             <SectionTitle>CRÍA</SectionTitle>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Grupos Huevo */}
-                <div className="p-[14px]" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0" }}>
-                    <div className="flex items-center gap-2 mb-2">
-                        <Egg size={14} className="text-[#CC0000]" />
-                        <span className="font-['Nunito'] text-[10px] text-[#888888] uppercase tracking-[0.05em]">Grupos Huevo</span>
+                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                    <Egg size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
+                    <div className="flex items-center gap-2 mb-4">
+                        <Egg size={20} className="text-[#CC0000]" strokeWidth={3} />
+                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">Grupos Huevo</span>
                     </div>
                     {eggGroups.length > 0 ? (
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2 relative z-10">
                             {eggGroups.map((g: any) => (
                                 <span
                                     key={g.name}
-                                    className="font-['Nunito'] text-[11px] font-bold px-2 py-[2px]"
-                                    style={{ backgroundColor: "#D1FAE5", border: "1px solid #6EE7B7", color: "#065F46" }}
+                                    className="font-['Press_Start_2P'] text-[7px] font-black uppercase px-2 py-1.5 border-2 border-[#111111] bg-white shadow-[2px_2px_0_#111111] group-hover:shadow-none group-hover:translate-x-[1px] group-hover:translate-y-[1px] transition-all"
                                 >
                                     {EGG_GROUPS_ES[g.name] ?? g.name}
                                 </span>
                             ))}
                         </div>
                     ) : (
-                        <span className="font-['Nunito'] text-[13px] text-[#888888]">Sin huevos</span>
+                        <span className="font-['Press_Start_2P'] text-[10px] font-black text-[#111111] relative z-10 leading-none">SIN HUEVOS</span>
                     )}
                 </div>
 
                 {/* Ciclos */}
-                <div className="p-[14px]" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0" }}>
-                    <div className="flex items-center gap-2 mb-2">
-                        <Timer size={14} className="text-[#CC0000]" />
-                        <span className="font-['Nunito'] text-[10px] text-[#888888] uppercase tracking-[0.05em]">Ciclos de Huevo</span>
+                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                    <Timer size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
+                    <div className="flex items-center gap-2 mb-4">
+                        <Timer size={20} className="text-[#CC0000]" strokeWidth={3} />
+                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">Ciclos de Huevo</span>
                     </div>
-                    <NumberFlow
-                        value={hatchCounter}
-                        suffix=" ciclos"
-                        className="font-['Nunito'] text-[14px] font-bold text-[#111111] block"
-                    />
-                    <span className="font-['Nunito'] text-[11px] text-[#888888]">≈ {steps.toLocaleString()} pasos</span>
+                    <div className="relative z-10">
+                        <NumberFlow
+                            value={hatchCounter}
+                            suffix=" CICLOS"
+                            className="font-['Press_Start_2P'] text-[12px] font-black text-[#111111] block mb-2"
+                        />
+                        <div className="bg-[#F9F9F9] border-l-4 border-[#CC0000] px-2 py-1">
+                            <span className="font-['Press_Start_2P'] text-[6px] text-[#888888]">≈ {steps.toLocaleString()} PASOS</span>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Género */}
-                <div className="p-[14px]" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0" }}>
-                    <div className="flex items-center gap-2 mb-2">
-                        <Mars size={14} className="text-[#CC0000]" />
-                        <span className="font-['Nunito'] text-[10px] text-[#888888] uppercase tracking-[0.05em]">Género</span>
+                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                    <Mars size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
+                    <div className="flex items-center gap-2 mb-4 z-10 relative">
+                        <Mars size={20} className="text-[#CC0000]" strokeWidth={3} />
+                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">Género</span>
                     </div>
-                    <GenderBar genderRate={genderRate} />
+                    <div className="relative z-10">
+                        <GenderBar genderRate={genderRate} />
+                    </div>
                 </div>
 
                 {/* Forma Bebé */}
-                <div className="p-[14px]" style={{ background: "#F8F8F8", border: "1px solid #E0E0E0" }}>
-                    <div className="flex items-center gap-2 mb-2">
-                        <Baby size={14} className="text-[#CC0000]" />
-                        <span className="font-['Nunito'] text-[10px] text-[#888888] uppercase tracking-[0.05em]">Forma Bebé</span>
+                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                    <Baby size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
+                    <div className="flex items-center gap-2 mb-4 z-10 relative">
+                        <Baby size={20} className="text-[#CC0000]" strokeWidth={3} />
+                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">Forma Bebé</span>
                     </div>
-                    {species.evolves_from_species ? (
-                        (() => {
-                            const id = getIdFromUrl(species.evolves_from_species.url)
-                            return (
-                                <Link href={`/pokemon/${id}`} className="flex items-center gap-2 hover:opacity-80">
-                                    <Image
-                                        src={getPokemonSpriteUrl(id)}
-                                        alt={species.evolves_from_species.name}
-                                        width={32}
-                                        height={32}
-                                        style={{ imageRendering: "pixelated" }}
-                                    />
-                                    <span className="font-['Nunito'] text-[12px] font-bold text-[#111111] capitalize">
-                                        {species.evolves_from_species.name}
-                                    </span>
-                                </Link>
-                            )
-                        })()
-                    ) : (
-                        <span className="font-['Nunito'] text-[13px] text-[#888888]">—</span>
-                    )}
+                    <div className="relative z-10 mt-2">
+                        {species.evolves_from_species ? (
+                            (() => {
+                                const id = getIdFromUrl(species.evolves_from_species.url)
+                                return (
+                                    <Link href={`/pokemon/${id}`} className="flex items-center gap-3 group/baby">
+                                        <div className="p-1 border-2 border-[#111111] bg-white shadow-[2px_2px_0_#111111] group-hover/baby:shadow-none group-hover/baby:translate-x-[1px] group-hover/baby:translate-y-[1px] transition-all">
+                                            <Image
+                                                src={getPokemonSpriteUrl(id)}
+                                                alt={species.evolves_from_species.name}
+                                                width={32}
+                                                height={32}
+                                                style={{ imageRendering: "pixelated" }}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span className="font-['Press_Start_2P'] text-[7px] text-[#111111] capitalize group-hover/baby:text-[#CC0000] transition-colors">
+                                                {species.evolves_from_species.name.toLowerCase()}
+                                            </span>
+                                            <span className="font-['Press_Start_2P'] text-[5px] text-[#888888] mt-1">VER INFO</span>
+                                        </div>
+                                    </Link>
+                                )
+                            })()
+                        ) : (
+                            <span className="font-['Press_Start_2P'] text-[10px] font-black text-[#111111] leading-none">—</span>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

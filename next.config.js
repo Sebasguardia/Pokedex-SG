@@ -11,6 +11,10 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "pokeapi.co",
             },
+            {
+                protocol: "https",
+                hostname: "play.pokemonshowdown.com",
+            },
         ],
     },
 };

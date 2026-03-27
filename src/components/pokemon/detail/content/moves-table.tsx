@@ -100,9 +100,9 @@ function ExpandedMovePanel({ moveName, onClose }: { moveName: string; onClose: (
         return (
             <tr>
                 <td colSpan={8}>
-                    <div className="p-6 bg-[#F8F8F8] border-t border-[#E0E0E0] flex items-center gap-2 text-[#888888]">
-                        <Loader size={14} className="animate-spin" />
-                        <span className="font-['Nunito'] text-[13px]">Cargando información...</span>
+                    <div className="p-10 bg-white border-t-4 border-[#111111] flex flex-col items-center justify-center gap-4 text-[#888888]">
+                        <Loader size={24} className="animate-spin text-[#111111]" />
+                        <span className="font-['Press_Start_2P'] text-[10px]">CARGANDO DATOS...</span>
                     </div>
                 </td>
             </tr>
@@ -147,121 +147,81 @@ function ExpandedMovePanel({ moveName, onClose }: { moveName: string; onClose: (
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     className="overflow-hidden"
                 >
-                    <div className="p-4 bg-[#F8F8F8] border-t border-[#E0E0E0] relative">
-                        <button onClick={onClose} className="absolute top-3 right-3 hover:text-[#CC0000] transition-colors">
-                            <X size={14} className="text-[#888888]" />
+                    <div className="p-6 bg-white border-t-4 border-[#111111] relative">
+                        <button 
+                            onClick={onClose} 
+                            className="absolute top-4 right-4 p-2 border-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-all shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                        >
+                            <X size={16} strokeWidth={3} />
                         </button>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
                             {/* Left: Effect */}
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                                 {mainText && (
-                                    <div>
-                                        <p className="font-['Nunito'] text-[10px] font-bold uppercase text-[#888888] mb-1">Efecto</p>
-                                        <p
-                                            className="font-['Nunito'] text-[13px] text-[#444444] leading-[1.7] pl-3"
-                                            style={{ borderLeft: `3px solid ${typeBorderColor}` }}
-                                        >
+                                    <div className="relative p-6 bg-[#F9F9F9] border-2 border-[#111111] shadow-inner mt-4">
+                                        <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#111111] font-['Press_Start_2P'] text-[8px] text-[#111111] shadow-[2px_2px_0_#111111]">EFECTO</span>
+                                        <p className="font-['Nunito'] text-[15px] text-[#111111] leading-[1.6] font-black">
                                             {mainText}
                                             {mainIsFallback && (
-                                                <span className="ml-1 text-[8px] px-1 bg-[#F2F2F2] border border-[#E0E0E0] text-[#888888]">EN</span>
+                                                <span className="ml-2 font-['Press_Start_2P'] text-[6px] px-1 py-[2px] bg-[#111111] text-white">EN</span>
                                             )}
                                         </p>
                                     </div>
                                 )}
                                 {shortText && !esFlavorEntry && (
-                                    <div>
-                                        <p className="font-['Nunito'] text-[10px] font-bold uppercase text-[#888888] mb-1">Resumen</p>
-                                        <p className="font-['Nunito'] text-[12px] italic text-[#666666]">{shortText}</p>
+                                    <div className="relative p-6 border-l-4 border-[#111111] bg-white border-y border-r border-[#E0E0E0] mt-8">
+                                        <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#111111] font-['Press_Start_2P'] text-[8px] text-[#888888] shadow-[2px_2px_0_#E0E0E0]">RESUMEN</span>
+                                        <p className="font-['Nunito'] text-[13px] italic font-bold text-[#444444]">{shortText}</p>
                                     </div>
                                 )}
                             </div>
 
                             {/* Right: Technical metadata */}
-                            <div className="space-y-2">
-                                {targetEs && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito']">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Objetivo</span>
-                                        <span className="text-[#111111] font-bold capitalize">{targetEs}</span>
+                            <div className="grid grid-cols-1 gap-y-3">
+                                {[
+                                    { label: "OBJETIVO", value: targetEs, color: "#111111" },
+                                    { label: "PRIORIDAD", value: priority !== 0 ? (priority > 0 ? `+${priority}` : priority) : null, color: priority > 0 ? "#16A34A" : "#DC2626" },
+                                    { label: move.meta?.ailment_chance > 0 ? `${move.meta.ailment_chance}% ${ailmentEs.toUpperCase()}` : "EFECTO", value: ailmentName !== "none" ? ailmentEs : null, color: "#111111" },
+                                    { label: "GOLPES", value: minHits && maxHits ? `${minHits}–${maxHits}` : null, icon: <Repeat size={12} />, color: "#111111" },
+                                    { label: "DRENAR", value: drain !== 0 ? (drain > 0 ? `Absorbe ${drain}%` : `Gasta ${Math.abs(drain)}% PS`) : null, icon: <Heart size={12} />, color: drain > 0 ? "#16A34A" : "#DC2626" },
+                                    { label: "RETROCESO", value: flinchChance > 0 ? `${flinchChance}%` : null, color: "#111111" },
+                                    { label: "CRÍTICO", value: critRate > 0 ? `+${critRate}` : null, icon: <Zap size={12} />, color: "#D97706" },
+                                    { label: "CONCURSO", value: move.contest_type ? (CONTEST_TYPE_ES[move.contest_type.name] ?? move.contest_type.name) : null, color: "#111111" }
+                                ].filter(item => item.value).map((item, idx) => (
+                                    <div key={idx} className="flex items-center justify-between py-2 border-b border-[#F0F0F0] font-['Press_Start_2P']">
+                                        <span className="text-[8px] text-[#888888] tracking-tighter">{item.label}</span>
+                                        <div className="flex items-center gap-2">
+                                            {item.icon && <span style={{ color: item.color }}>{item.icon}</span>}
+                                            <span className="text-[10px] uppercase" style={{ color: item.color }}>{item.value}</span>
+                                        </div>
                                     </div>
-                                )}
-                                {priority !== 0 && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito'] items-center">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Prioridad</span>
-                                        <span className={`font-bold font-['JetBrains_Mono'] ${priority > 0 ? "text-green-600" : "text-red-600"}`}>
-                                            {priority > 0 ? "+" : ""}{priority}
-                                        </span>
-                                    </div>
-                                )}
-                                {ailmentName !== "none" && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito']">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">
-                                            {move.meta?.ailment_chance > 0 ? `${move.meta.ailment_chance}% de` : "Efecto"}
-                                        </span>
-                                        <span className="text-[#111111] font-bold">{ailmentEs}</span>
-                                    </div>
-                                )}
-                                {minHits && maxHits && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito'] items-center">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Golpes</span>
-                                        <span className="font-['JetBrains_Mono'] text-[#111111] font-bold flex items-center gap-1">
-                                            <Repeat size={10} /> {minHits}–{maxHits}
-                                        </span>
-                                    </div>
-                                )}
-                                {drain !== 0 && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito'] items-center">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Drenar</span>
-                                        <span className={`font-['JetBrains_Mono'] font-bold flex items-center gap-1 ${drain > 0 ? "text-green-600" : "text-red-600"}`}>
-                                            <Heart size={10} />
-                                            {drain > 0 ? `Absorbe ${drain}%` : `Gasta ${Math.abs(drain)}% PS`}
-                                        </span>
-                                    </div>
-                                )}
-                                {flinchChance > 0 && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito']">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Retroceso</span>
-                                        <span className="font-['JetBrains_Mono'] text-[#111111] font-bold">{flinchChance}%</span>
-                                    </div>
-                                )}
-                                {critRate > 0 && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito'] items-center">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Tasa crítico</span>
-                                        <span className="font-['JetBrains_Mono'] text-yellow-600 font-bold flex items-center gap-1">
-                                            <Zap size={10} /> +{critRate}
-                                        </span>
-                                    </div>
-                                )}
-                                {move.contest_type && (
-                                    <div className="flex gap-2 text-[12px] font-['Nunito'] pt-2 border-t border-[#E0E0E0]">
-                                        <span className="text-[#888888] w-[110px] flex-shrink-0">Concurso</span>
-                                        <span className="font-bold text-[#111111]">
-                                            {CONTEST_TYPE_ES[move.contest_type.name] ?? move.contest_type.name}
-                                        </span>
-                                    </div>
-                                )}
+                                ))}
                             </div>
                         </div>
 
                         {/* Pokémon that learn this move */}
                         {pokemonList.length > 0 && (
-                            <div className="mt-4 pt-3 border-t border-[#E0E0E0]">
-                                <p className="font-['Nunito'] text-[11px] text-[#888888] mb-2">
-                                    También aprenden este movimiento ({move.learned_by_pokemon?.length}):
+                            <div className="mt-8 pt-5 border-t-2 border-[#111111]">
+                                <p className="font-['Press_Start_2P'] text-[8px] text-[#111111] mb-4">
+                                    APRENDEDORES DESTACADOS ({move.learned_by_pokemon?.length}):
                                 </p>
-                                <div className="flex gap-2 overflow-x-auto pb-1">
+                                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
                                     {pokemonList.map((p: any) => {
                                         const parts = p.url.split("/").filter(Boolean)
                                         const id = parseInt(parts[parts.length - 1])
                                         if (id > 1010) return null
                                         return (
-                                            <Link key={p.name} href={`/pokemon/${id}`} className="flex-shrink-0">
-                                                <motion.div whileHover={{ scale: 1.1 }}>
+                                            <Link key={p.name} href={`/pokemon/${id}`} className="flex-shrink-0 group">
+                                                <motion.div 
+                                                    whileHover={{ scale: 1.15, rotate: 2 }}
+                                                    className="p-1 border-2 border-[#111111] bg-white shadow-[3px_3px_0_rgba(17,17,17,0.1)] group-hover:shadow-[3px_3px_0_#111111] transition-all"
+                                                >
                                                     <Image
                                                         src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`}
                                                         alt={p.name}
-                                                        width={32}
-                                                        height={32}
+                                                        width={36}
+                                                        height={36}
                                                         style={{ imageRendering: "pixelated" }}
                                                         title={p.name}
                                                     />
@@ -305,22 +265,22 @@ function MoveRow({
     return (
         <>
             <motion.tr
-                className="cursor-pointer border-b border-[#F2F2F2]"
+                className="cursor-pointer border-b-[2px] border-[#F2F2F2] transition-colors"
                 style={{ backgroundColor: isExpanded ? "#FFF5F5" : "transparent" }}
-                whileHover={{ backgroundColor: isExpanded ? "#FFF5F5" : "#FAFAFA" }}
+                whileHover={{ backgroundColor: isExpanded ? "#FFF5F5" : "#F8F8F8" }}
                 onClick={onToggle}
             >
                 {/* Level / MT number */}
-                <td className="py-3 pl-3 pr-2 font-['JetBrains_Mono'] text-[11px] text-[#CC0000]">
+                <td className="py-4 pl-4 pr-2 font-['JetBrains_Mono'] text-[13px] font-black text-[#CC0000]">
                     {method === "level-up"
-                        ? basicMove.level || "—"
+                        ? (basicMove.level || "—").toString().padStart(2, "0")
                         : method === "machine" ? "MT" : "—"
                     }
                 </td>
                 {/* Name */}
-                <td className="py-3 pr-2">
-                    <span className={`font-['Nunito'] font-bold text-[13px] ${isExpanded ? "text-[#CC0000]" : "text-[#111111]"}`}>
-                        {formattedName}
+                <td className="py-4 pr-2">
+                    <span className={`font-['Nunito'] font-black text-[15px] ${isExpanded ? "text-[#CC0000]" : "text-[#111111]"}`}>
+                        {formattedName.toUpperCase()}
                     </span>
                 </td>
                 {/* Type */}
@@ -420,45 +380,54 @@ export function MovesTable({ moves, expandedMove, onExpandMove }: Props) {
     }
 
     return (
-        <div>
+        <div className="space-y-6">
+            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] mb-6 flex items-center gap-3">
+                <span className="w-3 h-3 bg-[#111111]" />
+                MOVIMIENTOS
+                <span className="flex-1 h-[2px] bg-[#E0E0E0]" />
+            </h3>
+
             {/* Method pills */}
-            <div className="flex gap-2 mb-5 flex-wrap">
+            <div className="flex gap-3 mb-6 flex-wrap">
                 {availableMethods.map(method => (
                     <button
                         key={method}
                         onClick={() => { setActiveMethod(method); onExpandMove(null) }}
-                        className="px-4 py-[6px] font-['Nunito'] text-[12px] font-bold transition-colors"
+                        className="px-5 py-2.5 font-['Press_Start_2P'] text-[8px] transition-all relative"
                         style={{
-                            backgroundColor: activeMethod === method ? "#111111" : "#F2F2F2",
-                            color: activeMethod === method ? "white" : "#888888",
-                            border: "1px solid #E0E0E0"
+                            backgroundColor: activeMethod === method ? "#111111" : "#FFFFFF",
+                            color: activeMethod === method ? "#FFFFFF" : "#888888",
+                            border: "2px solid #111111",
+                            boxShadow: activeMethod === method ? "none" : "3px 3px 0 #111111",
+                            transform: activeMethod === method ? "translate(2px, 2px)" : "none"
                         }}
                     >
-                        {METHOD_LABELS[method]}
+                        {METHOD_LABELS[method].toUpperCase()}
                     </button>
                 ))}
             </div>
 
-            <ScrollArea.Root className="w-full overflow-hidden">
-                <ScrollArea.Viewport className="w-full overflow-x-auto">
-                    <AnimatePresence mode="wait">
-                        <motion.table
-                            key={activeMethod}
-                            className="w-full min-w-[560px]"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.2 }}
-                        >
-                            <thead>
-                                <tr style={{ backgroundColor: "#111111" }}>
-                                    {["Nv.", "Nombre", "Tipo", "Clase", "POT", "PRE", "PP", ""].map((h, i) => (
-                                        <th key={i} className="py-2 pl-3 pr-2 font-['Press_Start_2P'] text-[7px] text-white text-left whitespace-nowrap">
-                                            {h}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
+            <div className="bg-white border-[3px] border-[#111111] shadow-[6px_6px_0_rgba(17,17,17,1)] rounded-lg overflow-hidden">
+                <ScrollArea.Root className="w-full">
+                    <ScrollArea.Viewport className="w-full">
+                        <AnimatePresence mode="wait">
+                            <motion.table
+                                key={activeMethod}
+                                className="w-full min-w-[620px]"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                <thead>
+                                    <tr className="bg-[#111111] border-b-2 border-[#111111]">
+                                        {["NV.", "NOMBRE DEL MOVIMIENTO", "TIPO", "CLASE", "POT", "PRE", "PP", ""].map((h, i) => (
+                                            <th key={i} className="py-4 px-4 font-['Press_Start_2P'] text-[8px] text-white text-left whitespace-nowrap tracking-tighter">
+                                                {h}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
                             <tbody>
                                 {currentMoves.map((basicMove) => (
                                     <MoveRow
@@ -477,6 +446,7 @@ export function MovesTable({ moves, expandedMove, onExpandMove }: Props) {
                     <ScrollArea.Thumb className="bg-[#CC0000]" />
                 </ScrollArea.Scrollbar>
             </ScrollArea.Root>
+            </div>
         </div>
     )
 }

@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { AbilityCategoryBadge } from "./ability-category-badge"
 import { inferAbilityCategory } from "@/lib/utils/ability.utils"
-import { Users } from "lucide-react"
+import { Users, Zap } from "lucide-react"
 
 interface Props {
     ability: any
@@ -19,75 +19,82 @@ export function AbilityCard({ ability, index }: Props) {
 
     const fullEffect = esEffect || enEffect || esFlavor || enFlavor || "No hay descripción disponible."
     const category = inferAbilityCategory(fullEffect) as any
-    const isHidden = false // Would need logic if filtering by hidden specifically
+
+    const categoryColors = {
+        offensive: "#CC0000",
+        defensive: "#4A90E2",
+        support: "#50C878",
+        unknown: "#888888"
+    }
+    const color = categoryColors[category as keyof typeof categoryColors] || "#111111"
+
+    const abilityName = ability.names?.find((n: any) => n.language.name === "es")?.name || ability.name.replace("-", " ")
 
     return (
         <Link href={`/abilities/${ability.name}`}>
             <motion.div
-                className="group relative bg-white border-2 border-[#111111] overflow-hidden"
-                initial={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-                whileInView={{ opacity: 1, clipPath: "inset(0 0% 0 0)" }}
+                className="group relative bg-[#FAFAFA] border-4 border-[#111111] overflow-hidden flex flex-col h-full"
+                initial={{ opacity: 0, clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }}
+                whileInView={{ opacity: 1, clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)" }}
                 viewport={{ once: true, margin: "-20px" }}
                 transition={{
-                    duration: 0.35,
+                    duration: 0.4,
                     ease: [0.22, 1, 0.36, 1],
                     delay: (index % 15) * 0.05
                 }}
                 whileHover={{
-                    x: 4,
-                    y: 4,
-                    boxShadow: "0px 0px 0 #111111"
+                    translateY: -4,
+                    translateX: -4,
+                    boxShadow: "10px 10px 0 #111111",
                 }}
                 style={{
-                    boxShadow: "4px 4px 0 #111111"
+                    boxShadow: "6px 6px 0 #111111"
                 }}
             >
-                {/* 3px Top Strip */}
+                {/* Accent Header Strip */}
                 <div
-                    className="h-[3px] w-full"
-                    style={{ backgroundColor: isHidden ? "#CC0000" : "#111111" }}
+                    className="h-[6px] w-full"
+                    style={{ backgroundColor: color }}
                 />
 
-                <div className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-nunito font-bold text-[16px] text-[#111111] capitalize group-hover:text-[#CC0000] transition-colors line-clamp-1">
-                            {ability.names?.find((n: any) => n.language.name === "es")?.name || ability.name.replace("-", " ")}
+                <div className="p-5 sm:p-6 flex flex-col flex-1">
+                    <div className="flex justify-between items-start mb-4">
+                        <h3 className="font-press-start text-[14px] sm:text-[16px] text-[#111111] uppercase leading-snug group-hover:text-[#CC0000] transition-colors pr-2 break-words max-w-[85%]">
+                            {abilityName}
                         </h3>
-
-                        {isHidden && (
-                            <motion.div
-                                className="bg-[#111111] text-white font-press-start text-[7px] px-2 py-1 border border-[#CC0000] shrink-0 ml-2"
-                                animate={{
-                                    boxShadow: [
-                                        "0 0 0px rgba(204,0,0,0)",
-                                        "0 0 6px rgba(204,0,0,0.5)",
-                                        "0 0 0px rgba(204,0,0,0)"
-                                    ]
-                                }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            >
-                                OCULTA
-                            </motion.div>
-                        )}
+                        <div className="shrink-0 text-[#111111] opacity-20 group-hover:opacity-100 group-hover:text-[#CC0000] transition-colors" style={{ color: color }}>
+                            <Zap size={24} fill={color} />
+                        </div>
                     </div>
 
-                    <div className="h-px bg-[#E0E0E0] w-full mb-3" />
+                    <div className="h-[2px] bg-[#111111] w-full mb-4 opacity-10" />
 
-                    <div className="font-nunito text-[13px] text-[#888888] line-clamp-2 mb-4 h-[40px]">
-                        {fullEffect}
+                    <div className="font-nunito text-[14px] sm:text-[15px] text-[#555555] line-clamp-3 mb-6 flex-1 italic leading-relaxed">
+                        "{fullEffect}"
                     </div>
 
-                    <div className="h-px bg-[#E0E0E0] w-full mb-3" />
+                    <div className="h-[2px] bg-[#111111] w-full mb-4 opacity-10" />
 
-                    <div className="flex justify-between items-center">
-                        <AbilityCategoryBadge category={category} size="sm" />
+                    <div className="flex justify-between items-center mt-auto">
+                        <AbilityCategoryBadge category={category} size="md" />
 
-                        <div className="flex items-center gap-1.5 text-[#888888] font-nunito text-[12px]">
-                            <Users size={12} />
-                            <span>{ability.pokemon?.length || 0} Pokémon</span>
+                        <div className="flex items-center gap-2 bg-[#111111] text-white px-3 py-1.5 border-2 border-[#111111] shadow-[2px_2px_0_#CC0000]">
+                            <Users size={14} className="text-[#CC0000]" />
+                            <span className="font-press-start text-[8px] sm:text-[9px] translate-y-[1px]">
+                                {ability.pokemon?.length || 0}
+                            </span>
                         </div>
                     </div>
                 </div>
+
+                {/* Hover Reveal Pattern */}
+                <div 
+                    className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-5 transition-opacity"
+                    style={{
+                        backgroundImage: `radial-gradient(${color} 2px, transparent 2px)`,
+                        backgroundSize: '16px 16px'
+                    }}
+                />
             </motion.div>
         </Link>
     )

@@ -16,12 +16,14 @@ export function PageTransitionAbilities() {
         )
     }
 
-    const sparkles = Array.from({ length: 6 }).map((_, i) => ({
-        id: i,
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        delay: i * 0.04
-    }))
+    const sparkles = [
+        { id: 0, top: "25%", left: "15%", delay: 0 },
+        { id: 1, top: "70%", left: "80%", delay: 0.04 },
+        { id: 2, top: "40%", left: "60%", delay: 0.08 },
+        { id: 3, top: "85%", left: "30%", delay: 0.12 },
+        { id: 4, top: "15%", left: "75%", delay: 0.16 },
+        { id: 5, top: "60%", left: "20%", delay: 0.20 }
+    ]
 
     return (
         <motion.div

@@ -26,11 +26,11 @@ const STAT_NAMES: Record<string, string> = {
 }
 
 function getStatColor(val: number) {
-    if (val < 50) return "#EF4444"
-    if (val < 80) return "#F59E0B"
-    if (val < 110) return "#22C55E"
-    if (val < 150) return "#3B82F6"
-    return "#8B5CF6"
+    if (val < 50) return "#EF4444" // red
+    if (val < 80) return "#F59E0B" // orange
+    if (val < 110) return "#22C55E" // green
+    if (val < 150) return "#3B82F6" // blue
+    return "#8B5CF6" // purple
 }
 
 const TIER_MAP = [
@@ -53,45 +53,45 @@ function StatRow({ stat, index, inView, prefersRM }: { stat: Stat, index: number
             <Tooltip.Root>
                 <Tooltip.Trigger asChild>
                     <motion.div
-                        className="flex items-center gap-3 py-2 border-b border-[#F2F2F2] cursor-default group"
-                        whileHover={{ backgroundColor: "#FAFAFA" }}
+                        className="flex items-center gap-2 py-[10px] border-b-[2px] cursor-default group border-[#F0F0F0]"
+                        whileHover={{ backgroundColor: "#F9F9F9" }}
                         transition={{ duration: 0.15 }}
                     >
-                        <span className="font-['Press_Start_2P'] text-[8px] text-[#888888] w-[52px] text-right group-hover:text-[#111111] transition-colors">
+                        <span className="font-['Press_Start_2P'] text-[10px] w-[56px] text-right transition-colors text-[#888888] group-hover:text-[#111111]">
                             {label}
                         </span>
 
                         {/* Bar container */}
-                        <div className="flex-1 h-[8px] bg-[#F2F2F2] border border-[#E0E0E0] relative overflow-hidden">
-                            {inView && (
-                                <motion.div
-                                    className="absolute inset-y-0 left-0 rounded-none"
-                                    style={{ backgroundColor: color }}
-                                    initial={{ width: "0%" }}
-                                    animate={{ width: `${pct}%` }}
-                                    transition={{ delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                                >
-                                    {/* Shimmer */}
-                                    <motion.div
-                                        className="absolute inset-0"
-                                        style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent)" }}
-                                        initial={{ x: "-100%" }}
-                                        animate={{ x: "200%" }}
-                                        transition={{ delay, duration: 0.7, ease: "easeOut" }}
-                                    />
-                                </motion.div>
-                            )}
+                        <div className="flex-1 h-[10px] relative overflow-hidden bg-white border-[2px] border-[#111111]">
+                            <motion.div
+                                className="absolute left-0 top-0 h-full overflow-hidden"
+                                initial={{ width: "0%", backgroundColor: "#EEEEEE" }}
+                                animate={{ 
+                                    width: inView ? `${pct}%` : "0%",
+                                    backgroundColor: color 
+                                }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                            >
+                                {/* Static scanlines instead of moving shimmer */}
+                                <div 
+                                    className="absolute inset-0 opacity-20 pointer-events-none" 
+                                    style={{ 
+                                        backgroundImage: "linear-gradient(transparent 50%, rgba(255,255,255,0.4) 50%)", 
+                                        backgroundSize: "100% 4px" 
+                                    }} 
+                                />
+                            </motion.div>
                         </div>
 
                         {/* Number */}
-                        <div className="w-[36px] text-right">
+                        <div className="w-[42px] text-right">
                             <NumberFlow
                                 value={inView ? stat.base_stat : 0}
-                                className="font-['JetBrains_Mono'] text-[12px]"
+                                className="font-['Press_Start_2P'] text-[10px]"
                                 style={{ color }}
                             />
                         </div>
-                        <span className="font-['Nunito'] text-[10px] text-[#AAAAAA] w-[32px]">/ 255</span>
+                        <span className="font-['Press_Start_2P'] text-[8px] w-[32px] text-[#AAAAAA]">/255</span>
                     </motion.div>
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
@@ -117,43 +117,47 @@ export function StatBars({ stats }: Props) {
     const TierIcon = tier.icon
 
     return (
-        <div ref={ref} className="mb-6">
-            <h3 className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-3 tracking-wide">BASE STATS</h3>
+        <div ref={ref} className="mb-6 p-5 sm:p-6 bg-[#FFFFFF] border-[2px] border-[#111111] shadow-[4px_4px_0_rgba(17,17,17,0.15)] rounded-lg">
+            
+            <h3 className="font-['Press_Start_2P'] text-[12px] mb-4 tracking-wide text-[#111111] border-b-2 border-[#E0E0E0] pb-2 inline-block">ESTADÍSTICAS BASE</h3>
 
-            {stats.map((stat, i) => (
-                <StatRow key={stat.stat.name} stat={stat} index={i} inView={inView} prefersRM={prefersRM} />
-            ))}
+            <div className="relative z-10">
+                {stats.map((stat, i) => (
+                    <StatRow key={stat.stat.name} stat={stat} index={i} inView={inView} prefersRM={prefersRM} />
+                ))}
 
-            {/* Total */}
-            <div className="flex items-center gap-3 pt-3 mt-1 border-t-2 border-[#111111]">
-                <span className="font-['Press_Start_2P'] text-[8px] text-[#111111] w-[52px] text-right">TOT</span>
-                <div className="flex-1 h-[12px] bg-[#F2F2F2] border border-[#E0E0E0] overflow-hidden">
-                    {inView && (
-                        <motion.div
-                            className="h-full"
-                            style={{ backgroundColor: "#CC0000" }}
-                            initial={{ width: "0%" }}
-                            animate={{ width: `${Math.min((total / (255 * 6)) * 100, 100)}%` }}
-                            transition={{ delay: prefersRM ? 0 : 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                {/* Total */}
+                <div className="flex items-center gap-3 pt-4 mt-2 border-t-[3px] border-[#111111]">
+                    <span className="font-['Press_Start_2P'] text-[10px] w-[56px] text-right text-[#111111]">TOT</span>
+                    <div className="flex-1 h-[14px] relative overflow-hidden bg-[#F2F2F2] border-[2px] border-[#111111]">
+                        {inView && (
+                            <motion.div
+                                className="h-full relative overflow-hidden bg-[#111111]"
+                                initial={{ width: "0%" }}
+                                animate={{ width: `${Math.min((total / (255 * 6)) * 100, 100)}%` }}
+                                transition={{ delay: prefersRM ? 0 : 0.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                                <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "linear-gradient(transparent 50%, rgba(255,255,255,0.4) 50%)", backgroundSize: "100% 4px" }} />
+                            </motion.div>
+                        )}
+                    </div>
+                    <div className="flex items-center gap-3 w-auto">
+                        <NumberFlow
+                            value={inView ? total : 0}
+                            className="font-['Press_Start_2P'] text-[14px] text-[#111111]"
                         />
-                    )}
-                </div>
-                <div className="flex items-center gap-2 w-auto">
-                    <NumberFlow
-                        value={inView ? total : 0}
-                        className="font-['Press_Start_2P'] text-[14px] text-[#111111]"
-                    />
-                    {/* Tier Badge */}
-                    <motion.span
-                        initial={{ scale: 0 }}
-                        animate={{ scale: inView ? 1 : 0 }}
-                        transition={{ delay: 0.8, type: "spring", bounce: 0.4 }}
-                        className="font-['Press_Start_2P'] text-[7px] px-2 py-[3px] flex items-center gap-1"
-                        style={{ backgroundColor: tier.color + "22", color: tier.color, border: `1px solid ${tier.color}` }}
-                    >
-                        {TierIcon && <TierIcon size={10} />}
-                        {tier.label}
-                    </motion.span>
+                        {/* Tier Badge */}
+                        <motion.span
+                            initial={{ scale: 0 }}
+                            animate={{ scale: inView ? 1 : 0 }}
+                            transition={{ delay: 0.8, type: "spring", bounce: 0.4 }}
+                            className="font-['Press_Start_2P'] text-[8px] px-2 py-1 flex items-center gap-1 shadow-[2px_2px_0_rgba(17,17,17,1)]"
+                            style={{ backgroundColor: tier.color, color: "#FFFFFF", border: `2px solid #111111` }}
+                        >
+                            {TierIcon && <TierIcon size={12} strokeWidth={3} />}
+                            {tier.label}
+                        </motion.span>
+                    </div>
                 </div>
             </div>
         </div>

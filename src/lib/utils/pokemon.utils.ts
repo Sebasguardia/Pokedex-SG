@@ -27,9 +27,18 @@ export function getPokemonShinyArtworkUrl(id: number): string {
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`;
 }
 
-/** Returns the simple sprite URL for a given Pokémon ID */
-export function getPokemonSpriteUrl(id: number, shiny = false): string {
+/** Returns the showdown animated sprite URL */
+export function getPokemonShowdownSpriteUrl(id: number, shiny = false, back = false): string {
+    const dir = back ? "back/" : "";
     return shiny
-        ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${id}.png`
-        : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
+        ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${dir}shiny/${id}.gif`
+        : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${dir}${id}.gif`;
+}
+
+/** Returns the simple sprite URL for a given Pokémon ID */
+export function getPokemonSpriteUrl(id: number, shiny = false, back = false): string {
+    const dir = back ? "back/" : "";
+    return shiny
+        ? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dir}shiny/${id}.png`
+        : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${dir}${id}.png`;
 }

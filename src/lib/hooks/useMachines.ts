@@ -1,36 +1,80 @@
-import { useQuery } from "@tanstack/react-query"
-import { apiClient } from "../api/client"
-import { MachineVersionDetail } from "@/types/api/move.types"
+import { useQuery } from "@tanstack/react-query";
+import {
+  getMoveList, getMoveDetail, getMachineItem,
+  getMachineById, getMovesDetail,
+} from "../api/machines";
+import { POPULAR_TM_MOVES_UNIQUE } from "@/lib/constants/machines.constants";
 
-interface MachineData {
-    id: number
-    item: { name: string; url: string }
-    move: { name: string; url: string }
-    version_group: { name: string; url: string }
+/** Lista ligera de todos los movimientos — para la searchbar Fuse.js */
+export function useMoveList() {
+  return useQuery({
+    queryKey:  ["moves", "list"],
+    queryFn:   getMoveList,
+    staleTime: Infinity,
+    gcTime:    Infinity,
+  });
 }
 
-async function fetchMachineData(url: string): Promise<MachineData> {
-    // The URL is a full URL not a path, so call directly
-    const { data } = await apiClient.get<MachineData>(url.replace("https://pokeapi.co/api/v2", ""))
-    return data
+/** Movimientos populares precargados para la lista inicial */
+export function usePopularTMMoves() {
+  return useQuery({
+    queryKey:  ["moves", "popular-tms"],
+    queryFn:   () => getMovesDetail(POPULAR_TM_MOVES_UNIQUE),
+    staleTime: Infinity,
+    gcTime:    Infinity,
+  });
 }
 
-export function useMachines(machines: MachineVersionDetail[] | undefined) {
-    return useQuery({
-        queryKey: ["machines", machines?.map(m => m.machine.url).join(",")],
-        queryFn: async () => {
-            if (!machines || machines.length === 0) return []
-            const results = await Promise.allSettled(
-                machines.map(m => fetchMachineData(m.machine.url).then(data => ({
-                    ...data,
-                    version_group: m.version_group
-                })))
-            )
-            return results
-                .filter((r): r is PromiseFulfilledResult<MachineData & { version_group: { name: string; url: string } }> => r.status === "fulfilled")
-                .map(r => r.value)
-        },
-        enabled: !!machines && machines.length > 0,
-        staleTime: 1000 * 60 * 60,
-    })
+/** Detalle de un movimiento individual */
+export function useMoveDetail(nameOrId: string | number, enabled = true) {
+  return useQuery({
+    queryKey:  ["move", nameOrId],
+    queryFn:   () => getMoveDetail(nameOrId),
+    enabled:   !!nameOrId && enabled,
+    staleTime: Infinity,
+  });
+}
+
+/** Ítem TM/HM/TR — para el sprite del disco */
+export function useMachineItem(itemName: string, enabled = true) {
+  return useQuery({
+    queryKey:  ["machine-item", itemName],
+    queryFn:   () => getMachineItem(itemName),
+    enabled:   !!itemName && enabled,
+    staleTime: Infinity,
+  });
+}
+
+/** Máquina individual — para obtener el número de TM (lazy) */
+export function useMachineById(id: number, enabled = true) {
+  return useQuery({
+    queryKey:  ["machine", id],
+    queryFn:   () => getMachineById(id),
+    enabled:   id > 0 && enabled,
+    staleTime: Infinity,
+  });
+}
+
+/** Lista de máquinas a partir de las referencias de un movimiento */
+export function useMachines(machinesRefs?: { machine: { url: string }, version_group: { name: string, url: string } }[]) {
+  return useQuery({
+    queryKey: ["move-machines", machinesRefs?.map(m => m.machine.url).join(",")],
+    queryFn: async () => {
+      if (!machinesRefs || machinesRefs.length === 0) return [];
+      
+      const promises = machinesRefs.map(async (m) => {
+        const res = await fetch(m.machine.url);
+        if (!res.ok) throw new Error(`Failed to fetch machine data: ${res.status}`);
+        const data = await res.json();
+        return {
+          ...data,
+          version_group: m.version_group
+        };
+      });
+      
+      return Promise.all(promises);
+    },
+    enabled: !!machinesRefs && machinesRefs.length > 0,
+    staleTime: Infinity,
+  });
 }

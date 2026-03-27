@@ -49,109 +49,148 @@ export function GameLocations({ pokemonId }: Props) {
     }
 
     const versions = Object.keys(byVersion)
-    if (!selectedVersion && versions.length > 0) {
-        // default to last
-    }
     const activeVersion = selectedVersion || versions[versions.length - 1] || ""
     const locations = byVersion[activeVersion] ?? []
 
     if (isLoading) return (
-        <div className="mb-6">
-            <h3 className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-3 tracking-wide">UBICACIONES</h3>
-            <div className="space-y-2">{[1, 2, 3].map(i => <div key={i} className="h-8 bg-[#F2F2F2] animate-pulse" />)}</div>
+        <div className="mb-10">
+            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] mb-6 flex items-center gap-3">
+                <span className="w-3 h-3 bg-[#111111]" />
+                UBICACIONES
+                <span className="flex-1 h-[2px] bg-[#E0E0E0]" />
+            </h3>
+            <div className="grid grid-cols-1 gap-4">
+                {[1, 2, 3].map(i => (
+                    <div key={i} className="h-20 bg-white border-[3px] border-[#111111] shadow-[6px_6px_0_rgba(17,17,17,0.1)] animate-pulse" />
+                ))}
+            </div>
         </div>
     )
 
     return (
-        <div className="mb-6">
-            <h3 className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-3 tracking-wide">UBICACIONES EN JUEGOS</h3>
+        <div className="mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
+                <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] flex items-center gap-3">
+                    <span className="w-3 h-3 bg-[#111111]" />
+                    UBICACIONES EN JUEGOS
+                </h3>
 
-            {versions.length === 0 ? (
-                <p className="font-['Nunito'] text-[13px] italic text-[#888888]">No disponible en ninguna versión</p>
-            ) : (
-                <>
-                    {/* Version selector */}
-                    <div className="flex flex-wrap gap-1 mb-4">
+                {versions.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
                         {versions.map(ver => (
                             <button
                                 key={ver}
                                 onClick={() => setSelectedVersion(ver)}
-                                className="font-['Nunito'] text-[11px] font-bold px-2 py-1 transition-colors"
+                                className="font-['Press_Start_2P'] text-[8px] px-3 py-2 transition-all relative"
                                 style={{
-                                    backgroundColor: activeVersion === ver ? "#CC0000" : "#F2F2F2",
-                                    color: activeVersion === ver ? "white" : "#888888",
-                                    border: "1px solid #E0E0E0"
+                                    backgroundColor: activeVersion === ver ? "#CC0000" : "#FFFFFF",
+                                    color: activeVersion === ver ? "white" : "#111111",
+                                    border: "2px solid #111111",
+                                    boxShadow: activeVersion === ver ? "none" : "3px 3px 0 #111111",
+                                    transform: activeVersion === ver ? "translate(2px, 2px)" : "none"
                                 }}
                             >
-                                {VERSION_NAMES_ES[ver] ?? ver}
+                                {VERSION_NAMES_ES[ver]?.toUpperCase() ?? ver.toUpperCase()}
                             </button>
                         ))}
                     </div>
+                )}
+            </div>
 
-                    {locations.length === 0 ? (
-                        <p className="font-['Nunito'] text-[13px] italic text-[#888888]">No disponible en esta versión</p>
-                    ) : (
-                        <div className="space-y-2">
-                            {locations.map((loc, i) => {
-                                const formatLocationName = (name: string) => {
-                                    return name
-                                        .replace(/-/g, " ")
-                                        .replace(/\broute\b/ig, "Ruta")
-                                        .replace(/\barea\b/ig, "Área")
-                                        .replace(/\bcity\b/ig, "Ciudad")
-                                        .replace(/\btown\b/ig, "Pueblo")
-                                        .replace(/\bforest\b/ig, "Bosque")
-                                        .replace(/\bcave\b/ig, "Cueva")
-                                        .replace(/\bmt\b/ig, "Monte")
-                                        .replace(/\bmountain\b/ig, "Montaña")
-                                        .replace(/\bsea\b/ig, "Mar")
-                                        .replace(/\bocean\b/ig, "Océano")
-                                        .replace(/\bisland\b/ig, "Isla")
-                                        .replace(/\bpark\b/ig, "Parque")
-                                        .replace(/\bruins\b/ig, "Ruinas")
-                                        .replace(/\blake\b/ig, "Lago")
-                                        .replace(/\btower\b/ig, "Torre")
-                                        .replace(/\bpath\b/ig, "Senda")
-                                        .replace(/\bwoods\b/ig, "Bosque")
-                                        .replace(/\bvalley\b/ig, "Valle")
-                                        .replace(/\bcamp\b/ig, "Campamento")
-                                        .replace(/\bdesert\b/ig, "Desierto")
-                                }
+            {versions.length === 0 ? (
+                <div className="p-10 bg-[#F9F9F9] border-2 border-dashed border-[#E0E0E0] text-center">
+                    <p className="font-['Nunito'] text-[14px] italic text-[#888888]">No disponible en ninguna versión conocida</p>
+                </div>
+            ) : locations.length === 0 ? (
+                <div className="p-10 bg-[#F9F9F9] border-2 border-dashed border-[#E0E0E0] text-center">
+                    <p className="font-['Nunito'] text-[14px] italic text-[#888888]">Este Pokémon no aparece en la naturaleza en esta versión</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 gap-5">
+                    {locations.map((loc, i) => {
+                        const formatLocationName = (name: string) => {
+                            return name
+                                .replace(/-/g, " ")
+                                .replace(/\broute\b/ig, "Ruta")
+                                .replace(/\barea\b/ig, "Área")
+                                .replace(/\bcity\b/ig, "Ciudad")
+                                .replace(/\btown\b/ig, "Pueblo")
+                                .replace(/\bforest\b/ig, "Bosque")
+                                .replace(/\bcave\b/ig, "Cueva")
+                                .replace(/\bmt\b/ig, "Monte")
+                                .replace(/\bmountain\b/ig, "Montaña")
+                                .replace(/\bsea\b/ig, "Mar")
+                                .replace(/\bocean\b/ig, "Océano")
+                                .replace(/\bisland\b/ig, "Isla")
+                                .replace(/\bpark\b/ig, "Parque")
+                                .replace(/\bruins\b/ig, "Ruinas")
+                                .replace(/\blake\b/ig, "Lago")
+                                .replace(/\btower\b/ig, "Torre")
+                                .replace(/\bpath\b/ig, "Senda")
+                                .replace(/\bwoods\b/ig, "Bosque")
+                                .replace(/\bvalley\b/ig, "Valle")
+                                .replace(/\bcamp\b/ig, "Campamento")
+                                .replace(/\bdesert\b/ig, "Desierto")
+                        }
 
-                                const methodName = loc.method === "island-scan" ? "Escaneo Insular" : (ENCOUNTER_METHODS_ES[loc.method] ?? loc.method)
+                        const methodName = loc.method === "island-scan" ? "Escaneo Insular" : (ENCOUNTER_METHODS_ES[loc.method] ?? loc.method)
 
-                                return (
-                                    <motion.div
-                                        key={`${loc.areaName}-${i}`}
-                                        initial={{ opacity: 0, x: -8 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: i * 0.04 }}
-                                        className="flex items-center gap-3 py-2 px-3"
-                                        style={{ backgroundColor: "#F8F8F8", border: "1px solid #E0E0E0" }}
-                                    >
-                                        <MapPin size={12} className="text-[#CC0000] flex-shrink-0" />
-                                        <div className="flex-1">
-                                            <span className="font-['Nunito'] text-[13px] font-bold text-[#111111] capitalize block">
-                                                {formatLocationName(loc.areaName)}
+                        return (
+                            <motion.div
+                                key={`${loc.areaName}-${i}`}
+                                initial={{ opacity: 0, y: 10 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.05 }}
+                                className="group flex flex-col sm:flex-row sm:items-center gap-4 py-4 px-6 bg-white border-[3px] border-[#111111] shadow-[6px_6px_0_#111111] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_#111111] transition-all"
+                            >
+                                <div className="flex items-center gap-4 flex-1">
+                                    <div className="w-10 h-10 bg-[#F9F9F9] border-2 border-[#111111] flex items-center justify-center shadow-[3px_3px_0_#111111] group-hover:bg-[#CC0000] group-hover:text-white transition-colors">
+                                        <MapPin size={18} strokeWidth={3} />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="font-['Nunito'] text-[16px] font-black text-[#111111] capitalize">
+                                            {formatLocationName(loc.areaName)}
+                                        </span>
+                                        <div className="flex items-center gap-2 mt-0.5">
+                                            <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] uppercase tracking-tighter">
+                                                {methodName}
                                             </span>
-                                            <span className="font-['Nunito'] text-[11px] text-[#888888]">
-                                                {methodName} · Nv. {loc.minLevel}–{loc.maxLevel}
+                                            <span className="w-1 h-1 bg-[#E0E0E0] rounded-full" />
+                                            <span className="font-['JetBrains_Mono'] text-[11px] font-bold text-[#CC0000]">
+                                                Nv. {loc.minLevel}–{loc.maxLevel}
                                             </span>
                                         </div>
-                                        <div className="flex flex-col items-end">
-                                            <div className="flex items-center gap-1">
-                                                <div className="h-[6px] bg-[#F2F2F2] border border-[#E0E0E0]" style={{ width: 60 }}>
-                                                    <div className="h-full bg-[#CC0000]" style={{ width: `${loc.maxChance}%` }} />
-                                                </div>
-                                                <span className="font-['JetBrains_Mono'] text-[10px] text-[#CC0000]">{loc.maxChance}%</span>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                )
-                            })}
-                        </div>
-                    )}
-                </>
+                                    </div>
+                                </div>
+
+                                <div className="flex flex-col items-end gap-1.5 sm:border-l-2 sm:border-[#F2F2F2] sm:pl-6 min-w-[140px]">
+                                    <div className="flex items-center justify-between w-full mb-1">
+                                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888]">PROBAB.</span>
+                                        <span className="font-['JetBrains_Mono'] text-[13px] font-black text-[#111111]">{loc.maxChance}%</span>
+                                    </div>
+                                    <div className="w-full h-3 bg-[#F2F2F2] border-[2px] border-[#111111] relative overflow-hidden">
+                                        <motion.div 
+                                            initial={{ width: 0 }}
+                                            whileInView={{ width: `${loc.maxChance}%` }}
+                                            viewport={{ once: true }}
+                                            transition={{ duration: 1, ease: "easeOut" }}
+                                            className="h-full bg-[#CC0000]"
+                                        >
+                                            <div 
+                                                className="absolute inset-0 opacity-20 pointer-events-none" 
+                                                style={{ 
+                                                    backgroundImage: "linear-gradient(transparent 50%, rgba(255,255,255,0.4) 50%)", 
+                                                    backgroundSize: "100% 4px" 
+                                                }} 
+                                            />
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )
+                    })}
+                </div>
             )}
         </div>
     )

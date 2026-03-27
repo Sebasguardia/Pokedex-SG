@@ -11,6 +11,7 @@ import { inferAbilityCategory } from "@/lib/utils/ability.utils"
 import { PageTransitionAbility } from "@/components/shared/page-transition-ability"
 import { AbilityDetailHero } from "@/components/abilities/ability-detail-hero"
 import { AbilityEffectPanel } from "@/components/abilities/ability-effect-panel"
+import { AbilityVersionHistory } from "@/components/abilities/ability-version-history"
 import { AbilityPokemonTabs } from "@/components/abilities/ability-pokemon-tabs"
 import { RelatedAbilitiesCarousel } from "@/components/abilities/related-abilities-carousel"
 
@@ -47,6 +48,8 @@ export default function AbilityDetailPage({ params }: Props) {
                         ability={ability}
                         typeColor="#111111"
                     />
+
+                    <AbilityVersionHistory ability={ability} typeColor="#111111" />
 
                     <div className="h-1 bg-[#E0E0E0] w-full" />
 

@@ -237,21 +237,34 @@ function PokedexPageContent() {
     // Only fetch for filtered results to avoid 1000+ parallel requests
     const first100Filtered = useMemo(() => filteredItems.slice(0, 100), [filteredItems])
 
-    // We use a simple effect to trigger detail fetches for the first 100 results
-    // This makes sure sort by Weight/Stats has data for at least the top items.
+    // Background Detail Fetcher — batched with concurrency limit of 5
+    // Only fetches what isn't already cached. Staggered to avoid network spikes.
     useEffect(() => {
-        if (first100Filtered.length > 0) {
-            first100Filtered.forEach(p => {
+        if (first100Filtered.length === 0) return
+        let cancelled = false
+
+        const uncached = first100Filtered.filter(p => {
+            const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
+            return !queryClient.getQueryData(pokemonKeys.detail(id))
+        })
+
+        const CHUNK = 5
+        let i = 0
+        function nextChunk() {
+            if (cancelled || i >= uncached.length) return
+            const slice = uncached.slice(i, i + CHUNK)
+            i += CHUNK
+            Promise.all(slice.map(p => {
                 const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-                if (!queryClient.getQueryData(pokemonKeys.detail(id))) {
-                    queryClient.prefetchQuery({
-                        queryKey: pokemonKeys.detail(id),
-                        queryFn: () => getPokemonByIdOrName(id),
-                        staleTime: 1000 * 60 * 60 // 1 hour
-                    })
-                }
-            })
+                return queryClient.prefetchQuery({
+                    queryKey: pokemonKeys.detail(id),
+                    queryFn: () => getPokemonByIdOrName(id),
+                    staleTime: Infinity
+                })
+            })).then(() => { setTimeout(nextChunk, 100) })
         }
+        nextChunk()
+        return () => { cancelled = true }
     }, [first100Filtered, queryClient])
 
     const sortedItems = useMemo(() => {

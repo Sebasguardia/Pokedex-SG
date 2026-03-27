@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import { notFound } from "next/navigation"
 import { Howl } from "howler"
 import Link from "next/link"
-import { Home, ChevronRight } from "lucide-react"
+import { Home, ChevronRight, ChevronLeft } from "lucide-react"
 
 import { usePokemon } from "@/lib/hooks/usePokemon"
 import { usePokemonSpecies } from "@/lib/hooks/usePokemonSpecies"
@@ -19,9 +19,11 @@ import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
 import { getIdFromUrl } from "@/lib/utils/pokemon.utils"
 import { cn } from "@/lib/utils/cn"
 import { PageTransitionPokemon } from "@/components/shared/page-transition-pokemon"
+import { getGenerationByPokemonId } from "@/lib/constants/favorites.constants"
 
 // Hero column components (compact — no data)
 import { SpriteStage } from "@/components/pokemon/detail/identity/sprite-stage"
+import { PokemonVariantSelector } from "@/components/pokemon/detail/identity/pokemon-variant-selector"
 import { PokemonIdentity } from "@/components/pokemon/detail/identity/pokemon-identity"
 import { ActionButtons } from "@/components/pokemon/detail/identity/action-buttons"
 import { NavigationArrows } from "@/components/pokemon/detail/identity/navigation-arrows"
@@ -35,6 +37,7 @@ import { BreedingSection } from "@/components/pokemon/detail/info/breeding-secti
 // Tab: Estadísticas
 import { StatBars } from "@/components/pokemon/detail/visuals/stat-bars"
 import { StatRadar } from "@/components/pokemon/detail/visuals/stat-radar"
+import { TypeDefenses } from "@/components/pokemon/detail/visuals/type-defenses"
 
 // Tab: Habilidades (new)
 import { AbilitiesDetail } from "@/components/pokemon/detail/content/abilities-detail"
@@ -92,6 +95,37 @@ export default function PokemonDetailPage() {
     const { addPokemon, pokemonIds } = useCompareStore()
     const { pokedexFilters } = useFilterStore()
     const pokedexHref = pokedexFilters ? `/pokemon?${pokedexFilters}` : "/pokemon"
+
+    const buildFavInput = useCallback(() => {
+        if (!pokemon) return null
+        const stats = pokemon.stats ?? []
+        const getStat = (name: string) => stats.find((s: { stat: { name: string }; base_stat: number }) => s.stat.name === name)?.base_stat ?? 0
+        const artwork = pokemon.sprites?.other?.["official-artwork"]?.front_default
+            ?? pokemon.sprites?.front_default ?? ""
+        const sprite = pokemon.sprites?.front_default ?? ""
+        const displayName = pokemon.name.split("-").map((w: string) => w[0].toUpperCase() + w.slice(1)).join(" ")
+        const bst = stats.reduce((sum: number, s: { base_stat: number }) => sum + s.base_stat, 0)
+        return {
+            id:     pokemon.id,
+            name:   pokemon.name,
+            nameEs: displayName,
+            artwork,
+            sprite,
+            types:  pokemon.types?.map((t: { type: { name: string } }) => t.type.name) ?? [],
+            bst,
+            baseStats: {
+                hp:             getStat("hp"),
+                attack:         getStat("attack"),
+                defense:        getStat("defense"),
+                specialAttack:  getStat("special-attack"),
+                specialDefense: getStat("special-defense"),
+                speed:          getStat("speed"),
+            },
+            generation:   getGenerationByPokemonId(pokemon.id),
+            isLegendary:  false,
+            isMythical:   false,
+        }
+    }, [pokemon])
 
     const primaryType = pokemon?.types?.[0]?.type.name ?? "normal"
     const typeColor = (TYPE_CONSTANTS[primaryType] as any)?.color ?? "#A8A878"
@@ -154,18 +188,15 @@ export default function PokemonDetailPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
             >
-                {/* Breadcrumb */}
-                <nav className="flex items-center gap-1 mb-6 font-['Nunito'] text-[12px]">
-                    <Link href="/" className="text-[#888888] hover:text-[#CC0000] flex items-center gap-1 transition-colors">
-                        <Home size={12} /> Inicio
-                    </Link>
-                    <ChevronRight size={12} className="text-[#888888]" />
-                    <Link href={pokedexHref} className="text-[#888888] hover:text-[#CC0000] transition-colors">
-                        Pokédex
-                    </Link>
-                    <ChevronRight size={12} className="text-[#888888]" />
-                    <span className="text-[#111111] font-bold">{pokemonName}</span>
-                </nav>
+                {/* Back to Pokédex */}
+                <Link
+                    href={pokedexHref}
+                    className="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white border-2 border-[#111111] font-['Nunito'] text-[14px] font-black text-[#111111] transition-transform hover:-translate-y-1 active:translate-y-0"
+                    style={{ boxShadow: "4px 4px 0 #111111" }}
+                >
+                    <ChevronLeft size={18} strokeWidth={3} />
+                    Volver a la Pokédex
+                </Link>
 
                 {/* Main layout — LEAN HERO + CONTENT TABS */}
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
@@ -175,6 +206,13 @@ export default function PokemonDetailPage() {
                         Only visual + interactive — no data sections
                     ════════════════════════════════════════ */}
                     <div className="w-full lg:w-[360px] lg:flex-shrink-0 lg:sticky lg:top-[80px] lg:self-start flex flex-col gap-4">
+
+                        {/* Variant Selector (if has multiple forms) */}
+                        <PokemonVariantSelector
+                            pokemon={pokemon}
+                            species={species}
+                            typeColor={typeColor}
+                        />
 
                         {/* Sprite Stage */}
                         <SpriteStage
@@ -204,7 +242,10 @@ export default function PokemonDetailPage() {
                         <ActionButtons
                             isFavorite={isFavorite(pokemonIdNum)}
                             isInCompare={pokemonIds.includes(pokemonIdNum) as boolean}
-                            onFavorite={() => toggleFavorite(pokemonIdNum)}
+                            onFavorite={() => {
+                                const favInput = buildFavInput()
+                                if (favInput) toggleFavorite(favInput)
+                            }}
                             onCompare={() => addPokemon(pokemonIdNum)}
                             onShare={handleShare}
                             pokemonName={pokemonName}
@@ -226,26 +267,19 @@ export default function PokemonDetailPage() {
                         <Tabs.Root value={activeTab} onValueChange={(v) => { setActiveTab(v); setExpandedMove(null) }}>
 
                             {/* Tab List with traveling indicator */}
-                            <Tabs.List className="flex border-b-2 border-[#E0E0E0] mb-6 overflow-x-auto scrollbar-none">
+                            <Tabs.List className="flex border-b-4 border-[#111111] mb-8 overflow-x-auto scrollbar-hide gap-2 p-1">
                                 {TABS.map(tab => (
                                     <Tabs.Trigger key={tab.id} value={tab.id} asChild>
                                         <button
                                             className={cn(
-                                                "relative px-4 py-3 font-['Nunito'] text-[13px] font-bold whitespace-nowrap",
-                                                "border-b-2 border-transparent -mb-[2px] transition-colors duration-150",
+                                                "relative px-6 py-4 font-['Press_Start_2P'] text-[9px] uppercase transition-all duration-200",
+                                                "border-2 border-transparent",
                                                 activeTab === tab.id
-                                                    ? "text-[#111111] text-[14px]"
-                                                    : "text-[#888888] hover:text-[#444444]"
+                                                    ? "bg-[#111111] text-white shadow-[4px_4px_0_#CC0000] translate-x-[-2px] translate-y-[-2px]"
+                                                    : "bg-white text-[#888888] hover:text-[#111111] hover:border-[#111111]"
                                             )}
                                         >
                                             {tab.label}
-                                            {activeTab === tab.id && (
-                                                <motion.div
-                                                    layoutId="tab-indicator-v3"
-                                                    className="absolute bottom-[-2px] left-0 right-0 h-[2px] bg-[#CC0000]"
-                                                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
-                                                />
-                                            )}
                                         </button>
                                     </Tabs.Trigger>
                                 ))}
@@ -275,6 +309,7 @@ export default function PokemonDetailPage() {
                                         <div>
                                             <StatBars stats={pokemon.stats} />
                                             <StatRadar stats={pokemon.stats} typeColor={typeColor} />
+                                            <TypeDefenses types={pokemon.types.map((t: any) => t.type.name)} />
                                         </div>
                                     )}
 
@@ -299,6 +334,7 @@ export default function PokemonDetailPage() {
                                     {activeTab === "evolucion" && (
                                         <EvolutionChain
                                             chain={evolutionData?.chain}
+                                            species={species}
                                             currentPokemonId={pokemon.id}
                                             typeColor={typeColor}
                                         />

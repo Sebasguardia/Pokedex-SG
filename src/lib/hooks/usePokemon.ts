@@ -6,6 +6,7 @@ export function usePokemonList(limit = 20, offset = 0) {
     return useQuery({
         queryKey: pokemonKeys.list({ limit, offset }),
         queryFn: () => getPokemonList(limit, offset),
+        staleTime: Infinity,
     });
 }
 
@@ -14,5 +15,6 @@ export function usePokemon(idOrName: string | number) {
         queryKey: pokemonKeys.detail(idOrName),
         queryFn: () => getPokemonByIdOrName(idOrName),
         enabled: !!idOrName,
+        staleTime: Infinity,
     });
 }
