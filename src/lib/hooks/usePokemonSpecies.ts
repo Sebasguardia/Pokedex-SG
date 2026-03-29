@@ -8,5 +8,6 @@ export function usePokemonSpecies(idOrName: string | number) {
         queryFn: () => getPokemonSpecies(idOrName),
         enabled: !!idOrName,
         staleTime: Infinity,
+        gcTime: Infinity,
     });
 }

@@ -12,19 +12,21 @@ import { PokemonGrid } from "@/components/pokemon/list/pokemon-grid"
 import { PokemonTable } from "@/components/pokemon/list/pokemon-table"
 import { Pagination } from "@/components/shared/pagination"
 import { PageTransitionPokemons } from "@/components/shared/page-transition-pokemons"
-import { usePokemonList } from "@/lib/hooks/usePokemonList"
-import { useTypesData } from "@/lib/hooks/useTypesData"
+import { usePokemonIndex } from "@/lib/hooks/usePokemonIndex"
 import { getPokemonByIdOrName } from "@/lib/api/pokemon"
 import { useUIStore } from "@/lib/store/ui.store"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFilterStore } from "@/lib/store/filter.store"
 import Fuse from "fuse.js"
-import { useQueryClient } from "@tanstack/react-query"
-import { pokemonKeys } from "@/lib/constants/query-keys"
+
 import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants"
 
+// Pre-compute Sets once at module level for O(1) lookups — much faster than Array.includes in filter loops
+const LEGENDARY_SET = new Set(LEGENDARY_IDS)
+const MYTHICAL_SET = new Set(MYTHICAL_IDS)
+const BABY_SET = new Set(BABY_IDS)
+
 function PokedexPageContent() {
-    const queryClient = useQueryClient()
     const { viewMode } = useUIStore()
     const searchParams = useSearchParams()
     const { setPokedexFilters } = useFilterStore()
@@ -42,46 +44,33 @@ function PokedexPageContent() {
     const [mythicalFilter, setMythicalFilter] = useQueryState("mythical")
     const [babyFilter, setBabyFilter] = useQueryState("baby")
     const [formsFilter, setFormsFilter] = useQueryState("forms")
+    const [baseStageFilter, setBaseStageFilter] = useQueryState("base")
+    const [levelEvoFilter, setLevelEvoFilter] = useQueryState("levelEvo")
+    const [itemEvoFilter, setItemEvoFilter] = useQueryState("itemEvo")
+
+    const [weightClass, setWeightClass] = useQueryState("weightClass")
+    const [heightClass, setHeightClass] = useQueryState("heightClass")
+    
     const [searchQuery, setSearchQuery] = useQueryState("search", { defaultValue: "" })
     const [page, setPage] = useQueryState("page", { defaultValue: "1" })
 
     // STATS FILTERS
-    const [minHp] = useQueryState("minHp")
-    const [minAtk] = useQueryState("minAtk")
-    const [minDef] = useQueryState("minDef")
-    const [minSpa] = useQueryState("minSpa")
-    const [minSpd] = useQueryState("minSpd")
-    const [minSpe] = useQueryState("minSpe")
+    const [minHp, setMinHp] = useQueryState("minHp")
+    const [minAtk, setMinAtk] = useQueryState("minAtk")
+    const [minDef, setMinDef] = useQueryState("minDef")
+    const [minSpa, setMinSpa] = useQueryState("minSpa")
+    const [minSpd, setMinSpd] = useQueryState("minSpd")
+    const [minSpe, setMinSpe] = useQueryState("minSpe")
+    
+    // ORDENAR
+    const [sortField, setSortField] = useQueryState("sort", { defaultValue: "id" })
+    const [sortOrder, setSortOrder] = useQueryState("order", { defaultValue: "asc" })
 
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false)
 
-    // 1. Fetch ALL pokemon (for search index)
-    const { data: allPokemonData, isLoading: isAllLoading } = usePokemonList(10000, 0)
+    const { data: globalPokemon, isLoading: isAllLoading } = usePokemonIndex()
 
-    // 2. Fetch Category data if filters active
     const activeTypes = useMemo(() => typeFilter ? typeFilter.split(",") : [], [typeFilter])
-    const typeQueries = useTypesData(activeTypes)
-    const isTypesLoading = typeQueries.some(q => q.isLoading)
-
-    const typePokemonNames = useMemo(() => {
-        if (activeTypes.length === 0) return null
-
-        let intersected: string[] = []
-        let hasData = false
-
-        typeQueries.forEach((q, idx) => {
-            if (!q.data) return
-            hasData = true
-            const names = q.data.pokemon.map(p => p.pokemon.name)
-            if (idx === 0) {
-                intersected = names
-            } else {
-                intersected = intersected.filter(n => names.includes(n))
-            }
-        })
-
-        return hasData ? intersected : []
-    }, [typeQueries, activeTypes])
 
     // We'll simplify: get the full list and filter locally. 
     // For Type and Gen, we'd ideally need those relations. 
@@ -97,23 +86,30 @@ function PokedexPageContent() {
     const currentPage = parseInt(page || "1")
     const offset = (currentPage - 1) * limit
 
-    const allItems = allPokemonData?.results || []
+    const allItems = globalPokemon || []
 
-    const filteredItems = useMemo(() => {
-        let results = [...allItems]
+    // Build Fuse index once when allItems changes — NOT inside filteredAndSortedItems
+    // This is the key perf fix: creating a Fuse index on 1025 items each filter change was causing lag
+    const fuseIndex = useMemo(() => {
+        if (allItems.length === 0) return null
+        return new Fuse(allItems, { keys: ['name'], threshold: 0.3, includeScore: false })
+    }, [allItems])
+
+    const filteredAndSortedItems = useMemo(() => {
+        // Avoid spreading if no filters active
+        let results = allItems
+        let needsMutation = false
 
         // A. Type Filter
-        if (typePokemonNames !== null) {
-            results = results.filter(p => typePokemonNames.includes(p.name))
+        if (activeTypes.length > 0) {
+            results = results.filter(p => activeTypes.every(t => p.types.includes(t)))
+            needsMutation = true
         }
 
-        // B. Search filter
-        if (searchQuery) {
-            const fuse = new Fuse(results, {
-                keys: ['name'],
-                threshold: 0.3
-            })
-            results = fuse.search(searchQuery).map(r => r.item)
+        // B. Search filter — reuses the stable fuseIndex instead of creating a new Fuse each time
+        if (searchQuery && fuseIndex) {
+            results = fuseIndex.search(searchQuery).map(r => r.item)
+            needsMutation = true
         }
 
         // C. Gen filter
@@ -125,45 +121,94 @@ function PokedexPageContent() {
             }
             const range = ranges[gen]
             if (range) {
-                results = results.filter(p => {
-                    const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-                    return id >= range[0] && id <= range[1]
-                })
+                results = results.filter(p => p.id >= range[0] && p.id <= range[1])
             }
         }
 
-        // D. Special Filters
-        if (legendaryFilter === "true" || mythicalFilter === "true" || babyFilter === "true") {
+        // D. Special Filters — uses Set for O(1) lookup instead of Array.includes
+        if (legendaryFilter === "true" || mythicalFilter === "true" || babyFilter === "true" || formsFilter === "true" || baseStageFilter === "true" || levelEvoFilter === "true" || itemEvoFilter === "true") {
             results = results.filter(p => {
-                const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-                if (legendaryFilter === "true" && LEGENDARY_IDS.includes(id)) return true
-                if (mythicalFilter === "true" && MYTHICAL_IDS.includes(id)) return true
-                if (babyFilter === "true" && BABY_IDS.includes(id)) return true
+                if (legendaryFilter === "true" && LEGENDARY_SET.has(p.id)) return true
+                if (mythicalFilter === "true" && MYTHICAL_SET.has(p.id)) return true
+                if (babyFilter === "true" && BABY_SET.has(p.id)) return true
+                if (baseStageFilter === "true" && p.evolution_method === "base") return true
+                if (levelEvoFilter === "true" && p.evolution_method === "level") return true
+                if (itemEvoFilter === "true" && p.evolution_method === "item") return true
                 return false
             })
+            needsMutation = true
+        }
+
+        // D.2. Physical Filters
+        if (weightClass || heightClass) {
+            results = results.filter(p => {
+                let matchesWeight = true
+                let matchesHeight = true
+                
+                if (weightClass === "feather") matchesWeight = p.weight < 200
+                else if (weightClass === "heavy") matchesWeight = p.weight >= 2000
+
+                if (heightClass === "small") matchesHeight = p.height < 10
+                else if (heightClass === "giant") matchesHeight = p.height >= 30
+
+                return matchesWeight && matchesHeight
+            })
+            needsMutation = true
         }
 
         // E. Stats Filters
-        const hasStatsFilter = minHp || minAtk || minDef || minSpa || minSpd || minSpe
+        const minHpN = minHp ? parseInt(minHp) : 0
+        const minAtkN = minAtk ? parseInt(minAtk) : 0
+        const minDefN = minDef ? parseInt(minDef) : 0
+        const minSpaN = minSpa ? parseInt(minSpa) : 0
+        const minSpdN = minSpd ? parseInt(minSpd) : 0
+        const minSpeN = minSpe ? parseInt(minSpe) : 0
+        const hasStatsFilter = minHpN > 0 || minAtkN > 0 || minDefN > 0 || minSpaN > 0 || minSpdN > 0 || minSpeN > 0
         if (hasStatsFilter) {
             results = results.filter(p => {
-                const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-                const details = queryClient.getQueryData(pokemonKeys.detail(id)) as any
-                if (!details) return true // If no data yet, don't filter it out (optimistic)
-
-                if (minHp && (details.stats[0].base_stat < parseInt(minHp))) return false
-                if (minAtk && (details.stats[1].base_stat < parseInt(minAtk))) return false
-                if (minDef && (details.stats[2].base_stat < parseInt(minDef))) return false
-                if (minSpa && (details.stats[3].base_stat < parseInt(minSpa))) return false
-                if (minSpd && (details.stats[4].base_stat < parseInt(minSpd))) return false
-                if (minSpe && (details.stats[5].base_stat < parseInt(minSpe))) return false
-
+                if (minHpN > 0 && p.stats.hp < minHpN) return false
+                if (minAtkN > 0 && p.stats.attack < minAtkN) return false
+                if (minDefN > 0 && p.stats.defense < minDefN) return false
+                if (minSpaN > 0 && p.stats.specialAttack < minSpaN) return false
+                if (minSpdN > 0 && p.stats.specialDefense < minSpdN) return false
+                if (minSpeN > 0 && p.stats.speed < minSpeN) return false
                 return true
+            })
+            needsMutation = true
+        }
+
+        // F. Global Sort — skip sort entirely for default ID ASC (data already comes ordered from API)
+        const isDefaultSort = sortField === 'id' && sortOrder === 'asc'
+        if (!isDefaultSort) {
+            // Only clone array when we need to sort and haven't mutated it yet
+            if (!needsMutation) results = [...results]
+            results.sort((a, b) => {
+                let valA: string | number = a.id
+                let valB: string | number = b.id
+
+                switch(sortField) {
+                    case 'name': valA = a.name; valB = b.name; break;
+                    case 'hp': valA = a.stats.hp; valB = b.stats.hp; break;
+                    case 'attack': valA = a.stats.attack; valB = b.stats.attack; break;
+                    case 'defense': valA = a.stats.defense; valB = b.stats.defense; break;
+                    case 'weight': valA = a.weight; valB = b.weight; break;
+                    case 'height': valA = a.height; valB = b.height; break;
+                    case 'id': valA = a.id; valB = b.id; break;
+                }
+
+                if (valA < valB) return sortOrder === 'desc' ? 1 : -1
+                if (valA > valB) return sortOrder === 'desc' ? -1 : 1
+                return 0
             })
         }
 
-        return results
-    }, [allItems, searchQuery, genFilter, typePokemonNames, legendaryFilter, mythicalFilter, babyFilter, minHp, minAtk, minDef, minSpa, minSpd, minSpe])
+        // Map to {name, url, indexTypes} — types piggyback for free avoiding 60 per-card fetches
+        return results.map(p => ({
+            name: p.name,
+            url: `https://pokeapi.co/api/v2/pokemon/${p.id}/`,
+            indexTypes: p.types,
+        }))
+    }, [allItems, fuseIndex, searchQuery, genFilter, activeTypes, legendaryFilter, mythicalFilter, babyFilter, formsFilter, baseStageFilter, levelEvoFilter, itemEvoFilter, weightClass, heightClass, minHp, minAtk, minDef, minSpa, minSpd, minSpe, sortField, sortOrder])
 
     const activeFiltersCount = useMemo(() => [
         typeFilter ? typeFilter.split(",").length : 0,
@@ -172,13 +217,18 @@ function PokedexPageContent() {
         mythicalFilter ? 1 : 0,
         babyFilter ? 1 : 0,
         formsFilter ? 1 : 0,
+        baseStageFilter ? 1 : 0,
+        levelEvoFilter ? 1 : 0,
+        itemEvoFilter ? 1 : 0,
+        weightClass ? 1 : 0,
+        heightClass ? 1 : 0,
         minHp ? 1 : 0,
         minAtk ? 1 : 0,
         minDef ? 1 : 0,
         minSpa ? 1 : 0,
         minSpd ? 1 : 0,
         minSpe ? 1 : 0,
-    ].reduce((a, b) => a + Number(b), 0), [typeFilter, genFilter, legendaryFilter, mythicalFilter, babyFilter, formsFilter, minHp, minAtk, minDef, minSpa, minSpd, minSpe])
+    ].reduce((a, b) => a + Number(b), 0), [typeFilter, genFilter, legendaryFilter, mythicalFilter, babyFilter, formsFilter, baseStageFilter, levelEvoFilter, itemEvoFilter, weightClass, heightClass, minHp, minAtk, minDef, minSpa, minSpd, minSpe])
 
     const clearAllFilters = useCallback(() => {
         setTypeFilter(null)
@@ -187,10 +237,21 @@ function PokedexPageContent() {
         setMythicalFilter(null)
         setBabyFilter(null)
         setFormsFilter(null)
+        setBaseStageFilter(null)
+        setLevelEvoFilter(null)
+        setItemEvoFilter(null)
+        setWeightClass(null)
+        setHeightClass(null)
         setPage("1")
         setSearchQuery("")
-        // Clear Stats also - nuqs will handle batch if we use query state
-    }, [setTypeFilter, setGenFilter, setLegendaryFilter, setMythicalFilter, setBabyFilter, setFormsFilter, setPage, setSearchQuery])
+        // Clear Stats also
+        setMinHp(null)
+        setMinAtk(null)
+        setMinDef(null)
+        setMinSpa(null)
+        setMinSpd(null)
+        setMinSpe(null)
+    }, [setTypeFilter, setGenFilter, setLegendaryFilter, setMythicalFilter, setBabyFilter, setFormsFilter, setBaseStageFilter, setLevelEvoFilter, setItemEvoFilter, setWeightClass, setHeightClass, setPage, setSearchQuery, setMinHp, setMinAtk, setMinDef, setMinSpa, setMinSpd, setMinSpe])
 
     const handleRemoveFilter = useCallback((key: string, val: string) => {
         if (key === 'type' && typeFilter) {
@@ -202,7 +263,16 @@ function PokedexPageContent() {
         if (key === 'mythical') setMythicalFilter(null)
         if (key === 'baby') setBabyFilter(null)
         if (key === 'forms') setFormsFilter(null)
-    }, [typeFilter, setTypeFilter, setGenFilter, setLegendaryFilter, setMythicalFilter, setBabyFilter, setFormsFilter])
+        if (key === 'base') setBaseStageFilter(null)
+        if (key === 'levelEvo') setLevelEvoFilter(null)
+        if (key === 'itemEvo') setItemEvoFilter(null)
+        if (key === 'weightClass') setWeightClass(null)
+        if (key === 'heightClass') setHeightClass(null)
+        if (key === 'sort') {
+            setSortField(null)
+            setSortOrder(null)
+        }
+    }, [typeFilter, setTypeFilter, setGenFilter, setLegendaryFilter, setMythicalFilter, setBabyFilter, setFormsFilter, setBaseStageFilter, setLevelEvoFilter, setItemEvoFilter, setWeightClass, setHeightClass, setSortField, setSortOrder])
 
     const handleSearchChange = useCallback((val: string) => {
         setSearchQuery(val)
@@ -211,15 +281,12 @@ function PokedexPageContent() {
         }
     }, [searchQuery, setSearchQuery, setPage])
 
-    const [sortField, setSortField] = useQueryState("sort", { defaultValue: "id" })
-    const [sortOrder, setSortOrder] = useQueryState("order", { defaultValue: "asc" })
-
     const handlePageChange = (p: number) => {
         setPage(p.toString())
         window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
-    const isLoadingOverall = isAllLoading || isTypesLoading
+    const isLoadingOverall = isAllLoading
 
     // RESET PAGE ON FILTER CHANGE
     // When any filter changes, we should return to page 1 to avoid empty views
@@ -231,88 +298,23 @@ function PokedexPageContent() {
         }
         // We specifically EXCLUDE 'page' from dependencies to only trigger on filter changes
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [typeFilter, genFilter, legendaryFilter, mythicalFilter, babyFilter, formsFilter, searchQuery, minHp, minAtk, minDef, minSpa, minSpd, minSpe])
-
-    // F. Background Detail Fetcher (for Advanced Filters/Sorting)
-    // Only fetch for filtered results to avoid 1000+ parallel requests
-    const first100Filtered = useMemo(() => filteredItems.slice(0, 100), [filteredItems])
-
-    // Background Detail Fetcher — batched with concurrency limit of 5
-    // Only fetches what isn't already cached. Staggered to avoid network spikes.
-    useEffect(() => {
-        if (first100Filtered.length === 0) return
-        let cancelled = false
-
-        const uncached = first100Filtered.filter(p => {
-            const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-            return !queryClient.getQueryData(pokemonKeys.detail(id))
-        })
-
-        const CHUNK = 5
-        let i = 0
-        function nextChunk() {
-            if (cancelled || i >= uncached.length) return
-            const slice = uncached.slice(i, i + CHUNK)
-            i += CHUNK
-            Promise.all(slice.map(p => {
-                const id = parseInt(p.url.split("/").filter(Boolean).pop() || "0")
-                return queryClient.prefetchQuery({
-                    queryKey: pokemonKeys.detail(id),
-                    queryFn: () => getPokemonByIdOrName(id),
-                    staleTime: Infinity
-                })
-            })).then(() => { setTimeout(nextChunk, 100) })
-        }
-        nextChunk()
-        return () => { cancelled = true }
-    }, [first100Filtered, queryClient])
-
-    const sortedItems = useMemo(() => {
-        let results = [...filteredItems]
-
-        results.sort((a, b) => {
-            const getVal = (item: any) => {
-                const id = parseInt(item.url.split("/").filter(Boolean).pop() || "0")
-                // Search in QueryClient cache
-                const details = queryClient.getQueryData(pokemonKeys.detail(id)) as any
-
-                if (sortField === "weight") return details?.weight || 0
-                if (sortField === "height") return details?.height || 0
-                if (sortField === "hp") return details?.stats?.find((s: any) => s.stat.name === "hp")?.base_stat || 0
-                if (sortField === "attack") return details?.stats?.find((s: any) => s.stat.name === "attack")?.base_stat || 0
-                if (sortField === "defense") return details?.stats?.find((s: any) => s.stat.name === "defense")?.base_stat || 0
-
-                if (sortField === "name") return item.name
-                return id // default is id
-            }
-
-            const valA = getVal(a)
-            const valB = getVal(b)
-
-            if (typeof valA === "string" && typeof valB === "string") {
-                return sortOrder === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA)
-            }
-
-            const nA = Number(valA)
-            const nB = Number(valB)
-            return sortOrder === "asc" ? nA - nB : nB - nA
-        })
-
-        return results
-    }, [filteredItems, sortField, sortOrder])
+    }, [typeFilter, genFilter, legendaryFilter, mythicalFilter, babyFilter, formsFilter, baseStageFilter, levelEvoFilter, itemEvoFilter, weightClass, heightClass, searchQuery, minHp, minAtk, minDef, minSpa, minSpd, minSpe])
 
     const displayItems = useMemo(() => {
-        return sortedItems.slice(offset, offset + limit)
-    }, [sortedItems, offset, limit])
+       const paginatedItems = filteredAndSortedItems.slice(offset, offset + limit)
+       return paginatedItems
+    }, [filteredAndSortedItems, offset, limit])
 
     return (
-        <motion.div 
-            className="min-h-screen bg-white text-[#111111] overflow-x-hidden selection:bg-[#CC0000] selection:text-white"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-        >
-            <main className="max-w-[1440px] mx-auto px-4 md:px-8 py-6 md:py-10 flex flex-col lg:flex-row gap-8 relative">
+        <>
+            <PageTransitionPokemons isDataLoading={isLoadingOverall} />
+            <motion.div 
+                className="min-h-screen bg-white text-[#111111] overflow-x-hidden selection:bg-[#CC0000] selection:text-white"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+            >
+                <main className="max-w-[1440px] mx-auto px-4 md:px-8 py-6 md:py-10 flex flex-col lg:flex-row gap-8 relative">
 
                 {/* DESKTOP SIDEBAR */}
                 <aside className="hidden lg:block w-[260px] flex-shrink-0 relative">
@@ -338,12 +340,12 @@ function PokedexPageContent() {
 
                 {/* MAIN CONTENT AREA */}
                 <div className="flex-1 w-full min-w-0 z-0 relative">
-                    <PokedexHeader count={filteredItems.length} />
+                    <PokedexHeader count={filteredAndSortedItems.length} />
 
                     <SearchBar
                         value={searchQuery}
                         onChange={handleSearchChange}
-                        totalCount={filteredItems.length}
+                        totalCount={filteredAndSortedItems.length}
                     />
 
                     <ActiveFilterChips
@@ -352,6 +354,13 @@ function PokedexPageContent() {
                         legendaryFilter={legendaryFilter}
                         mythicalFilter={mythicalFilter}
                         babyFilter={babyFilter}
+                        baseStageFilter={baseStageFilter}
+                        levelEvoFilter={levelEvoFilter}
+                        itemEvoFilter={itemEvoFilter}
+                        weightClass={weightClass}
+                        heightClass={heightClass}
+                        sortField={sortField}
+                        sortOrder={sortOrder}
                         onRemove={handleRemoveFilter}
                         onClearAll={clearAllFilters}
                     />
@@ -391,24 +400,22 @@ function PokedexPageContent() {
 
                     <Pagination
                         currentPage={currentPage}
-                        totalItems={filteredItems.length}
+                        totalItems={filteredAndSortedItems.length}
                         itemsPerPage={limit}
                         onPageChange={handlePageChange}
                     />
                 </div>
             </main>
         </motion.div>
+        </>
     )
 }
 
 export default function PokemonPage() {
     return (
-        <>
-            <PageTransitionPokemons />
-            <Suspense fallback={<div className="min-h-screen bg-white" />}>
-                <PokedexPageContent />
-            </Suspense>
-        </>
+        <Suspense fallback={<div className="min-h-screen bg-white" />}>
+            <PokedexPageContent />
+        </Suspense>
     )
 }
 

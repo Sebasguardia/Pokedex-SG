@@ -6,7 +6,7 @@ import * as Switch from "@radix-ui/react-switch"
 import * as Slider from "@radix-ui/react-slider"
 import * as Select from "@radix-ui/react-select"
 import { motion, AnimatePresence } from "framer-motion"
-import { SlidersHorizontal, ChevronDown, Check, Crown, Baby, Layers, ChevronUp, Sparkles } from "lucide-react"
+import { SlidersHorizontal, ChevronDown, Check, Crown, Baby, Layers, ChevronUp, Sparkles, Sprout, TrendingUp, Gem, Weight, Ruler } from "lucide-react"
 import { useQueryState } from "nuqs"
 import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
 
@@ -23,6 +23,12 @@ export function FilterContent() {
     const [mythicalFilter, setMythicalFilter] = useQueryState("mythical")
     const [babyFilter, setBabyFilter] = useQueryState("baby")
     const [formsFilter, setFormsFilter] = useQueryState("forms")
+    const [baseStageFilter, setBaseStageFilter] = useQueryState("base")
+    const [levelEvoFilter, setLevelEvoFilter] = useQueryState("levelEvo")
+    const [itemEvoFilter, setItemEvoFilter] = useQueryState("itemEvo")
+    
+    const [weightClass, setWeightClass] = useQueryState("weightClass")
+    const [heightClass, setHeightClass] = useQueryState("heightClass")
 
     const [minHp, setMinHp] = useQueryState("minHp")
     const [minAtk, setMinAtk] = useQueryState("minAtk")
@@ -57,7 +63,9 @@ export function FilterContent() {
         window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
-    const numSpecials = [legendaryFilter, mythicalFilter, babyFilter, formsFilter].filter(v => v === "true").length
+    const numRarity = [legendaryFilter, mythicalFilter, babyFilter].filter(v => v === "true").length
+    const numEvolution = [baseStageFilter, levelEvoFilter, itemEvoFilter].filter(v => v === "true").length
+    const numPhysical = [weightClass, heightClass].filter(v => v !== null).length
     const numStats = [minHp, minAtk, minDef, minSpa, minSpd, minSpe].filter(v => v !== null && v !== "0").length
 
     return (
@@ -102,7 +110,10 @@ export function FilterContent() {
                                             pointerEvents: isDimmed ? "none" : "auto"
                                         }}
                                     >
-                                        <span className="text-white font-nunito text-[9px] font-bold uppercase">{t}</span>
+                                        <div className="flex flex-col items-center justify-center gap-[2px]">
+                                            <img src={`/icons/${t}.svg`} alt={t} className="w-[14px] h-[14px] opacity-90 drop-shadow-sm brightness-0 invert" />
+                                            <span className="text-white font-nunito text-[9px] font-bold uppercase">{t}</span>
+                                        </div>
                                         <AnimatePresence>
                                             {isSelected && (
                                                 <motion.div
@@ -170,15 +181,15 @@ export function FilterContent() {
                 </Accordion.Content>
             </Accordion.Item>
 
-            {/* 3. ESPECIALES */}
-            <Accordion.Item value="special" className="border-b border-[#F2F2F2]">
+            {/* 3. RAREZA */}
+            <Accordion.Item value="rarity" className="border-b border-[#F2F2F2]">
                 <Accordion.Header>
                     <Accordion.Trigger className="w-full flex items-center justify-between px-5 py-[14px] group outline-none">
                         <div className="flex items-center gap-2">
-                            <span className="font-nunito text-[13px] font-bold text-[#111111]">ESPECIALES</span>
-                            {numSpecials > 0 && (
+                            <span className="font-nunito text-[13px] font-bold text-[#111111]">RAREZA</span>
+                            {numRarity > 0 && (
                                 <span className="bg-[#F2F2F2] text-[#444444] font-nunito text-[10px] px-2 py-[2px] rounded-full">
-                                    {numSpecials} activos
+                                    {numRarity} activos
                                 </span>
                             )}
                         </div>
@@ -187,10 +198,67 @@ export function FilterContent() {
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                     <div className="px-5 pb-4 space-y-0">
-                        <SpecialSwitch label="Legendario" icon={Crown} checked={legendaryFilter === "true"} onCheckedChange={(c) => { setLegendaryFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
-                        <SpecialSwitch label="Mítico" icon={Sparkles} checked={mythicalFilter === "true"} onCheckedChange={(c) => { setMythicalFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                        <SpecialSwitch label="Legendario / Mítico" icon={Crown} checked={legendaryFilter === "true" || mythicalFilter === "true"} onCheckedChange={(c) => { setLegendaryFilter(c ? "true" : null); setMythicalFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
                         <SpecialSwitch label="Baby Pokémon" icon={Baby} checked={babyFilter === "true"} onCheckedChange={(c) => { setBabyFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
-                        <SpecialSwitch label="Tiene Formas" icon={Layers} checked={formsFilter === "true"} onCheckedChange={(c) => { setFormsFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                    </div>
+                </Accordion.Content>
+            </Accordion.Item>
+
+            {/* 4. CRIANZA Y EVOLUCIÓN */}
+            <Accordion.Item value="evolution" className="border-b border-[#F2F2F2]">
+                <Accordion.Header>
+                    <Accordion.Trigger className="w-full flex items-center justify-between px-5 py-[14px] group outline-none">
+                        <div className="flex items-center gap-2">
+                            <span className="font-nunito text-[13px] font-bold text-[#111111]">EVOLUCIÓN</span>
+                            {numEvolution > 0 && (
+                                <span className="bg-[#F2F2F2] text-[#444444] font-nunito text-[10px] px-2 py-[2px] rounded-full">
+                                    {numEvolution} activos
+                                </span>
+                            )}
+                        </div>
+                        <ChevronDown size={14} className="text-[#888888] transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180" />
+                    </Accordion.Trigger>
+                </Accordion.Header>
+                <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                    <div className="px-5 pb-4 space-y-0">
+                        <SpecialSwitch label="Fase Inicial (Base)" icon={Sprout} checked={baseStageFilter === "true"} onCheckedChange={(c) => { setBaseStageFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                        <SpecialSwitch label="Evoluciona x Nivel" icon={TrendingUp} checked={levelEvoFilter === "true"} onCheckedChange={(c) => { setLevelEvoFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                        <SpecialSwitch label="Evoluciona x Objeto" icon={Gem} checked={itemEvoFilter === "true"} onCheckedChange={(c) => { setItemEvoFilter(c ? "true" : null); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                    </div>
+                </Accordion.Content>
+            </Accordion.Item>
+
+            {/* 5. FÍSICO */}
+            <Accordion.Item value="physical" className="border-b border-[#F2F2F2]">
+                <Accordion.Header>
+                    <Accordion.Trigger className="w-full flex items-center justify-between px-5 py-[14px] group outline-none">
+                        <div className="flex items-center gap-2">
+                            <span className="font-nunito text-[13px] font-bold text-[#111111]">FÍSICO</span>
+                            {numPhysical > 0 && (
+                                <span className="bg-[#F2F2F2] text-[#444444] font-nunito text-[10px] px-2 py-[2px] rounded-full">
+                                    {numPhysical} activos
+                                </span>
+                            )}
+                        </div>
+                        <ChevronDown size={14} className="text-[#888888] transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180" />
+                    </Accordion.Trigger>
+                </Accordion.Header>
+                <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                    <div className="px-5 pb-4 space-y-0">
+                        <div className="pt-2">
+                            <span className="font-pixel text-[8px] text-[#888888] mb-2 block">CATERGORÍA DE PESO</span>
+                            <div className="flex gap-2">
+                                <PhysicalButton label="Pluma" icon={Weight} isActive={weightClass === "feather"} onClick={() => { setWeightClass(weightClass === "feather" ? null : "feather"); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                                <PhysicalButton label="Pesado" icon={Weight} isActive={weightClass === "heavy"} onClick={() => { setWeightClass(weightClass === "heavy" ? null : "heavy"); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                            </div>
+                        </div>
+                        <div className="pt-4 mt-2 border-t border-[#F2F2F2]">
+                            <span className="font-pixel text-[8px] text-[#888888] mb-2 block">CATERGORÍA DE ALTURA</span>
+                            <div className="flex gap-2">
+                                <PhysicalButton label="Pequeño" icon={Ruler} isActive={heightClass === "small"} onClick={() => { setHeightClass(heightClass === "small" ? null : "small"); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                                <PhysicalButton label="Gigante" icon={Ruler} isActive={heightClass === "giant"} onClick={() => { setHeightClass(heightClass === "giant" ? null : "giant"); window.scrollTo({ top: 0, behavior: "smooth" }) }} />
+                            </div>
+                        </div>
                     </div>
                 </Accordion.Content>
             </Accordion.Item>
@@ -212,12 +280,12 @@ export function FilterContent() {
                 </Accordion.Header>
                 <Accordion.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                     <div className="px-5 pb-4 space-y-4 pt-2">
-                        <StatSlider label="HP" value={minHp} onChange={setMinHp} />
-                        <StatSlider label="Ataque" value={minAtk} onChange={setMinAtk} />
-                        <StatSlider label="Defensa" value={minDef} onChange={setMinDef} />
-                        <StatSlider label="Sp. Atk" value={minSpa} onChange={setMinSpa} />
-                        <StatSlider label="Sp. Def" value={minSpd} onChange={setMinSpd} />
-                        <StatSlider label="Velocidad" value={minSpe} onChange={setMinSpe} />
+                        <StatSlider label="HP" value={minHp} onChange={setMinHp} color="#58C963" />
+                        <StatSlider label="Ataque" value={minAtk} onChange={setMinAtk} color="#E85B55" />
+                        <StatSlider label="Defensa" value={minDef} onChange={setMinDef} color="#E2943F" />
+                        <StatSlider label="Sp. Atk" value={minSpa} onChange={setMinSpa} color="#55A4E8" />
+                        <StatSlider label="Sp. Def" value={minSpd} onChange={setMinSpd} color="#8DBE53" />
+                        <StatSlider label="Velocidad" value={minSpe} onChange={setMinSpe} color="#D155E8" />
                     </div>
                 </Accordion.Content>
             </Accordion.Item>
@@ -296,7 +364,7 @@ function SpecialSwitch({ label, icon: Icon, checked, onCheckedChange }: { label:
     )
 }
 
-function StatSlider({ label, value, onChange }: { label: string, value: string | null, onChange: (v: string | null) => void }) {
+function StatSlider({ label, value, onChange, color = "#CC0000" }: { label: string, value: string | null, onChange: (v: string | null) => void, color?: string }) {
     const valNum = parseInt(value || "0")
     const isActive = valNum > 0
 
@@ -304,7 +372,7 @@ function StatSlider({ label, value, onChange }: { label: string, value: string |
         <div>
             <div className="flex justify-between items-center mb-2">
                 <span className="font-nunito text-[12px] text-[#444444]">{label}</span>
-                <span className={`font-mono text-[11px] transition-colors duration-200 ${isActive ? 'text-[#CC0000]' : 'text-[#AAAAAA]'}`}>{valNum}</span>
+                <span className={`font-mono text-[11px] transition-colors duration-200`} style={{ color: isActive ? color : '#AAAAAA' }}>{valNum}</span>
             </div>
             <Slider.Root
                 className="relative flex items-center select-none touch-none w-full h-[16px] group"
@@ -317,11 +385,30 @@ function StatSlider({ label, value, onChange }: { label: string, value: string |
                 }}
             >
                 <Slider.Track className="bg-[#F2F2F2] relative grow h-[4px]">
-                    <Slider.Range className="absolute bg-[#CC0000] h-full" />
+                    <Slider.Range className="absolute h-full" style={{ backgroundColor: color }} />
                 </Slider.Track>
-                <Slider.Thumb className="block w-[16px] h-[16px] bg-white border-2 border-[#CC0000] rounded-full shadow-[0_0_0_3px_rgba(204,0,0,0.15)] outline-none focus:shadow-[0_0_0_4px_rgba(204,0,0,0.3)] group-hover:scale-125 group-active:scale-150 transition-transform cursor-grab active:cursor-grabbing" />
+                <Slider.Thumb className="block w-[16px] h-[16px] bg-white border-2 rounded-full outline-none transition-transform cursor-grab active:cursor-grabbing" style={{ borderColor: color, boxShadow: `0 0 0 2px ${color}33` }} />
             </Slider.Root>
         </div>
+    )
+}
+
+function PhysicalButton({ label, icon: Icon, isActive, onClick }: { label: string, icon: any, isActive: boolean, onClick: () => void }) {
+    return (
+        <motion.button
+            onClick={onClick}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex-1 flex flex-col items-center justify-center p-2 rounded-sm border-2 outline-none transition-colors"
+            style={{
+                backgroundColor: isActive ? "#111111" : "#FFFFFF",
+                borderColor: isActive ? "#111111" : "#E0E0E0",
+                boxShadow: isActive ? "2px 2px 0 #CC0000" : "none"
+            }}
+        >
+            <Icon size={14} className={isActive ? 'text-white' : 'text-[#888888]'} />
+            <span className={`font-nunito text-[10px] font-bold mt-1 ${isActive ? 'text-white' : 'text-[#444444]'}`}>{label}</span>
+        </motion.button>
     )
 }
 

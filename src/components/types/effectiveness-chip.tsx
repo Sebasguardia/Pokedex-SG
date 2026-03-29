@@ -1,8 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { TYPE_COLORS, TYPE_ICON } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types.constants"
 import * as Tooltip from "@radix-ui/react-tooltip"
+import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
 
 interface EffectivenessChipProps {
     typeName: string;
@@ -12,10 +13,33 @@ interface EffectivenessChipProps {
     index: number;
 }
 
+const TYPE_NAMES_ES: Record<string, string> = {
+    normal: "Normal",
+    fighting: "Lucha",
+    flying: "Volador",
+    poison: "Veneno",
+    ground: "Tierra",
+    rock: "Roca",
+    bug: "Bicho",
+    ghost: "Fantasma",
+    steel: "Acero",
+    fire: "Fuego",
+    water: "Agua",
+    grass: "Planta",
+    electric: "Eléctrico",
+    psychic: "Psíquico",
+    ice: "Hielo",
+    dragon: "Dragón",
+    dark: "Siniestro",
+    fairy: "Hada",
+    stellar: "Estelar",
+    unknown: "Desconocido"
+}
+
 export function EffectivenessChip({ typeName, multiplier, baseTypeColor, context, index }: EffectivenessChipProps) {
-    const Icon = TYPE_ICON[typeName as keyof typeof TYPE_ICON]
     const color = TYPE_COLORS[typeName] || "#111111"
     const multiStr = multiplier === 0.5 ? "0.5" : multiplier === 2 ? "2" : "0"
+    const typeNameES = TYPE_NAMES_ES[typeName] || typeName
 
     // Custom states
     const isVulnerable = context === "defense" && multiplier === 2;
@@ -43,8 +67,8 @@ export function EffectivenessChip({ typeName, multiplier, baseTypeColor, context
                             className="flex items-center gap-1.5 px-2.5 py-1.5 border-2 border-[#111111]"
                             style={{ backgroundColor: color }}
                         >
-                            {Icon && <Icon size={12} className="text-white" />}
-                            <span className="font-nunito text-[11px] font-bold text-white uppercase">{typeName}</span>
+                            <TypeSvgIcon type={typeName} size={12} style={{ filter: "brightness(0) invert(1)" }} />
+                            <span className="font-['Nunito'] text-[11px] font-bold text-white uppercase">{typeNameES}</span>
                         </div>
 
                         {/* The multiplier badge */}
@@ -124,7 +148,7 @@ export function EffectivenessChip({ typeName, multiplier, baseTypeColor, context
                     >
                         <div className="font-bold mb-1">Efectividad ×{multiStr}</div>
                         <div className="text-white/70">
-                            {context === "attack" ? `Este tipo de ataques hacen daño ×${multiStr} a los Pokémon Tipo ${typeName}.` : `Los ataques Tipo ${typeName} le hacen daño ×${multiStr} a este Pokémon.`}
+                            {context === "attack" ? `Este tipo de ataques hacen daño ×${multiStr} a los Pokémon Tipo ${typeNameES}.` : `Los ataques Tipo ${typeNameES} le hacen daño ×${multiStr} a este Pokémon.`}
                         </div>
                         <Tooltip.Arrow className="fill-[#111111]" />
                     </Tooltip.Content>

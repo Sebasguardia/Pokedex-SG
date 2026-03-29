@@ -163,7 +163,23 @@ export default function PokemonDetailPage() {
         }
     }, [])
 
-    if (isLoading) return <DetailSkeleton />
+    const renderTransition = () => {
+        if (prefersRM) return null
+        return (
+            <PageTransitionPokemon 
+                spriteSrc={currentSprite ?? ""} 
+                typeColor={typeColor} 
+                isLoading={isLoading}
+            />
+        )
+    }
+
+    if (isLoading) return (
+        <>
+            {renderTransition()}
+            <DetailSkeleton />
+        </>
+    )
     if (isError || !pokemon) return notFound()
 
     const pokemonName = pokemon.name
@@ -175,12 +191,7 @@ export default function PokemonDetailPage() {
     return (
         <>
             {/* Page transition — uses type color and sprite */}
-            {!prefersRM && (
-                <PageTransitionPokemon 
-                    spriteSrc={currentSprite ?? ""} 
-                    typeColor={typeColor} 
-                />
-            )}
+            {renderTransition()}
 
             <motion.main
                 className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6"
@@ -364,9 +375,8 @@ export default function PokemonDetailPage() {
 
                 {/* Related Pokémon carrusel at the footer */}
                 <RelatedPokemon
-                    currentType={primaryType}
-                    currentGeneration={species?.generation?.name}
-                    excludeId={pokemon.id}
+                    currentId={pokemon.id}
+                    currentTypes={pokemon.types.map((t: any) => t.type.name)}
                 />
             </motion.main>
         </>

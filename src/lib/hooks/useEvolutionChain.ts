@@ -7,5 +7,6 @@ export function useEvolutionChain(id: number) {
         queryFn: () => getEvolutionChainById(id),
         enabled: !!id,
         staleTime: Infinity,
+        gcTime: Infinity,
     });
 }

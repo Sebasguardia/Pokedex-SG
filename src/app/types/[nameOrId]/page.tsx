@@ -3,11 +3,9 @@
 import { useState } from "react"
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion"
 import { notFound } from "next/navigation"
-import { useQueryState, parseAsInteger } from "nuqs"
 
 import { useType } from "@/lib/hooks/useTypes"
 import { useTypesData } from "@/lib/hooks/useTypesData"
-import { usePokemonByType } from "@/lib/hooks/usePokemonByType"
 import { useMovesByType } from "@/lib/hooks/useMovesByType"
 
 import { TYPE_COLORS, TYPE_ORDER } from "@/lib/constants/types.constants"
@@ -20,6 +18,10 @@ import { TypePokemonGrid } from "@/components/types/type-pokemon-grid"
 import { TypeMovesTable } from "@/components/types/type-moves-table"
 import { TypeHistoryAccordion } from "@/components/types/type-history-accordion"
 import { RelatedTypesCarousel } from "@/components/types/related-types-carousel"
+import { TypeZMovesSection } from "@/components/types/type-zmoves-section"
+import { TypeDynamaxSection } from "@/components/types/type-dynamax-section"
+import { TypeAbilitiesSection } from "@/components/types/type-abilities-section"
+import { TypeItemsSection } from "@/components/types/type-items-section"
 
 interface Props {
     params: { nameOrId: string }
@@ -36,10 +38,6 @@ export default function TypeDetailPage({ params }: Props) {
     // Substate for child components
     const [matrixOpen, setMatrixOpen] = useState(false)
 
-    const [pokemonTab, setPokemonTab] = useState("all")
-    const [pokemonPage, setPokemonPage] = useQueryState("page", parseAsInteger.withDefault(1))
-    const { data: pokemonPaginated, limit: pokemonLimit, total: totalPokemon } = usePokemonByType(type?.name, pokemonTab, pokemonPage)
-
     const [movesFilter, setMovesFilter] = useState("all")
     const { data: movesRaw } = useMovesByType(type?.name, movesFilter)
 
@@ -54,11 +52,14 @@ export default function TypeDetailPage({ params }: Props) {
 
     const typeColor = TYPE_COLORS[type.name] || "#111111"
 
+    // Helper: Map all pokemon to simple array format for fallback
+    const simplePokemonList = type.pokemon.map((p: any) => p.pokemon)
+
     return (
         <>
             <PageTransitionType typeColor={typeColor} typeName={type.name} />
 
-            <main className="min-h-screen bg-[#F8F8F8]">
+            <main className="min-h-screen bg-[#FAFAFA]">
 
                 <TypeDetailHero
                     type={type}
@@ -67,47 +68,63 @@ export default function TypeDetailPage({ params }: Props) {
                     iconBgY={iconY}
                 />
 
-                <div className="max-w-[1280px] mx-auto px-4 sm:px-6 divide-y-4 divide-[#E0E0E0]">
+                {/* Contenido principal dividido en max-w */}
+                <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
 
-                    <EffectivenessSection type={type} typeColor={typeColor} />
+                    {/* Efectividades y Matriz */}
+                    <div className="border-b-4 border-[#111111] pb-12 mb-12">
+                        <EffectivenessSection type={type} typeColor={typeColor} />
+                        
+                        <TypeMatrixSection
+                            currentType={type.name}
+                            typeColor={typeColor}
+                            allTypes={allTypes as any[]}
+                        />
 
-                    {/* Matrices are heavy, but they share the same data context */}
-                    <TypeMatrixSection
-                        open={matrixOpen}
-                        onToggle={() => setMatrixOpen(prev => !prev)}
-                        currentType={type.name}
-                        allTypes={allTypes as any[]}
-                    />
+                        <TypeHistoryAccordion
+                            pastRelations={type.past_damage_relations}
+                            currentRelations={type.damage_relations}
+                            typeColor={typeColor}
+                        />
+                    </div>
 
-                    <TypePokemonGrid
-                        pokemon={pokemonPaginated}
-                        typeName={type.name}
-                        typeColor={typeColor}
-                        activeTab={pokemonTab}
-                        onTabChange={(t) => {
-                            setPokemonTab(t);
-                            setPokemonPage(1); // Reset page on tab change
-                        }}
-                        page={pokemonPage}
-                        limit={pokemonLimit}
-                        onPageChange={setPokemonPage}
-                        total={totalPokemon}
-                    />
+                    {/* Pokémon */}
+                    <div className="border-b-4 border-[#111111] pb-12 mb-12">
+                        <TypePokemonGrid
+                            pokemon={simplePokemonList}
+                            typeName={type.name}
+                            typeColor={typeColor}
+                            allPokemonWithSlots={type.pokemon}
+                        />
+                    </div>
 
-                    <TypeMovesTable
-                        moves={movesRaw}
-                        typeName={type.name}
-                        typeColor={typeColor}
-                        activeFilter={movesFilter}
-                        onFilterChange={setMovesFilter}
-                    />
+                    {/* Movimientos especiales (Z-Moves, Dynamax) */}
+                    <div className="border-b-4 border-[#111111] pb-12 mb-12">
+                        <TypeZMovesSection typeName={type.name} typeColor={typeColor} />
+                        <TypeDynamaxSection typeName={type.name} typeColor={typeColor} />
+                    </div>
 
-                    <TypeHistoryAccordion
-                        pastRelations={type.past_damage_relations}
-                        currentRelations={type.damage_relations}
-                    />
+                    {/* Movimientos regulares */}
+                    <div className="border-b-4 border-[#111111] pb-12 mb-12">
+                        <TypeMovesTable
+                            moves={movesRaw}
+                            typeName={type.name}
+                            typeColor={typeColor}
+                            activeFilter={movesFilter}
+                            onFilterChange={setMovesFilter}
+                        />
+                    </div>
 
-                    <RelatedTypesCarousel currentType={type} typeColor={typeColor} />
+                    {/* Habilidades y Objetos relacionados */}
+                    <div className="border-b-4 border-[#111111] pb-12 mb-12">
+                        <TypeAbilitiesSection typeName={type.name} typeColor={typeColor} />
+                        <TypeItemsSection typeName={type.name} typeColor={typeColor} />
+                    </div>
+
+                    {/* Tipos Relacionados */}
+                    <div className="pb-24">
+                        <RelatedTypesCarousel currentType={type} typeColor={typeColor} />
+                    </div>
 
                 </div>
             </main>
@@ -129,11 +146,11 @@ export default function TypeDetailPage({ params }: Props) {
 
 function TypeDetailSkeleton() {
     return (
-        <div className="min-h-screen bg-[#F8F8F8] animate-pulse">
-            <div className="h-[400px] bg-[#E0E0E0] w-full" />
+        <div className="min-h-screen bg-[#FAFAFA] animate-pulse">
+            <div className="h-[400px] bg-[#111111]/10 w-full" />
             <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-12 space-y-12">
-                <div className="h-64 bg-[#E0E0E0] rounded" />
-                <div className="h-64 bg-[#E0E0E0] rounded" />
+                <div className="h-64 bg-[#111111]/10 rounded-none border-2 border-[#111111]" />
+                <div className="h-96 bg-[#111111]/10 rounded-none border-2 border-[#111111]" />
             </div>
         </div>
     )

@@ -16,5 +16,6 @@ export function usePokemon(idOrName: string | number) {
         queryFn: () => getPokemonByIdOrName(idOrName),
         enabled: !!idOrName,
         staleTime: Infinity,
+        gcTime: Infinity,
     });
 }

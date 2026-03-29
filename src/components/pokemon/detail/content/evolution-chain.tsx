@@ -42,11 +42,10 @@ function getConditionLabel(detail: EvolutionDetail): { label: string; icon?: any
     // Support gender requirement
     const genderSuffix = gender === 1 ? " (Hembra)" : gender === 2 ? " (Macho)" : ""
 
-    // Helper for item sprites using Pokemon Showdown (most reliable for recent items)
+    // Helper for item sprites using Serebii (reliable for Gen 8/9 items)
     const getItemSprite = (name: string) => {
-        // Showdown uses lowercase IDs without dashes or spaces for items
-        const showdownId = name.toLowerCase().replace(/-/g, "").replace(/\s/g, "")
-        return `https://play.pokemonshowdown.com/sprites/itemicons/${showdownId}.png`
+        const serebiiId = name.toLowerCase().replace(/-/g, "")
+        return `https://www.serebii.net/itemdex/sprites/${serebiiId}.png`
     }
 
     // Trade evolutions
@@ -668,7 +667,7 @@ export function EvolutionChain({ chain, species, currentPokemonId, typeColor }: 
                         )}
 
                         <div 
-                            className="w-full relative overflow-hidden flex justify-center py-8"
+                            className="w-full relative overflow-x-auto overflow-y-hidden evolution-scroll"
                             style={{ 
                                 backgroundColor: "#FFFFFF", 
                                 border: "3px solid #111111", 
@@ -677,7 +676,7 @@ export function EvolutionChain({ chain, species, currentPokemonId, typeColor }: 
                                 margin: "16px 0"
                             }}
                         >
-                            <div className="inline-flex h-full items-center justify-center p-8 lg:p-12">
+                            <div className="w-max min-w-full h-full flex items-center justify-center p-8 lg:p-12">
                                 {hasEvolutions ? (
                                     <RecursiveChain 
                                         node={diag.chain} 

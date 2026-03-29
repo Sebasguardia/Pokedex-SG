@@ -165,7 +165,7 @@ export function PokedexDataGrid({ pokemon, species }: Props) {
             label: pokemon.name.includes("primal") ? "Orbe" : "Megapiedra",
             value: (
                 <div className="flex items-center gap-2">
-                    <img src={`https://play.pokemonshowdown.com/sprites/itemicons/${megaStone}.png`} alt={megaStone} className="w-6 h-6" style={{ imageRendering: "pixelated" }} />
+                    <img src={`https://www.serebii.net/itemdex/sprites/${megaStone.replace(/-/g, "")}.png`} alt={megaStone} className="w-6 h-6" style={{ imageRendering: "pixelated" }} />
                     <span className="capitalize text-[13px]">{megaStone.replace("-", " ")}</span>
                 </div>
             ),

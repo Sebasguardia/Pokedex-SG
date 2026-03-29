@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, useReducedMotion } from "framer-motion"
-import { TYPE_ICON } from "@/lib/constants/types.constants"
+import { TypeSvgIcon } from "./type-svg-icon"
 
 interface Props {
     typeColor: string;
@@ -10,7 +10,6 @@ interface Props {
 
 export function PageTransitionType({ typeColor, typeName }: Props) {
     const prefersRM = useReducedMotion()
-    const Icon = TYPE_ICON[typeName as keyof typeof TYPE_ICON]
 
     if (prefersRM) {
         return (
@@ -35,19 +34,22 @@ export function PageTransitionType({ typeColor, typeName }: Props) {
                 delay: 0.5
             }}
         >
-            {Icon && (
-                <motion.div
-                    initial={{ scale: 0, opacity: 1 }}
-                    animate={{ scale: [0, 1.2, 1], opacity: [1, 1, 0] }}
-                    transition={{
-                        duration: 0.6,
-                        times: [0, 0.5, 1],
-                        delay: 0.1
-                    }}
-                >
-                    <Icon size={100} className="text-white opacity-90" />
-                </motion.div>
-            )}
+            <motion.div
+                initial={{ scale: 0, opacity: 1 }}
+                animate={{ scale: [0, 1.2, 1], opacity: [1, 1, 0] }}
+                transition={{
+                    duration: 0.6,
+                    times: [0, 0.5, 1],
+                    delay: 0.1
+                }}
+            >
+                <TypeSvgIcon
+                    type={typeName}
+                    size={120}
+                    className="opacity-90"
+                    style={{ filter: "brightness(0) invert(1)" }}
+                />
+            </motion.div>
         </motion.div>
     )
 }

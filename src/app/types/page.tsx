@@ -54,87 +54,61 @@ export default function TypesPage() {
 
 function TypesPageHeader() {
     return (
-        <div className="pb-8 relative">
-            <div className="font-nunito text-[12px] text-[#888888] mb-4">Inicio / Tipos</div>
-
+        <div className="pb-10 relative">
             <div className="flex justify-between items-end mb-4">
-                <div className="flex items-end gap-3">
-                    {/* Decoración vertical animada */}
-                    <motion.div
-                        className="w-1 h-9"
-                        animate={{
-                            background: [
-                                "linear-gradient(180deg, #F08030, #6890F0)",
-                                "linear-gradient(180deg, #78C850, #F8D030)",
-                                "linear-gradient(180deg, #7038F8, #F85888)",
-                                "linear-gradient(180deg, #F08030, #6890F0)"
-                            ]
-                        }}
-                        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                    />
+                <div className="flex items-center gap-3">
+                    {/* Icono de Título (Cuadrado de Color Acento) */}
+                    <div className="w-4 h-4 bg-[#CC0000] shrink-0" />
 
-                    <h1 className="font-press-start text-[20px] text-[#111111] leading-none">TIPOS</h1>
+                    <h1 className="font-['Press_Start_2P'] text-[18px] sm:text-[22px] text-[#111111] leading-none uppercase tracking-tight">
+                        TIPOS
+                    </h1>
 
-                    <motion.div
-                        className="relative flex items-center justify-center w-8 h-8 bg-[#111111] border-2 border-[#CC0000]"
-                        style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}
-                        initial={{ scale: 0, rotate: -30 }}
-                        animate={{ scale: 1, rotate: 0 }}
-                        transition={{ delay: 0.7, type: "spring", stiffness: 300, damping: 20 }}
-                    >
-                        <span className="font-press-start text-[10px] text-white">18</span>
-                    </motion.div>
+                    {/* Badge de Contador Técnico (Cuadrado) */}
+                    <div className="flex items-center justify-center min-w-[32px] h-8 bg-[#111111] border-2 border-[#111111] px-2">
+                        <span className="font-['Press_Start_2P'] text-[11px] text-white">18</span>
+                    </div>
                 </div>
 
-                <div className="font-nunito text-[13px] text-[#888888] italic max-w-[200px] text-right">
-                    El sistema estratégico que define cada batalla
+                <div className="hidden sm:block font-['Nunito'] text-[13px] text-[#666666] italic max-w-[250px] text-right">
+                    El sistema estratégico que define cada batalla.
                 </div>
             </div>
 
-            {/* Separador doble (negro + rojo) */}
-            <div className="relative h-[5px]">
-                <motion.div
-                    className="absolute top-0 left-0 w-full h-[3px] bg-[#111111] origin-left"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-                />
-                <motion.div
-                    className="absolute bottom-0 right-0 w-full h-[2px] bg-[#CC0000] origin-right"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
-                />
-            </div>
+            {/* Separador Brutalista (Línea Negra Sólida y Gruesa) */}
+            <div className="h-[3px] bg-[#111111] w-full" />
         </div>
     )
 }
 
 function EducationalSection() {
     return (
-        <div className="mt-20 hidden lg:block">
-            <div className="mb-6 relative">
-                <h2 className="font-press-start text-[11px] text-[#111111] mb-2">EL SISTEMA DE TIPOS</h2>
-                <div className="relative h-[5px]">
-                    <motion.div className="absolute top-0 left-0 w-full h-[3px] bg-[#111111] origin-left" initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} />
-                    <motion.div className="absolute bottom-0 right-0 w-full h-[2px] bg-[#CC0000] origin-right" initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }} />
+        <div className="mt-24 mb-16 px-2 lg:px-0">
+            <div className="mb-10 relative">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="w-3 h-3 bg-[#CC0000]" />
+                    <h2 className="font-['Press_Start_2P'] text-[12px] sm:text-[14px] text-[#111111] uppercase">
+                        EL SISTEMA DE TIPOS
+                    </h2>
                 </div>
+                
+                <div className="h-[2px] bg-[#111111] w-full" />
             </div>
 
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <EduCard
                     title="SÚPER EFECTIVO ×2"
-                    desc="El move hace el doble de daño. El Pokémon defensor recibe 200% del daño normal."
+                    desc="El movimiento inflige el doble de daño. El Pokémon defensor recibe 200% del daño normal."
                     icon={TrendingUp} color="#22C55E" bg="#F0FDF4" delay={0}
                 />
                 <EduCard
                     title="NO MUY EFECTIVO ×0.5"
-                    desc="El move hace la mitad de daño. El Pokémon defensor recibe 50% del daño normal."
+                    desc="El daño se reduce a la mitad. El Pokémon defensor recibe 50% del daño normal."
                     icon={TrendingDown} color="#F97316" bg="#FFF7ED" delay={1}
                 />
                 <EduCard
                     title="NO AFECTA ×0"
-                    desc="El move no tiene ningún efecto. El Pokémon defensor es completamente inmune."
+                    desc="El ataque no tiene ningún efecto. El Pokémon defensor es completamente inmune."
                     icon={Ban} color="#111111" bg="#F8F8F8" delay={2}
                 />
             </div>
@@ -145,25 +119,31 @@ function EducationalSection() {
 function EduCard({ title, desc, icon: Icon, color, bg, delay }: any) {
     return (
         <motion.div
-            className="p-5 border-l-4"
-            style={{ backgroundColor: bg, borderColor: color }}
+            className="group relative bg-white border-2 border-[#111111] p-6 flex flex-col h-full"
+            style={{ 
+                boxShadow: "4px 4px 0 #111111",
+                borderLeftWidth: "6px",
+                borderLeftColor: color
+            }}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: delay * 0.1, type: "spring", stiffness: 200, damping: 20 }}
+            whileHover={{ x: -2, y: -2, boxShadow: "6px 6px 0 #111111" }}
         >
-            <div className="flex items-center gap-3 mb-3">
-                <motion.div
-                    initial={{ y: 5, scale: 0.8 }}
-                    whileInView={{ y: 0, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: delay * 0.1 + 0.2, type: "spring" }}
+            <div className="flex items-center gap-3 mb-4">
+                <div 
+                    className="w-10 h-10 flex items-center justify-center border-2 border-[#111111] transition-transform group-hover:scale-110"
+                    style={{ backgroundColor: bg }}
                 >
-                    <Icon size={18} color={color} />
-                </motion.div>
-                <h3 className="font-press-start text-[9px]" style={{ color }}>{title}</h3>
+                    <Icon size={20} color={color} strokeWidth={2.5} />
+                </div>
+                <h3 className="font-['Press_Start_2P'] text-[9px] leading-relaxed" style={{ color: "#111111" }}>{title}</h3>
             </div>
-            <p className="font-nunito text-[13px] text-[#444444] leading-relaxed">{desc}</p>
+            
+            <p className="font-['Nunito'] text-[13px] text-[#444444] leading-relaxed">
+                {desc}
+            </p>
         </motion.div>
     )
 }

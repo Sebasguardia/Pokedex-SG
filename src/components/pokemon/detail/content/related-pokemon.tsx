@@ -1,48 +1,93 @@
 "use client"
 
+import { useMemo } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { useQuery } from "@tanstack/react-query"
-import { getPokemonSpriteUrl, formatPokemonId } from "@/lib/utils/pokemon.utils"
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
+import { getPokemonSpriteUrl, formatPokemonId, formatPokemonName } from "@/lib/utils/pokemon.utils"
+import { usePokemonIndex, PokemonIndexItem } from "@/lib/hooks/usePokemonIndex"
+import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants"
 
 interface Props {
-    currentType?: string
-    currentGeneration?: string
-    excludeId?: number
-    evolutionIds?: number[]
+    currentId: number;
+    currentTypes: string[];
 }
 
-async function fetchPokemonByType(type: string) {
-    const res = await fetch(`https://pokeapi.co/api/v2/type/${type}`)
-    if (!res.ok) return []
-    const data = await res.json()
-    return data.pokemon.map((p: any) => p.pokemon) as { name: string; url: string }[]
+const LEGENDARY_SET = new Set(LEGENDARY_IDS)
+const MYTHICAL_SET = new Set(MYTHICAL_IDS)
+const BABY_SET = new Set(BABY_IDS)
+
+function getBST(stats: any) {
+    if (!stats) return 0
+    return stats.hp + stats.attack + stats.defense + stats.specialAttack + stats.specialDefense + stats.speed
 }
 
-export function RelatedPokemon({ currentType, currentGeneration, excludeId, evolutionIds = [] }: Props) {
-    // Fetch a batch to find related pokemon by type
-    const { data: pokemonList } = useQuery({
-        queryKey: ["related-pokemon", currentType],
-        queryFn: () => fetchPokemonByType(currentType!),
-        enabled: !!currentType,
-        staleTime: 1000 * 60 * 5,
-    })
+export function RelatedPokemon({ currentId, currentTypes }: Props) {
+    const { data: globalPokemon } = usePokemonIndex()
 
-    if (!pokemonList) return null
+    const relatedPokemonList = useMemo(() => {
+        if (!globalPokemon) return []
 
-    // Filter out current pokemon, get IDs from URLs
-    const relatedRaw = pokemonList
-        .map(p => {
-            const parts = p.url.split("/").filter(Boolean)
-            return { name: p.name, id: parseInt(parts[parts.length - 1]) }
-        })
-        .filter(p => p.id !== excludeId && p.id <= 1010)
-        // random sort logic to mix up the related pokemon if desired, but slicing for now
-        .slice(0, 16)
+        const current = globalPokemon.find((p) => p.id === currentId)
+        if (!current) return []
 
-    if (relatedRaw.length === 0) return null
+        const currentBst = getBST(current.stats)
+        const isLeg = LEGENDARY_SET.has(currentId)
+        const isMyth = MYTHICAL_SET.has(currentId)
+        const isBaby = BABY_SET.has(currentId)
+
+        const scored = globalPokemon
+            .filter((p) => p.id !== currentId && p.id <= 1025) // Exclude self and beyond Gen 9
+            .map((p) => {
+                let score = 0
+                const otherBst = getBST(p.stats)
+                const otherLeg = LEGENDARY_SET.has(p.id)
+                const otherMyth = MYTHICAL_SET.has(p.id)
+                const otherBaby = BABY_SET.has(p.id)
+                
+                const idDiff = Math.abs(currentId - p.id)
+
+                // 1. Exact group logic (Legendary trios etc are usually very close in ID)
+                if ((isLeg && otherLeg) || (isMyth && otherMyth)) {
+                    // Massive boost if they are the same category AND close in ID (e.g. Articuno 144, Zapdos 145, Moltres 146)
+                    if (idDiff < 15) score += 2000
+                    else score += 500 // Still favor other legendaries/mythicals
+                } else if (isBaby && otherBaby) {
+                    score += 300
+                }
+
+                // 2. Type matching
+                const sharedTypes = p.types.filter(t => currentTypes.includes(t)).length
+                if (sharedTypes === 2) score += 400
+                else if (sharedTypes === 1) score += 150
+
+                // 3. Proximity / Generation grouping
+                // Close IDs mean they are likely from the same generation/route/counterparts
+                if (idDiff === 1) score += 300 // Counterparts like Plusle/Minun, Nidoking/Queen
+                else if (idDiff <= 5) score += 150
+                else if (idDiff <= 20) score += 50
+                
+                // Subtract points for being far away in the Pokedex
+                score -= idDiff
+
+                // 4. Stat similarity (keeps early game bugs together, pseudo-legendaries together)
+                const bstDiff = Math.abs(currentBst - otherBst)
+                if (bstDiff < 20) score += 100
+                else if (bstDiff < 50) score += 50
+                
+                // Subtract points for vastly different power levels (prevents Caterpie showing next to Rayquaza)
+                score -= bstDiff * 0.5
+
+                return { ...p, relationScore: score }
+            })
+
+        // Sort by score descending
+        scored.sort((a, b) => b.relationScore - a.relationScore)
+        
+        return scored.slice(0, 16)
+    }, [globalPokemon, currentId, currentTypes])
+
+    if (relatedPokemonList.length === 0) return null
 
     return (
         <div className="mt-12 pt-10 border-t-4 border-[#111111]">
@@ -53,7 +98,7 @@ export function RelatedPokemon({ currentType, currentGeneration, excludeId, evol
             </div>
 
             <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide">
-                {relatedRaw.map((p, i) => (
+                {relatedPokemonList.map((p, i) => (
                     <motion.div
                         key={p.id}
                         initial={{ scale: 0, opacity: 0 }}
@@ -76,7 +121,7 @@ export function RelatedPokemon({ currentType, currentGeneration, excludeId, evol
                                 />
                             </motion.div>
                             <div className="flex flex-col items-center">
-                                <span className="font-['Nunito'] text-[12px] font-black text-[#111111] capitalize text-center max-w-[80px] truncate group-hover:text-[#CC0000] transition-colors">{p.name}</span>
+                                <span className="font-['Nunito'] text-[12px] font-black text-[#111111] capitalize text-center max-w-[80px] truncate group-hover:text-[#CC0000] transition-colors">{formatPokemonName(p.name)}</span>
                                 <span className="font-['JetBrains_Mono'] text-[10px] font-bold text-[#888888]">{formatPokemonId(p.id)}</span>
                             </div>
                         </Link>

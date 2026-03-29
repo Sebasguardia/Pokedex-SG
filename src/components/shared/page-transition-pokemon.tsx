@@ -5,18 +5,27 @@ import { useEffect, useState } from "react";
 import { PokeBallSVG } from "./pokeball-svg";
 
 interface PageTransitionPokemonProps {
-  spriteSrc: string;
-  typeColor: string;
+  spriteSrc?: string;
+  typeColor?: string;
+  isLoading?: boolean;
 }
 
-export function PageTransitionPokemon({ spriteSrc, typeColor }: PageTransitionPokemonProps) {
+export function PageTransitionPokemon({ spriteSrc, typeColor, isLoading = false }: PageTransitionPokemonProps) {
   const [phase, setPhase] = useState<"in" | "out" | "done">("in");
+  const [minTimePassed, setMinTimePassed] = useState(false);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("out"), 800);
-    const t2 = setTimeout(() => setPhase("done"), 1400);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t = setTimeout(() => setMinTimePassed(true), 800);
+    return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    if (minTimePassed && !isLoading && phase === "in") {
+      setPhase("out");
+      const t = setTimeout(() => setPhase("done"), 600);
+      return () => clearTimeout(t);
+    }
+  }, [minTimePassed, isLoading, phase]);
 
   return (
     <AnimatePresence>
@@ -31,7 +40,7 @@ export function PageTransitionPokemon({ spriteSrc, typeColor }: PageTransitionPo
           {/* Background circular reveal */}
           <motion.div
             className="absolute rounded-full"
-            style={{ backgroundColor: typeColor }}
+            style={{ backgroundColor: typeColor || "#CC0000" }}
             initial={{ width: 0, height: 0 }}
             animate={
               phase === "in"

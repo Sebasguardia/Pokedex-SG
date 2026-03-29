@@ -3,8 +3,12 @@
 import { PokemonCard } from "./pokemon-card"
 import { NamedAPIResource } from "@/types/api/common.types"
 
+interface GridItem extends NamedAPIResource {
+    indexTypes?: string[];
+}
+
 interface PokemonGridProps {
-    pokemon: NamedAPIResource[];
+    pokemon: GridItem[];
     isLoading?: boolean;
 }
 
@@ -25,7 +29,7 @@ export function PokemonGrid({ pokemon, isLoading }: PokemonGridProps) {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {pokemon.map((p, i) => (
                 <div key={p.name} className="w-full h-[220px]">
-                    <PokemonCard name={p.name} url={p.url} index={i} />
+                    <PokemonCard name={p.name} url={p.url} index={i} indexTypes={p.indexTypes} />
                 </div>
             ))}
         </div>
