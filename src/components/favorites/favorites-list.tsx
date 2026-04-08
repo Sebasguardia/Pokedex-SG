@@ -2,7 +2,7 @@
 
 import { FavoritePokemon } from "@/types/api/favorites.types";
 import { FavoriteCardList } from "./favorite-card-list";
-import { FavoritesNoResults } from "./favorites-no-results.tsx";
+import { FavoritesNoResults } from "./favorites-no-results";
 
 interface FavoritesListProps {
     items: FavoritePokemon[];

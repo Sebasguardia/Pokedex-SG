@@ -134,15 +134,12 @@ function RecommendationCard({ rec, index, slot }: RecommendationCardProps) {
 }
 
 function AddButton({ rec }: { rec: PokemonRecommendation }) {
-    const { activeTeam, openSearch } = useTeamBuilderStore();
+    const { activeTeam, openSearch, addMember } = useTeamBuilderStore();
+    const { refetch, isLoading } = usePokemonForTeam(rec.pokemonId, false);
     const nextSlot = activeTeam.members.length < 6 ? activeTeam.members.length : -1;
     const primaryColor = TYPE_COLORS[rec.types[0]] ?? "#888888";
 
     if (nextSlot < 0) return null;
-
-    // Usamos usePokemonForTeam con enabled=false y llamamos refetch al click
-    const { refetch, isLoading } = usePokemonForTeam(rec.pokemonId, false);
-    const { addMember } = useTeamBuilderStore();
 
     const handleAdd = async () => {
         const result = await refetch();

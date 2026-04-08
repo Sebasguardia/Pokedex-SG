@@ -2,7 +2,7 @@
 
 import { FavoritePokemon } from "@/types/api/favorites.types";
 import { FavoriteCardAlbum } from "./favorite-card-album";
-import { FavoritesNoResults } from "./favorites-no-results.tsx";
+import { FavoritesNoResults } from "./favorites-no-results";
 
 export function FavoritesAlbum({ items, onClearFilters }: { items: FavoritePokemon[]; onClearFilters: () => void }) {
     if (items.length === 0) return <FavoritesNoResults onClear={onClearFilters} />;

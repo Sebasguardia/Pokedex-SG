@@ -137,3 +137,36 @@ export function useCompareAnalysis(pokemon: (ComparedPokemon | null)[]) {
     }, [key])
 }
 
+// ── Compare panel hook (for managing pokemon list) ───────────────────────────
+export function useCompare() {
+    const { slots, setSlot, clearSlot, clearAll } = useCompareUrlState()
+    
+    const pokemonIds = slots.map(s => {
+        if (!s) return null
+        const num = parseInt(s, 10)
+        return isNaN(num) ? null : num
+    }).filter((id): id is number => id !== null)
+
+    const addPokemon = (id: number) => {
+        const emptyIndex = slots.findIndex(s => !s || s.trim() === "")
+        if (emptyIndex >= 0) {
+            setSlot(emptyIndex, String(id))
+        }
+    }
+
+    const removePokemon = (id: number) => {
+        const index = slots.findIndex(s => s === String(id))
+        if (index >= 0) {
+            clearSlot(index)
+        }
+    }
+
+    return {
+        pokemonIds,
+        addPokemon,
+        removePokemon,
+        clearAll,
+        slots,
+    }
+}
+
