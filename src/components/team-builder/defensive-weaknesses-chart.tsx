@@ -78,8 +78,8 @@ export function DefensiveWeaknessesChart({ analysis, totalMembers }: DefensiveWe
                         </div>
                     }
                 >
-                    <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111] active:translate-y-0.5 active:shadow-none">
-                        <Info size={16} className="text-[#111111]" />
+                    <button aria-label="Información sobre cómo leer la gráfica" className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111] active:translate-y-0.5 active:shadow-none">
+                        <Info size={16} className="text-[#111111]" aria-hidden="true" />
                     </button>
                 </CustomTooltip>
             </div>
@@ -154,7 +154,7 @@ function BalanceRow({ type, entry, index, isCritical, isVulnerable, isSafe }: {
         >
             {/* Tipo Label */}
             <div className="w-[120px] sm:w-[150px] shrink-0 flex items-center gap-3 pl-1">
-                <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 shadow-sm" style={{ backgroundColor: typeColor }}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0 shadow-sm bg-[var(--type-bg)]" style={{ "--type-bg": typeColor } as React.CSSProperties}>
                     <img src={`/icons/${type}.svg`} alt="" className="w-3.5 h-3.5 filter brightness-0 invert" />
                 </div>
                 <span className="font-press-start text-[11px] truncate text-[#444444] group-hover:text-[#111111] tracking-tighter">
@@ -223,8 +223,8 @@ function PKMMarker({ pokemon, color, isImmune = false }: {
             }
         >
             <div 
-                className="w-10 h-10 rounded-sm border-2 bg-white flex items-center justify-center shrink-0 cursor-help hover:scale-110 transition-transform relative"
-                style={{ borderColor: color, boxShadow: `0 3px 6px ${color}22` }}
+                className="w-10 h-10 rounded-sm border-2 bg-white flex items-center justify-center shrink-0 cursor-help hover:scale-110 transition-transform relative border-[var(--pkm-color)] shadow-[0_3px_6px_var(--pkm-shadow)]"
+                style={{ "--pkm-color": color, "--pkm-shadow": `${color}22` } as React.CSSProperties}
             >
                 <Image 
                     src={PIXEL_URL(pokemon.pokemonId)} 

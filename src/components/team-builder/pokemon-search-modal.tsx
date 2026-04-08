@@ -304,7 +304,7 @@ export function PokemonSearchModal() {
                         <h2 className="font-press-start text-[11px] uppercase">Explorador de Reclutamiento</h2>
                         <p className="font-nunito text-[11px] text-white/40 font-black tracking-widest uppercase">Slot {(selectedSlot ?? 0) + 1}</p>
                     </div>
-                    <button onClick={closeSearch} className="ml-auto text-white/50 hover:text-white transition-colors"><X size={24} /></button>
+                    <button onClick={closeSearch} className="ml-auto text-white/50 hover:text-white transition-colors" aria-label="Cerrar modal de búsqueda"><X size={24} /></button>
                 </div>
 
                 <div className="flex flex-1 overflow-hidden">

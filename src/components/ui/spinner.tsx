@@ -7,22 +7,22 @@ interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function Spinner({ size = 'md', className, ...props }: SpinnerProps) {
-    const sizeMap = {
-        sm: 24,
-        md: 48,
-        lg: 64,
-        xl: 96,
+    const sizeClasses = {
+        sm: 'w-[24px] h-[24px]',
+        md: 'w-[48px] h-[48px]',
+        lg: 'w-[64px] h-[64px]',
+        xl: 'w-[96px] h-[96px]',
     };
 
-    const px = sizeMap[size];
-
     return (
-        <div className={cn("flex justify-center items-center h-full w-full", className)} {...props}>
-            <div
-                className="animate-pokeball-spin"
-                style={{ width: px, height: px }}
-            >
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div 
+            className={cn("flex justify-center items-center h-full w-full", className)} 
+            role="status"
+            aria-label="Cargando..."
+            {...props}
+        >
+            <div className={cn("animate-pokeball-spin", sizeClasses[size])}>
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     {/* Top red half */}
                     <path d="M50 5C25.147 5 5 25.147 5 50H40C40 44.477 44.477 40 50 40C55.523 40 60 44.477 60 50H95C95 25.147 74.853 5 50 5Z" fill="#CC0000" />
                     {/* Bottom white half */}

@@ -45,15 +45,23 @@ export function PokemonSprite({ id, name, shiny = false, back = false, size = 96
     const isPixelated = !useArtwork && fallbackStep < 2;
 
     return (
-        <div className={cn("relative flex items-center justify-center", className)} style={{ width: size, height: size, ...style }}>
+        <div 
+            className={cn("relative flex items-center justify-center w-[var(--sprite-size)] h-[var(--sprite-size)]", className)} 
+            style={{ 
+                "--sprite-size": `${size}px`,
+                ...style 
+            } as React.CSSProperties}
+        >
             <Image
                 src={src}
-                alt={name}
+                alt={`Imagen de ${name}${shiny ? " variocolor" : ""}${back ? " (espalda)" : ""}`}
                 width={size}
                 height={size}
                 unoptimized
-                className="object-contain drop-shadow-[0_0_8px_rgba(204,0,0,0.15)]"
-                style={{ imageRendering: isPixelated ? "pixelated" : "auto" }}
+                className={cn(
+                    "object-contain drop-shadow-[0_0_8px_rgba(204,0,0,0.15)]",
+                    isPixelated ? "[image-rendering:pixelated]" : "auto"
+                )}
                 onError={() => setFallbackStep((prev) => Math.min(prev + 1, 2))}
             />
         </div>

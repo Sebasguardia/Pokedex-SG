@@ -73,15 +73,17 @@ export function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange
             </div>
 
             {/* ROW DE BOTONES */}
-            <div className="flex flex-wrap justify-center items-center gap-[4px] md:gap-[8px]">
+            <nav className="flex flex-wrap justify-center items-center gap-[4px] md:gap-[8px]" aria-label="Paginación de Pokémon">
                 {/* PREV */}
                 <button
                     onClick={() => onPageChange(currentPage - 1)}
                     disabled={currentPage === 1}
-                    style={{ boxShadow: currentPage === 1 ? "none" : "3px 3px 0 #CC0000" }}
-                    className="flex items-center gap-[6px] bg-[#111111] text-white font-nunito text-[12px] font-bold border-2 border-[#111111] px-4 py-2 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-transform disabled:opacity-30 disabled:pointer-events-none"
+                    className={`flex items-center gap-[6px] bg-[#111111] text-white font-nunito text-[12px] font-bold border-2 border-[#111111] px-4 py-2 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all disabled:opacity-30 disabled:pointer-events-none ${
+                        currentPage === 1 ? "shadow-none" : "shadow-[3px_3px_0_#CC0000]"
+                    }`}
+                    aria-label="Página anterior"
                 >
-                    <ChevronLeft size={14} />
+                    <ChevronLeft size={14} aria-hidden="true" />
                     ANTERIOR
                 </button>
 
@@ -90,7 +92,7 @@ export function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange
                     {getPageNumbers().map((page, index) => {
                         if (page === '...') {
                             return (
-                                <div key={`ellipsis-${index}`} className="w-[36px] h-[36px] flex items-center justify-center font-nunito text-[13px] text-[#888888]">
+                                <div key={`ellipsis-${index}`} className="w-[36px] h-[36px] flex items-center justify-center font-nunito text-[13px] text-[#888888]" aria-hidden="true">
                                     ...
                                 </div>
                             )
@@ -106,13 +108,12 @@ export function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange
                                 whileTap={{ scale: 0.95 }}
                                 animate={isActive ? { scale: [1, 1.2, 1] } : {}}
                                 transition={{ duration: 0.2 }}
-                                style={{
-                                    boxShadow: isActive ? "3px 3px 0 #111111" : "none"
-                                }}
-                                className={`w-[36px] h-[36px] border-2 flex items-center justify-center transition-colors ${isActive
-                                    ? "bg-[#CC0000] text-white border-[#CC0000] font-pixel text-[10px]"
-                                    : "bg-white text-[#111111] border-[#E0E0E0] font-nunito text-[13px] font-bold hover:border-[#111111] hover:bg-[#F2F2F2]"
+                                className={`w-[36px] h-[36px] border-2 flex items-center justify-center transition-all ${isActive
+                                    ? "bg-[#CC0000] text-white border-[#CC0000] font-pixel text-[10px] shadow-[3px_3px_0_#111111]"
+                                    : "bg-white text-[#111111] border-[#E0E0E0] font-nunito text-[13px] font-bold hover:border-[#111111] hover:bg-[#F2F2F2] shadow-none"
                                     }`}
+                                aria-label={`Ir a la página ${pNum}`}
+                                aria-current={isActive ? "page" : undefined}
                             >
                                 {pNum}
                             </motion.button>
@@ -124,19 +125,22 @@ export function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange
                 <button
                     onClick={() => onPageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
-                    style={{ boxShadow: currentPage === totalPages ? "none" : "3px 3px 0 #CC0000" }}
-                    className="flex items-center gap-[6px] bg-[#111111] text-white font-nunito text-[12px] font-bold border-2 border-[#111111] px-4 py-2 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-transform disabled:opacity-30 disabled:pointer-events-none"
+                    className={`flex items-center gap-[6px] bg-[#111111] text-white font-nunito text-[12px] font-bold border-2 border-[#111111] px-4 py-2 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-none transition-all disabled:opacity-30 disabled:pointer-events-none ${
+                        currentPage === totalPages ? "shadow-none" : "shadow-[3px_3px_0_#CC0000]"
+                    }`}
+                    aria-label="Siguiente página"
                 >
                     SIGUIENTE
-                    <ChevronRight size={14} />
+                    <ChevronRight size={14} aria-hidden="true" />
                 </button>
-            </div>
+            </nav>
 
             {/* QUICK JUMP */}
             <div className="hidden md:flex mt-8 items-center gap-3">
-                <span className="font-nunito text-[12px] text-[#888888]">Ir a página:</span>
+                <label htmlFor="jump-to-page" className="font-nunito text-[12px] text-[#888888]">Ir a página:</label>
                 <div className="flex relative">
                     <motion.input
+                        id="jump-to-page"
                         type="text"
                         value={jumpTo}
                         onChange={(e) => setJumpTo(e.target.value)}
@@ -145,12 +149,14 @@ export function Pagination({ currentPage, totalItems, itemsPerPage, onPageChange
                         placeholder="1"
                         animate={shake ? { x: [-4, 4, -2, 2, 0] } : {}}
                         transition={{ duration: 0.3 }}
+                        aria-label="Número de página para saltar"
                     />
                     <button
                         onClick={handleJump}
                         className="bg-[#CC0000] text-white w-[32px] h-[32px] flex items-center justify-center hover:bg-[#990000] transition-colors outline-none"
+                        aria-label="Saltar a la página"
                     >
-                        <ArrowRight size={14} />
+                        <ArrowRight size={14} aria-hidden="true" />
                     </button>
                 </div>
             </div>

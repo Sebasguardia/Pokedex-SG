@@ -16,6 +16,8 @@ import { RegionLocationsList } from "@/components/locations/region-locations-lis
 import { RegionPokedexSection } from "@/components/locations/region-pokedex-section";
 import { RegionVersionGroups } from "@/components/locations/region-version-groups";
 import { RegionNavStrip } from "@/components/locations/region-nav-strip";
+import { RegionLeagueSection } from "@/components/locations/region-league-section";
+import { RegionGeographySection } from "@/components/locations/region-geography-section";
 import { PageTransitionRegion } from "@/components/shared/page-transition-region";
 import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
 
@@ -108,6 +110,19 @@ export default function RegionDetailPage() {
                         pokedexCount={regionalPokedex?.pokemon_entries.length}
                     />
 
+                    {/* Geografía, ciudades y villanos */}
+                    <RegionGeographySection
+                        regionName={region.name}
+                        regionColor={regionColor}
+                        nameEs={nameEs}
+                    />
+
+                    {/* Liga Pokémon: Gym Leaders + Alto Mando + Campeón */}
+                    <RegionLeagueSection
+                        regionName={region.name}
+                        regionColor={regionColor}
+                    />
+
                     {/* Link cruzado a la generación */}
                     <RegionGenerationLink
                         generation={generation}
@@ -116,7 +131,7 @@ export default function RegionDetailPage() {
                         genColor={genColor}
                     />
 
-                    {/* Lista virtualizada de locaciones — la más importante */}
+                    {/* Lista virtualizada de locaciones */}
                     <RegionLocationsList
                         locations={region.locations}
                         regionColor={regionColor}
@@ -124,21 +139,23 @@ export default function RegionDetailPage() {
                         preOpenLocation={preOpenLocation ?? undefined}
                     />
 
-                    {/* Pokédex regional con búsqueda y toggle de vista */}
+                    {/* Pokédex regional */}
                     <RegionPokedexSection
+                        regionKey={regionParam}
                         pokedexName={pokedex}
                         regionColor={regionColor}
                         regionNameEs={nameEs}
                     />
 
-                    {/* Versiones en las que aparece esta región */}
+                    {/* Versiones disponibles + tipos */}
                     <RegionVersionGroups
                         versionGroups={region.version_groups}
                         regionColor={regionColor}
                         games={games}
+                        regionName={region.name}
                     />
 
-                    {/* Strip de navegación entre las 9 regiones */}
+                    {/* Strip de navegación entre regiones */}
                     <RegionNavStrip currentRegion={region.name} />
 
                 </div>

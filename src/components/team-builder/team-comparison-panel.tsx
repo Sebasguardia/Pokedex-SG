@@ -88,7 +88,7 @@ export function TeamComparisonPanel() {
                         </div>
                     }
                 >
-                    <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111]">
+                    <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111]" aria-label="Información sobre la comparación">
                         <Info size={16} className="text-[#111111]" />
                     </button>
                 </CustomTooltip>

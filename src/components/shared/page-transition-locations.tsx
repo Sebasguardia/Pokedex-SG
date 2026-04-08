@@ -2,89 +2,83 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { REGION_ORDER, REGION_COLORS, REGION_MAP_POSITIONS } from "@/lib/constants/locations.constants";
+import { Compass } from "lucide-react";
 
 export function PageTransitionLocations() {
-    const [visible, setVisible] = useState(true);
+    const [phase, setPhase] = useState<"loading" | "exit-content" | "exit-bg" | "done">("loading");
 
     useEffect(() => {
-        const t = setTimeout(() => setVisible(false), 1000);
-        return () => clearTimeout(t);
+        // Step 1: Hide the inner text and compass
+        const t1 = setTimeout(() => setPhase("exit-content"), 1400);
+        // Step 2: Open the yellow columns after the text is gone
+        const t2 = setTimeout(() => setPhase("exit-bg"), 1700);
+        // Step 3: Unmount everything
+        const t3 = setTimeout(() => setPhase("done"), 2400);
+        return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }, []);
+
+    const columns = [0, 1, 2, 3, 4];
 
     return (
         <AnimatePresence>
-            {visible && (
-                <motion.div
-                    className="fixed inset-0 z-[200] bg-[#111111] pointer-events-none overflow-hidden"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, delay: 0.6 }}
-                >
-                    {/* Puntos en disposición de mapa */}
-                    {REGION_ORDER.map((name, i) => {
-                        const pos = REGION_MAP_POSITIONS[name];
-                        const color = REGION_COLORS[name];
-                        return (
-                            <motion.div
-                                key={name}
-                                className="absolute rounded-full"
-                                style={{
-                                    left: `${pos.x}%`,
-                                    top: `${pos.y}%`,
-                                    width: 16,
-                                    height: 16,
-                                    backgroundColor: color,
-                                    translateX: "-50%",
-                                    translateY: "-50%",
+            {phase !== "done" && (
+                <div className="fixed inset-0 z-[200] pointer-events-none flex overflow-hidden">
+                    
+                    {/* 5 Map Pillars sliding down */}
+                    {columns.map((i) => (
+                        <motion.div 
+                            key={i}
+                            className="flex-1 h-full bg-[#ffdd00] border-r-8 border-[#111111] relative overflow-hidden"
+                            initial={{ y: "-100%" }}
+                            animate={(phase === "exit-bg" || phase === "exit-content") ? (phase === "exit-bg" ? { y: "100%" } : { y: "0%" }) : { y: "0%" }}
+                            transition={{ 
+                                duration: 0.6, 
+                                delay: (phase === "exit-content" || phase === "exit-bg") ? i * 0.1 : i * 0.1, 
+                                ease: [0.82, 0, 0.36, 1] 
+                            }}
+                        >
+                            {/* Topological mini-grid inside the column, scaled to absolute screen width so it seamlessly matches with other columns */}
+                            <div 
+                                className="absolute top-0 bottom-0 opacity-20"
+                                style={{ 
+                                    left: `-${i * 20}vw`, 
+                                    width: "100vw",
+                                    backgroundImage: "radial-gradient(#111111 4px, transparent 4px)", 
+                                    backgroundSize: "48px 48px" 
                                 }}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: [0, 1.4, 1], opacity: 1 }}
-                                exit={{ scale: 0, opacity: 0, transition: { duration: 0.2, delay: (8 - i) * 0.03 } }}
-                                transition={{ duration: 0.35, delay: i * 0.07, ease: "backOut" }}
                             />
-                        );
-                    })}
+                        </motion.div>
+                    ))}
 
-                    {/* Líneas de conexión entre puntos adyacentes (SVG) */}
-                    <motion.svg
-                        className="absolute inset-0 w-full h-full"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 0.25 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ delay: 0.5, duration: 0.2 }}
-                    >
-                        {REGION_ORDER.slice(0, -1).map((name, i) => {
-                            const from = REGION_MAP_POSITIONS[name];
-                            const to = REGION_MAP_POSITIONS[REGION_ORDER[i + 1]];
-                            return (
-                                <line
-                                    key={name}
-                                    x1={`${from.x}%`} y1={`${from.y}%`}
-                                    x2={`${to.x}%`} y2={`${to.y}%`}
-                                    stroke="#ffffff" strokeWidth="1" strokeDasharray="4 4"
-                                />
-                            );
-                        })}
-                    </motion.svg>
+                    {/* Centered Overlay */}
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+                        
+                        {/* Giant Compass */}
+                        <motion.div 
+                            initial={{ scale: 0, rotate: -180 }}
+                            animate={(phase === "exit-content" || phase === "exit-bg") ? { scale: 0, opacity: 0 } : { scale: 1, rotate: 0, opacity: 1 }}
+                            transition={{ 
+                                type: "spring", 
+                                stiffness: 200, 
+                                damping: 20, 
+                                delay: (phase === "exit-content" || phase === "exit-bg") ? 0 : 0.6 
+                            }}
+                            className="bg-white p-6 rounded-full border-[12px] border-[#111111] shadow-[12px_12px_0_#111111] z-20"
+                        >
+                            <Compass size={80} className="text-[#111111] sm:w-[100px] sm:h-[100px]" strokeWidth={2.5} />
+                        </motion.div>
 
-                    {/* Label */}
-                    <motion.p
-                        className="absolute bottom-[12%] left-1/2 -translate-x-1/2 font-press-start text-[10px] text-white opacity-50 tracking-widest whitespace-nowrap"
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 0.5, y: 0 }}
-                        transition={{ delay: 0.45 }}
-                    >
-                        LOCACIONES
-                    </motion.p>
-
-                    {/* Panel negro que sube al exit */}
-                    <motion.div
-                        className="absolute inset-0 bg-[#111111]"
-                        exit={{ y: "-100%" }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-                    />
-                </motion.div>
+                        {/* Text Label */}
+                        <motion.h2 
+                            className="font-['Press_Start_2P'] text-center mt-8 text-[#111111] bg-white border-8 border-[#111111] p-4 shadow-[8px_8px_0_#111111] text-lg sm:text-xl z-20"
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={(phase === "exit-content" || phase === "exit-bg") ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.8 }}
+                        >
+                            MAPAMUNDI
+                        </motion.h2>
+                    </div>
+                </div>
             )}
         </AnimatePresence>
     );

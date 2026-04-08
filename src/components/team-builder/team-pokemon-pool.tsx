@@ -91,7 +91,7 @@ export function TeamFilterPanel({ filters, onChange, onClear, count }: TeamFilte
                             className="flex-1 font-nunito font-bold text-[15px] outline-none bg-transparent text-[#111111] placeholder:text-[#BBBBBB]"
                         />
                         {filters.query && (
-                            <button onClick={() => onChange({ query: "" })} className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors">
+                            <button onClick={() => onChange({ query: "" })} className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-colors" aria-label="Borrar búsqueda">
                                 <X size={14} />
                             </button>
                         )}
@@ -340,11 +340,11 @@ export function TeamPokemonPool() {
 
                 <div className="flex items-center gap-3">
                     <div className="flex border-2 border-[#111111] overflow-hidden bg-white shadow-[2px_2px_0_#111111]">
-                        <button onClick={() => setView("grid")} className={`px-3 py-2 transition-colors ${view === "grid" ? "bg-[#111111] text-white" : "hover:bg-slate-50"}`}>
-                            <LayoutGrid size={13} />
+                        <button onClick={() => setView("grid")} aria-label="Vista de cuadrícula" className={`px-3 py-2 transition-colors ${view === "grid" ? "bg-[#111111] text-white" : "hover:bg-slate-50"}`}>
+                            <LayoutGrid size={13} aria-hidden="true" />
                         </button>
-                        <button onClick={() => setView("list")} className={`px-3 py-2 transition-colors ${view === "list" ? "bg-[#111111] text-white" : "hover:bg-slate-50"}`}>
-                            <List size={13} />
+                        <button onClick={() => setView("list")} aria-label="Vista de lista" className={`px-3 py-2 transition-colors ${view === "list" ? "bg-[#111111] text-white" : "hover:bg-slate-50"}`}>
+                            <List size={13} aria-hidden="true" />
                         </button>
                     </div>
                     
@@ -361,8 +361,8 @@ export function TeamPokemonPool() {
                             </div>
                         }
                     >
-                        <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111]">
-                            <Info size={16} className="text-[#111111]" />
+                        <button aria-label="Ver ayuda del explorador" className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111]">
+                            <Info size={16} className="text-[#111111]" aria-hidden="true" />
                         </button>
                     </CustomTooltip>
                 </div>
@@ -385,26 +385,19 @@ export function TeamPokemonPool() {
                 ) : (
                     <div
                         ref={parentRef}
-                        className="overflow-y-auto border-2 border-[#111111] bg-white scrollbar-thin scrollbar-thumb-[#111] scrollbar-track-slate-100"
-                        style={{ height: 680 }} // Aumentado altura del contenedor
+                        className="h-[680px] overflow-y-auto border-2 border-[#111111] bg-white scrollbar-thin scrollbar-thumb-[#111] scrollbar-track-slate-100"
                     >
-                        <div style={{ height: rowVirtualizer.getTotalSize(), position: "relative" }}>
+                        <div className="relative h-[var(--rv-height)]" style={{ "--rv-height": `${rowVirtualizer.getTotalSize()}px` } as React.CSSProperties}>
                             {rowVirtualizer.getVirtualItems().map((vRow) => {
                                 const rowItems = filtered.slice(vRow.index * COLS, vRow.index * COLS + COLS);
                                 return (
                                     <div
                                         key={vRow.index}
+                                        className={`absolute top-0 left-0 w-full p-4 gap-3 [transform:var(--rv-transform)] h-[var(--rv-item-h)] ${view === "grid" ? "grid grid-cols-4" : "flex"}`}
                                         style={{
-                                            position: "absolute",
-                                            top: 0, left: 0,
-                                            width: "100%",
-                                            height: ITEM_H,
-                                            transform: `translateY(${vRow.start}px)`,
-                                            display: view === "grid" ? "grid" : "flex",
-                                            gridTemplateColumns: view === "grid" ? `repeat(4, 1fr)` : undefined,
-                                            gap: "12px",
-                                            padding: "16px", // Más padding para que se vea completo
-                                        }}
+                                            "--rv-transform": `translateY(${vRow.start}px)`,
+                                            "--rv-item-h": `${ITEM_H}px`
+                                        } as React.CSSProperties}
                                     >
                                         {rowItems.map((p) => (
                                             view === "grid" ? (
@@ -441,8 +434,8 @@ export function TeamPokemonPool() {
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <h4 className="font-press-start text-[12px] text-[#111111] uppercase select-none">Equipo Lleno</h4>
-                                <button onClick={() => setReplacingPokemon(null)} className="text-[#888888] hover:text-[#111111]">
-                                    <X size={20} />
+                                <button onClick={() => setReplacingPokemon(null)} className="text-[#888888] hover:text-[#111111]" aria-label="Cerrar modal de reemplazo">
+                                    <X size={20} aria-hidden="true" />
                                 </button>
                             </div>
 
@@ -505,7 +498,7 @@ function PoolCardGrid({ pokemon, inTeam, isRec, onAdd }: {
             }`}
         >
             {/* Background Accent */}
-            <div className="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none -translate-y-1/2 translate-x-1/2 rounded-full" style={{ backgroundColor: primaryColor }} />
+            <div className="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none -translate-y-1/2 translate-x-1/2 rounded-full bg-[var(--acc-color)]" style={{"--acc-color": primaryColor} as React.CSSProperties} />
             
             {/* Recommendation Star */}
             {isRec && !inTeam && (
@@ -531,7 +524,7 @@ function PoolCardGrid({ pokemon, inTeam, isRec, onAdd }: {
 
                 <div className="flex justify-center gap-1.5">
                     {pokemon.types.map((t) => (
-                        <div key={t} className="w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm" style={{ backgroundColor: TYPE_COLORS[t] }}>
+                        <div key={t} className="w-5 h-5 rounded-full flex items-center justify-center border border-white shadow-sm bg-[var(--t-bg)]" style={{ "--t-bg": TYPE_COLORS[t] } as React.CSSProperties}>
                             <img src={`/icons/${t}.svg`} alt="" className="w-2.5 h-2.5 filter brightness-0 invert" />
                         </div>
                     ))}

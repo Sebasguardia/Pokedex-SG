@@ -2,7 +2,7 @@
 
 import {
     motion, AnimatePresence, useScroll, useMotionValueEvent,
-    useReducedMotion, LayoutGroup,
+    useReducedMotion, LayoutGroup, Variants
 } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import * as Tooltip from "@radix-ui/react-tooltip";
@@ -36,6 +36,7 @@ const NAV_GROUPS = [
             { href: "/pokemon", label: "Pokédex", icon: Gamepad2, count: "1025", description: "Todos los Pokémon" },
             { href: "/types", label: "Tipos", icon: Dna, count: "18", description: "18 tipos de batalla" },
             { href: "/locations", label: "Locaciones", icon: Map, count: "850+", description: "Regiones y rutas" },
+            { href: "/generations", label: "Generaciones", icon: GitCompare, count: "9", description: "9 generaciones" },
         ],
     },
     {
@@ -81,9 +82,9 @@ const navVariants = {
     hidden: { y: -110, opacity: 0, transition: { type: "spring" as const, stiffness: 420, damping: 38 } },
 };
 
-const megaMenuVariants = {
-    closed: { opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)", transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] } },
-    open: { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", transition: { duration: 0.26, ease: [0.22, 1, 0.36, 1] } },
+const megaMenuVariants: Variants = {
+    closed: { opacity: 0, y: -8, clipPath: "inset(0 0 100% 0)", transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
+    open: { opacity: 1, y: 0, clipPath: "inset(0 0 0% 0)", transition: { duration: 0.26, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] } },
 };
 
 const drawerVariants = {
@@ -145,7 +146,7 @@ const NavLogo = memo(function NavLogo() {
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: hov ? 1 : 0 }}
                         style={{ transformOrigin: hov ? "left" : "right" }}
-                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                     />
                 </div>
             </motion.div>
@@ -326,7 +327,7 @@ function GroupTrigger({ group, isActive, isDimmed }: GroupTriggerProps) {
                     "relative flex items-center gap-1.5 px-3 py-2 font-nunito text-[13px] font-bold uppercase tracking-[0.05em] transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-[#CC0000] focus-visible:outline-offset-2",
                     groupActive ? "text-[#CC0000]" : "text-gray-900 hover:text-[#CC0000]"
                 )}
-                aria-expanded={open}
+                aria-expanded={open ? "true" : "false"}
                 aria-haspopup="true"
             >
                 {/* Pixel underline on hover */}
@@ -336,7 +337,7 @@ function GroupTrigger({ group, isActive, isDimmed }: GroupTriggerProps) {
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: hov ? 1 : 0 }}
                         style={{ transformOrigin: hov ? "left" : "right" }}
-                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                     />
                 )}
 
@@ -408,8 +409,8 @@ function ThemeToggle() {
                 </Tooltip.Trigger>
                 <Tooltip.Portal>
                     <Tooltip.Content side="bottom" sideOffset={8}
-                        className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none"
-                        style={{ borderRadius: 0 }}>
+                        className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none rounded-none"
+                    >
                         {isDark ? "Modo claro" : "Modo oscuro"}
                         <Tooltip.Arrow className="fill-[#111111]" />
                     </Tooltip.Content>
@@ -444,8 +445,7 @@ function NavActions({ onSearchOpen, favCount, compareCount }: {
                 <motion.kbd
                     animate={kbdShake ? { x: [-1, 1, -1, 1, 0] } : { x: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="hidden sm:inline font-pixel text-[7px] bg-gray-100 border border-gray-300 px-1.5 py-0.5 text-gray-400"
-                    style={{ borderRadius: 0 }}
+                    className="hidden sm:inline font-pixel text-[7px] bg-gray-100 border border-gray-300 px-1.5 py-0.5 text-gray-400 rounded-none"
                 >⌘K</motion.kbd>
             </motion.button>
 
@@ -465,8 +465,7 @@ function NavActions({ onSearchOpen, favCount, compareCount }: {
                                         initial={{ scale: 0 }}
                                         animate={{ scale: [1.35, 1], transition: { type: "spring", stiffness: 600, damping: 15 } }}
                                         exit={{ scale: 0, transition: { duration: 0.14 } }}
-                                        className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] bg-[#CC0000] text-white font-pixel text-[6px] border-2 border-white flex items-center justify-center px-0.5"
-                                        style={{ borderRadius: 0 }}
+                                        className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] bg-[#CC0000] text-white font-pixel text-[6px] border-2 border-white flex items-center justify-center px-0.5 rounded-none"
                                     >
                                         {favCount > 9 ? "9+" : favCount}
                                     </motion.span>
@@ -476,8 +475,8 @@ function NavActions({ onSearchOpen, favCount, compareCount }: {
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
                         <Tooltip.Content side="bottom" sideOffset={8}
-                            className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none"
-                            style={{ borderRadius: 0 }}>
+                            className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none rounded-none"
+                        >
                             Favoritos {favCount > 0 && `(${favCount})`}
                             <Tooltip.Arrow className="fill-[#111111]" />
                         </Tooltip.Content>
@@ -500,8 +499,7 @@ function NavActions({ onSearchOpen, favCount, compareCount }: {
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1, transition: { type: "spring", stiffness: 500, damping: 15 } }}
                                         exit={{ scale: 0, transition: { duration: 0.14 } }}
-                                        className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] bg-[#111111] text-white font-pixel text-[6px] border-2 border-white flex items-center justify-center px-0.5"
-                                        style={{ borderRadius: 0 }}
+                                        className="absolute -top-0.5 -right-0.5 min-w-[17px] h-[17px] bg-[#111111] text-white font-pixel text-[6px] border-2 border-white flex items-center justify-center px-0.5 rounded-none"
                                     >
                                         {compareCount}
                                     </motion.span>
@@ -511,8 +509,8 @@ function NavActions({ onSearchOpen, favCount, compareCount }: {
                     </Tooltip.Trigger>
                     <Tooltip.Portal>
                         <Tooltip.Content side="bottom" sideOffset={8}
-                            className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none"
-                            style={{ borderRadius: 0 }}>
+                            className="bg-[#111111] text-white font-pixel text-[8px] px-2 py-1.5 border border-[#CC0000] z-[100] pointer-events-none rounded-none"
+                        >
                             Comparador {compareCount > 0 && `(${compareCount}/4)`}
                             <Tooltip.Arrow className="fill-[#111111]" />
                         </Tooltip.Content>
@@ -535,7 +533,7 @@ function HamburgerButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => 
         <button
             onClick={onClick}
             aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={isOpen}
+            aria-expanded={isOpen ? "true" : "false"}
             className="lg:hidden p-2 focus-visible:outline-2 focus-visible:outline-[#CC0000] focus-visible:outline-offset-2"
         >
             <div className="flex flex-col gap-[5px] w-[22px]">
@@ -684,8 +682,7 @@ export function Navbar() {
                 {!prefersReduced && (
                     <motion.div
                         aria-hidden="true"
-                        className="absolute inset-y-0 w-[80px] pointer-events-none z-0"
-                        style={{ background: "linear-gradient(90deg, transparent, rgba(204,0,0,0.09), transparent)" }}
+                        className="absolute inset-y-0 w-[80px] pointer-events-none z-0 bg-[linear-gradient(90deg,transparent,rgba(204,0,0,0.09),transparent)]"
                         animate={{ x: ["-80px", "calc(100vw + 80px)"] }}
                         transition={{ duration: 9, repeat: Infinity, ease: "linear", repeatDelay: 5 }}
                     />
@@ -752,26 +749,18 @@ export function Navbar() {
                                 <motion.div
                                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute inset-0 bg-black/70"
-                                    style={{ backdropFilter: "blur(6px)" }}
+                                    className="absolute inset-0 bg-black/70 backdrop-blur-[6px]"
                                 />
                             </Dialog.Overlay>
 
                             {/* Drawer panel */}
                             <Dialog.Content
-                                className="fixed left-0 top-0 bottom-0 z-50 lg:hidden focus:outline-none"
-                                style={{ width: "min(82vw, 320px)" }}
+                                className="fixed left-0 top-0 bottom-0 z-50 lg:hidden focus:outline-none w-[min(82vw,320px)]"
                             >
                                 <motion.div
                                     variants={drawerVariants}
                                     initial="closed" animate="open" exit="closed"
-                                    className="h-full flex flex-col overflow-hidden"
-                                    style={{
-                                        backgroundColor: "#0f0f0f",
-                                        border: "2px solid #111111",
-                                        borderLeft: "none",
-                                        boxShadow: "4px 0 0 0 #CC0000",
-                                    }}
+                                    className="h-full flex flex-col overflow-hidden bg-[#0f0f0f] border-2 border-l-0 border-[#111111] shadow-[4px_0_0_0_#CC0000]"
                                 >
                                     {/* CRT scanlines overlay */}
                                     <div
@@ -799,8 +788,7 @@ export function Navbar() {
                                         </div>
                                         <Dialog.Close asChild>
                                             <button
-                                                className="p-1.5 border border-white/20 hover:border-white/50 transition-colors focus-visible:outline-2 focus-visible:outline-[#CC0000]"
-                                                style={{ borderRadius: 0 }}
+                                                className="p-1.5 border border-white/20 hover:border-white/50 transition-colors focus-visible:outline-2 focus-visible:outline-[#CC0000] rounded-none"
                                                 aria-label="Cerrar menú"
                                             >
                                                 <X className="h-3.5 w-3.5 text-white/60" />
@@ -846,8 +834,7 @@ export function Navbar() {
                                         {/* Search button */}
                                         <button
                                             onClick={() => { setSearchOpen(true); setMobileOpen(false); }}
-                                            className="w-full flex items-center gap-3 py-2.5 px-3 border border-white/15 hover:border-[#CC0000]/60 transition-colors"
-                                            style={{ borderRadius: 0 }}
+                                            className="w-full flex items-center gap-3 py-2.5 px-3 border border-white/15 hover:border-[#CC0000]/60 transition-colors rounded-none"
                                         >
                                             <Search className="h-3.5 w-3.5 text-white/40" />
                                             <span className="font-pixel text-[8px] text-white/60 uppercase tracking-wider flex-1 text-left">Buscar</span>
@@ -863,7 +850,7 @@ export function Navbar() {
                                             ))}
                                         </div>
                                         <span className="font-pixel text-[7px] text-white/20">
-                                            <a href="https://pokeapi.co" target="_blank" rel="noreferrer"
+                                            <a href="https://pokeapi.co" target="_blank" rel="noopener noreferrer"
                                                 className="hover:text-white/40 transition-colors">PokéAPI</a>
                                         </span>
                                     </div>

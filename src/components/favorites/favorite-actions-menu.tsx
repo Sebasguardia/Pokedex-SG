@@ -46,8 +46,10 @@ export function FavoriteActionsMenu({ pokemon, onCreateCollection }: FavoriteAct
             <button
                 onClick={(e) => { e.stopPropagation(); setIsOpen((p) => !p); }}
                 className="w-6 h-6 flex items-center justify-center text-[#CCCCCC] hover:text-[#111111] transition-colors"
+                aria-label="Menú de acciones"
+                aria-expanded={isOpen ? "true" : "false"}
             >
-                <MoreVertical size={13} />
+                <MoreVertical size={13} aria-hidden="true" />
             </button>
 
             <AnimatePresence>
@@ -57,8 +59,7 @@ export function FavoriteActionsMenu({ pokemon, onCreateCollection }: FavoriteAct
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -4 }}
                         transition={{ duration: 0.12 }}
-                        className="absolute right-0 top-full mt-1 z-50 bg-white border-2 border-[#111111] w-52"
-                        style={{ boxShadow: "4px 4px 0 #111111" }}
+                        className="absolute right-0 top-full mt-1 z-50 bg-white border-2 border-[#111111] w-52 shadow-[4px_4px_0_#111111]"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {/* Note editor inline */}

@@ -151,6 +151,7 @@ function ExpandedMovePanel({ moveName, onClose }: { moveName: string; onClose: (
                         <button 
                             onClick={onClose} 
                             className="absolute top-4 right-4 p-2 border-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-all shadow-[2px_2px_0_#111111] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
+                            aria-label="Cerrar detalle"
                         >
                             <X size={16} strokeWidth={3} />
                         </button>

@@ -76,7 +76,7 @@ export function FavoritesImportModal({ isOpen, onClose, prefillJson }: Favorites
                         >
                             <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-[#111111] bg-[#111111]">
                                 <span className="font-press-start text-[10px] text-white">IMPORTAR</span>
-                                <button onClick={onClose} className="text-[#888888] hover:text-white"><X size={14} /></button>
+                                <button title="Botón" aria-label="Botón" onClick={onClose} className="text-[#888888] hover:text-white"><X size={14} /></button>
                             </div>
 
                             <div className="p-5 space-y-4">
@@ -88,7 +88,7 @@ export function FavoritesImportModal({ isOpen, onClose, prefillJson }: Favorites
                                     <Upload size={24} className="text-[#CCCCCC] mx-auto mb-2" />
                                     <p className="font-press-start text-[8px] text-[#888888]">Arrastra un archivo .json</p>
                                     <p className="font-nunito text-[11px] text-[#AAAAAA] mt-1">o haz click para seleccionar</p>
-                                    <input ref={fileRef} type="file" accept=".json" className="hidden" onChange={handleFile} />
+                                    <input aria-label="Input field" ref={fileRef} type="file" accept=".json" className="hidden" onChange={handleFile} />
                                 </div>
 
                                 {/* Paste JSON */}

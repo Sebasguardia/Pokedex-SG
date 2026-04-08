@@ -322,7 +322,7 @@ export function CompareSelectorModal({ isOpen, slotIndex, currentSlots, onSelect
                         <h2 className="font-press-start text-[12px] uppercase">Explorador de Comparación</h2>
                         <p className="font-nunito text-[12px] text-white/70 font-black tracking-widest uppercase mt-1">Slot {(slotIndex ?? 0) + 1}</p>
                     </div>
-                    <button onClick={onClose} className="ml-auto text-white/70 hover:text-white hover:rotate-90 transition-all"><X size={28} /></button>
+                    <button title="Botón" aria-label="Botón" onClick={onClose} className="ml-auto text-white/70 hover:text-white hover:rotate-90 transition-all"><X size={28} /></button>
                 </div>
 
                 <div className="flex flex-1 overflow-hidden">

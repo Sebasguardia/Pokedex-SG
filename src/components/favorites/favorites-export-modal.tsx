@@ -59,7 +59,7 @@ export function FavoritesExportModal({ isOpen, onClose }: FavoritesExportModalPr
                         >
                             <div className="flex items-center justify-between px-5 py-3.5 border-b-2 border-[#111111] bg-[#111111]">
                                 <span className="font-press-start text-[10px] text-white">EXPORTAR</span>
-                                <button onClick={onClose} className="text-[#888888] hover:text-white"><X size={14} /></button>
+                                <button title="Botón" aria-label="Botón" onClick={onClose} className="text-[#888888] hover:text-white"><X size={14} /></button>
                             </div>
 
                             <div className="p-5 space-y-4">

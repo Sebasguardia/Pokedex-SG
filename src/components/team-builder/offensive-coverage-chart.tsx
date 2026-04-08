@@ -89,7 +89,7 @@ export function OffensiveCoverageChart({ analysis }: OffensiveCoverageChartProps
                             </div>
                         }
                     >
-                        <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111] active:translate-y-0.5 active:shadow-none">
+                        <button className="w-8 h-8 rounded-full border-2 border-[#111111] flex items-center justify-center bg-[#FAFAFA] hover:bg-white transition-colors shadow-[2px_2px_0_#111111] active:translate-y-0.5 active:shadow-none" aria-label="Información sobre cobertura ofensiva">
                             <Info size={16} className="text-[#111111]" />
                         </button>
                     </CustomTooltip>

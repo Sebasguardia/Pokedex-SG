@@ -81,8 +81,7 @@ export function TeamImportModal({ isOpen, onClose }: TeamImportModalProps) {
 
                 {/* Modal */}
                 <motion.div
-                    className="relative w-full max-w-[480px] border-2 border-[#111111] bg-white"
-                    style={{ boxShadow: "6px 6px 0 #CC0000" }}
+                    className="relative w-full max-w-[480px] border-2 border-[#111111] bg-white shadow-[6px_6px_0_#CC0000]"
                     initial={{ scale: 0.9, opacity: 0, y: 16 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
                     exit={{ scale: 0.9, opacity: 0 }}
@@ -92,8 +91,8 @@ export function TeamImportModal({ isOpen, onClose }: TeamImportModalProps) {
                     <div className="flex items-center gap-3 px-5 py-4 border-b-2 border-[#111111] bg-[#111111]">
                         <div className="h-5 w-[3px] bg-[#CC0000]" />
                         <h2 className="font-press-start text-[12px] text-white flex-1">IMPORTAR EQUIPO</h2>
-                        <button onClick={handleClose} className="text-white/60 hover:text-white">
-                            <X size={18} />
+                        <button onClick={handleClose} className="text-white/60 hover:text-white" aria-label="Cerrar modal">
+                            <X size={18} aria-hidden="true" />
                         </button>
                     </div>
 
@@ -145,8 +144,7 @@ export function TeamImportModal({ isOpen, onClose }: TeamImportModalProps) {
                             <motion.button
                                 onClick={handleImport}
                                 disabled={!preview}
-                                className="flex-1 flex items-center justify-center gap-2 border-2 border-[#111111] py-2.5 font-press-start text-[9px] text-white bg-[#CC0000] disabled:opacity-40 disabled:cursor-not-allowed"
-                                style={{ boxShadow: "2px 2px 0 #111111" }}
+                                className="flex-1 flex items-center justify-center gap-2 border-2 border-[#111111] py-2.5 font-press-start text-[9px] text-white bg-[#CC0000] disabled:opacity-40 disabled:cursor-not-allowed shadow-[2px_2px_0_#111111]"
                                 whileHover={preview ? { x: 2, y: 2, boxShadow: "0px 0px 0 transparent" } : {}}
                             >
                                 <Upload size={12} /> IMPORTAR

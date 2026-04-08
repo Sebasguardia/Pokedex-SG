@@ -53,7 +53,7 @@ export function TeamShareModal({ isOpen, onClose }: TeamShareModalProps) {
                     <div className="flex items-center gap-3 px-5 py-4 border-b-2 border-[#111111] bg-[#111111]">
                         <div className="h-5 w-[3px] bg-[#CC0000]" />
                         <h2 className="font-press-start text-[12px] text-white flex-1">COMPARTIR EQUIPO</h2>
-                        <button onClick={onClose} className="text-white/60 hover:text-white"><X size={18} /></button>
+                        <button onClick={onClose} className="text-white/60 hover:text-white" aria-label="Cerrar modal de compartir"><X size={18} /></button>
                     </div>
 
                     <div className="p-6 space-y-5">
@@ -166,7 +166,7 @@ export function TeamImportModal({ isOpen, onClose }: TeamImportModalProps) {
                     <div className="flex items-center gap-3 px-5 py-4 border-b-2 border-[#111111] bg-[#111111]">
                         <div className="h-5 w-[3px] bg-[#CC0000]" />
                         <h2 className="font-press-start text-[12px] text-white flex-1">IMPORTAR EQUIPO</h2>
-                        <button onClick={onClose} className="text-white/60 hover:text-white"><X size={18} /></button>
+                        <button onClick={onClose} className="text-white/60 hover:text-white" aria-label="Cerrar modal de importación"><X size={18} /></button>
                     </div>
 
                     <div className="p-6 space-y-4">

@@ -138,7 +138,7 @@ export function SpritesGallery({ sprites, pokemonId }: Props) {
                     <Dialog.Overlay className="fixed inset-0 bg-black/60 z-50" />
                     <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-white p-10 flex flex-col items-center gap-6" style={{ border: "4px solid #111111", boxShadow: "12px 12px 0 #111111", borderRadius: "0" }}>
                         <Dialog.Close asChild>
-                            <button className="absolute top-4 right-4 p-2 border-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-all shadow-[2px_2px_0_#111111]">
+                            <button className="absolute top-4 right-4 p-2 border-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-all shadow-[2px_2px_0_#111111]" aria-label="Cerrar ventana">
                                 <X size={20} strokeWidth={3} />
                             </button>
                         </Dialog.Close>

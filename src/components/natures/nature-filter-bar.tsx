@@ -42,7 +42,7 @@ export function NatureFilterBar({
                     className="flex-1 font-nunito text-[14px] text-[#111111] placeholder:text-[#BBBBBB] outline-none bg-transparent"
                 />
                 {searchQuery && (
-                    <button onClick={() => onSearch("")} className="text-[#888888] hover:text-[#CC0000] transition-colors">
+                    <button onClick={() => onSearch("")} className="text-[#888888] hover:text-[#CC0000] transition-colors" aria-label="Limpiar búsqueda">
                         <X size={15} />
                     </button>
                 )}

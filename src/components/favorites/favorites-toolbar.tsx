@@ -38,15 +38,15 @@ export function FavoritesToolbar() {
                     placeholder="Buscar por nombre o tag..."
                     value={filterState.searchQuery}
                     onChange={handleSearch}
-                    className="w-full font-nunito text-[15px] pl-8 pr-8 py-2.5 border-2 border-[#DDDDDD] focus:border-[#CC0000] outline-none bg-white"
-                    style={{ boxShadow: filterState.searchQuery ? "inset 2px 2px 0 #CC000010" : undefined }}
+                    className={ `w-full font-nunito text-[15px] pl-8 pr-8 py-2.5 border-2 border-[#DDDDDD] focus:border-[#CC0000] outline-none bg-white ${filterState.searchQuery ? "shadow-[inset_2px_2px_0_#CC000010]" : ""}` }
                 />
                 {filterState.searchQuery && (
                     <button
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-[#AAAAAA] hover:text-[#CC0000]"
                         onClick={() => setFilter({ searchQuery: "" })}
+                        aria-label="Limpiar búsqueda"
                     >
-                        <X size={12} />
+                        <X size={12} aria-hidden="true" />
                     </button>
                 )}
             </div>
@@ -56,8 +56,8 @@ export function FavoritesToolbar() {
                 <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                    className="font-press-start text-[10px] pl-3 pr-8 py-2.5 border-2 border-[#111111] bg-white cursor-pointer appearance-none"
-                    style={{ boxShadow: "3px 3px 0 #111111" }}
+                    className="font-press-start text-[10px] pl-3 pr-8 py-2.5 border-2 border-[#111111] bg-white cursor-pointer appearance-none shadow-[3px_3px_0_#111111]"
+                    aria-label="Ordenar favoritos"
                 >
                     {SORT_OPTIONS.map((opt) => (
                         <option key={opt.key} value={opt.key}>{opt.label}</option>
@@ -66,13 +66,14 @@ export function FavoritesToolbar() {
                 <button
                     onClick={() => setSortBy(sortBy)}
                     className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#888888] hover:text-[#111111]"
+                    aria-label="Invertir ordenamiento"
                 >
-                    {sortDirection === "asc" ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                    {sortDirection === "asc" ? <ChevronUp size={12} aria-hidden="true" /> : <ChevronDown size={12} aria-hidden="true" />}
                 </button>
             </div>
 
             {/* View toggle */}
-            <div className="flex items-center border-2 border-[#111111]" style={{ boxShadow: "3px 3px 0 #111111" }}>
+            <div className="flex items-center border-2 border-[#111111] shadow-[3px_3px_0_#111111]">
                 {views.map(({ id, Icon, label }) => (
                     <motion.button
                         key={id}
@@ -91,10 +92,9 @@ export function FavoritesToolbar() {
             {/* Selection mode */}
             <motion.button
                 onClick={() => setSelectionMode(!isSelectionMode)}
-                className={`font-press-start text-[10px] px-3 py-2.5 border-2 border-[#111111] flex items-center gap-1.5 transition-colors ${
+                className={`font-press-start text-[10px] px-3 py-2.5 border-2 border-[#111111] flex items-center gap-1.5 transition-colors shadow-[3px_3px_0_#111111] ${
                     isSelectionMode ? "bg-[#CC0000] text-white" : "bg-white text-[#111111]"
                 }`}
-                style={{ boxShadow: "3px 3px 0 #111111" }}
                 whileHover={{ x: 1, y: 1, boxShadow: "2px 2px 0 #111111" }}
             >
                 <MousePointer size={11} />

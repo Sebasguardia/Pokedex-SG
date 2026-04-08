@@ -33,26 +33,18 @@ export function RegionDetailHero({
     ];
 
     return (
-        <div className="relative bg-[#111111] overflow-hidden">
-            {/* Dot grid */}
+        <div className="relative overflow-hidden border-b-4 border-[#111111]" style={{ backgroundColor: regionColor }}>
+            {/* Pattern de puntos oscuros */}
             <div
-                className="absolute inset-0 opacity-[0.035] pointer-events-none"
-                style={{ backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)", backgroundSize: "28px 28px" }}
+                className="absolute inset-0 opacity-[0.1]"
+                style={{ backgroundImage: "radial-gradient(#111111 2px, transparent 2px)", backgroundSize: "32px 32px" }}
             />
 
-            {/* Scanline animada */}
+            {/* Nombre watermark GIGANTE oscurecido */}
             <motion.div
-                className="absolute top-0 left-0 right-0 h-[2px] pointer-events-none"
-                style={{ backgroundColor: regionColor }}
-                animate={{ x: ["-100%", "200%"] }}
-                transition={{ duration: 3, repeat: Infinity, repeatDelay: 8, ease: "easeInOut" }}
-            />
-
-            {/* Nombre watermark GIGANTE */}
-            <motion.div
-                className="absolute right-[-10px] top-1/2 -translate-y-1/2 font-press-start leading-none select-none pointer-events-none text-white uppercase whitespace-nowrap"
+                className="absolute right-[-20px] top-1/2 -translate-y-1/2 font-['Press_Start_2P'] leading-none select-none pointer-events-none text-[#111111] uppercase whitespace-nowrap"
                 style={{ fontSize: "clamp(80px, 14vw, 150px)", opacity: 0 }}
-                animate={{ opacity: 0.03 }}
+                animate={{ opacity: 0.15 }}
                 initial={{ opacity: 0 }}
                 transition={{ duration: 0.8 }}
             >
@@ -62,14 +54,14 @@ export function RegionDetailHero({
             <div className="relative z-10 max-w-[1280px] mx-auto px-4 sm:px-6 py-10">
                 {/* Breadcrumb */}
                 <motion.div
-                    className="flex items-center gap-1.5 mb-6"
+                    className="flex items-center gap-2 mb-8"
                     initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.4 }}
                 >
-                    <Link href="/locations" className="font-nunito text-[11px] text-[#888888] hover:text-white transition-colors">
-                        Locaciones
+                    <Link href="/locations" className="font-['Press_Start_2P'] text-[9px] text-[#111111] bg-white px-3 py-1.5 border-2 border-[#111111] hover:bg-[#111111] hover:text-white transition-colors" style={{ boxShadow: "3px 3px 0 rgba(0,0,0,0.5)" }}>
+                        LOCACIONES
                     </Link>
-                    <ChevronRight size={10} className="text-[#555555]" />
-                    <span className="font-nunito text-[11px] text-white">{nameEs}</span>
+                    <ChevronRight size={14} className="text-[#111111]" />
+                    <span className="font-['Press_Start_2P'] text-[9px] text-white bg-[#111111] px-3 py-1.5 border-2 border-[#111111] shadow-[3px_3px_0_rgba(255,255,255,0.3)]">{nameEs.toUpperCase()}</span>
                 </motion.div>
 
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
@@ -77,20 +69,20 @@ export function RegionDetailHero({
                     <div className="flex-1 min-w-0">
                         {/* Chips de metadata */}
                         <motion.div
-                            className="flex flex-wrap gap-2 mb-5"
+                            className="flex flex-wrap gap-3 mb-6"
                             initial="hidden" animate="visible"
                             variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
                         >
                             {[
-                                { Icon: CalendarDays, text: year },
-                                { Icon: MapPin, text: inspiration, accent: true },
-                                { Icon: Layers, text: `Gen ${roman}`, href: `/generations/${generation}` },
+                                { Icon: CalendarDays, text: year, accent: false },
+                                { Icon: MapPin, text: inspiration, accent: false },
+                                { Icon: Layers, text: `GEN ${roman}`, href: `/generations/${generation}`, accent: true },
                             ].map(({ Icon, text, accent, href }) => {
-                                const cls = "flex items-center gap-1.5 px-3 py-1.5 border";
+                                const cls = "flex items-center gap-2 px-3 py-2 border-2 border-[#111111]";
                                 const style = {
-                                    borderColor: accent ? regionColor : "rgba(255,255,255,0.15)",
-                                    backgroundColor: "rgba(255,255,255,0.05)",
-                                    color: accent ? regionColor : "rgba(255,255,255,0.85)",
+                                    backgroundColor: accent ? "#111111" : "#ffffff",
+                                    color: accent ? "#ffffff" : "#111111",
+                                    boxShadow: "3px 3px 0 rgba(0,0,0,0.4)"
                                 };
                                 const inner = (
                                     <motion.div
@@ -98,8 +90,8 @@ export function RegionDetailHero({
                                         variants={{ hidden: { opacity: 0, y: -8 }, visible: { opacity: 1, y: 0 } }}
                                         className={cls} style={style}
                                     >
-                                        <Icon size={11} />
-                                        <span className="font-nunito font-bold text-[11px]">{text}</span>
+                                        <Icon size={13} />
+                                        <span className="font-['Press_Start_2P'] text-[8px] uppercase">{text}</span>
                                     </motion.div>
                                 );
                                 return href ? <Link key={text} href={href}>{inner}</Link> : inner;
@@ -107,16 +99,16 @@ export function RegionDetailHero({
                         </motion.div>
 
                         {/* Título — letras caen con spring */}
-                        <div className="overflow-hidden mb-4">
-                            <div className="flex flex-wrap gap-x-3">
+                        <div className="overflow-hidden mb-6">
+                            <div className="flex flex-wrap gap-x-2">
                                 {nameEs.toUpperCase().split("").map((char, i) => (
                                     <motion.span
                                         key={i}
-                                        className="font-press-start text-white leading-tight"
-                                        style={{ fontSize: "clamp(24px, 5vw, 38px)" }}
-                                        initial={{ y: -30, opacity: 0 }}
+                                        className="font-['Press_Start_2P'] text-white"
+                                        style={{ fontSize: "clamp(32px, 6vw, 56px)", textShadow: "4px 4px 0 #111111" }}
+                                        initial={{ y: -40, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        transition={{ type: "spring", stiffness: 320, damping: 20, delay: i * 0.045 }}
+                                        transition={{ type: "spring", stiffness: 320, damping: 15, delay: i * 0.05 }}
                                     >
                                         {char === " " ? "\u00A0" : char}
                                     </motion.span>
@@ -126,23 +118,23 @@ export function RegionDetailHero({
 
                         {/* Descripción */}
                         <motion.p
-                            className="font-nunito text-[13px] leading-relaxed max-w-[480px] mb-5"
-                            style={{ color: "rgba(255,255,255,0.6)" }}
-                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+                            className="font-['Nunito'] font-black text-[15px] leading-relaxed max-w-[500px] mb-6 p-4 border-2 border-[#111111] bg-white text-[#111111]"
+                            style={{ boxShadow: "5px 5px 0 #111111" }}
+                            initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }}
                         >
                             {description}
                         </motion.p>
 
                         {/* Chips de juegos */}
                         <motion.div
-                            className="flex flex-wrap gap-1.5"
+                            className="flex flex-wrap gap-2"
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
                         >
                             {games.map((g) => (
                                 <span
                                     key={g}
-                                    className="font-press-start text-[7px] px-2.5 py-1.5 border"
-                                    style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.65)" }}
+                                    className="font-['Press_Start_2P'] text-[8px] px-3 py-2 border-2 border-[#111111] bg-[#111111] text-white"
+                                    style={{ boxShadow: "3px 3px 0 rgba(255,255,255,0.3)" }}
                                 >
                                     {g}
                                 </span>
@@ -152,49 +144,36 @@ export function RegionDetailHero({
 
                     {/* ── DERECHA: stats verticales ── */}
                     <motion.div
-                        className="flex flex-row lg:flex-col gap-2 flex-wrap"
+                        className="flex flex-row lg:flex-col gap-3 flex-wrap"
                         initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}
                     >
                         {heroStats.map(({ label, value, Icon }, i) => (
                             <motion.div
                                 key={label}
-                                className="flex items-center gap-3 px-4 py-3 border min-w-[150px]"
-                                style={{ borderColor: "rgba(255,255,255,0.12)", backgroundColor: "rgba(255,255,255,0.04)" }}
+                                className="flex items-center gap-4 px-4 py-3 border-2 border-[#111111] min-w-[180px] bg-white text-[#111111]"
+                                style={{ boxShadow: "4px 4px 0 #111111" }}
                                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.35 + i * 0.07 }}
                             >
-                                <div className="w-7 h-7 flex items-center justify-center shrink-0"
-                                    style={{ backgroundColor: `${regionColor}22` }}>
-                                    <Icon size={14} style={{ color: regionColor }} />
+                                <div className="w-10 h-10 flex items-center justify-center shrink-0 border-2 border-[#111111]"
+                                    style={{ backgroundColor: regionColor }}>
+                                    <Icon size={18} className="text-[#111111]" />
                                 </div>
-                                <div>
+                                <div className="flex flex-col">
                                     {value !== null ? (
                                         <NumberFlow
                                             value={value as number}
-                                            className="font-press-start text-[14px] text-white block"
+                                            className="font-['Press_Start_2P'] text-[16px] text-[#111111] block mb-1"
                                         />
                                     ) : (
-                                        <span className="font-press-start text-[14px] text-[#555555] block">—</span>
+                                        <span className="font-['Press_Start_2P'] text-[16px] text-[#888888] block mb-1">—</span>
                                     )}
-                                    <span className="font-nunito text-[10px] text-[#888888] uppercase tracking-wide">{label}</span>
+                                    <span className="font-['Press_Start_2P'] text-[7px] text-[#888888]">{label.toUpperCase()}</span>
                                 </div>
                             </motion.div>
                         ))}
                     </motion.div>
                 </div>
-            </div>
-
-            {/* Separador doble invertido */}
-            <div className="relative h-[5px]">
-                <motion.div
-                    className="absolute top-0 left-0 w-full h-[2px] origin-left"
-                    style={{ backgroundColor: regionColor }}
-                    initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.5, delay: 0.4 }}
-                />
-                <motion.div
-                    className="absolute bottom-0 right-0 w-full h-[3px] bg-[#111111] origin-right"
-                    initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.4, delay: 0.5 }}
-                />
             </div>
         </div>
     );

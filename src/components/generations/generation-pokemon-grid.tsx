@@ -84,7 +84,7 @@ export function GenerationPokemonGrid({ pokemonList, genColor, totalCount }: Gen
                         className="flex-1 font-nunito text-[13px] text-[#111111] placeholder:text-[#BBBBBB] outline-none bg-transparent"
                     />
                     {query && (
-                        <button onClick={() => setQuery("")} className="text-[#888888] hover:text-[#111111]">
+                        <button title="Botón" aria-label="Botón" onClick={() => setQuery("")} className="text-[#888888] hover:text-[#111111]">
                             <X size={14} />
                         </button>
                     )}

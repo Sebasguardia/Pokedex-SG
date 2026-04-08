@@ -53,6 +53,7 @@ export function TeamHeader({ onShareOpen, onSaveOpen }: TeamHeaderProps) {
                         <div className="flex items-center gap-2 w-full">
                             <input
                                 autoFocus
+                                aria-label="Nombre del equipo"
                                 value={editName}
                                 onChange={(e) => setEditName(e.target.value)}
                                 onKeyDown={(e) => {
@@ -63,9 +64,10 @@ export function TeamHeader({ onShareOpen, onSaveOpen }: TeamHeaderProps) {
                             />
                             <button
                                 onClick={handleRename}
+                                aria-label="Confirmar cambio de nombre"
                                 className="w-8 h-8 bg-[#22C55E] flex items-center justify-center shrink-0 border-2 border-[#111111]"
                             >
-                                <Check size={16} className="text-white" />
+                                <Check size={16} className="text-white" aria-hidden="true" />
                             </button>
                         </div>
                     ) : (
@@ -83,8 +85,8 @@ export function TeamHeader({ onShareOpen, onSaveOpen }: TeamHeaderProps) {
 
                 {/* Badge count */}
                 <div
-                    className="border-2 border-[#111111] px-3 h-[42px] shrink-0 text-center flex items-center justify-center min-w-[60px]"
-                    style={{ backgroundColor: countColor }}
+                    className="border-2 border-[#111111] px-3 h-[42px] shrink-0 text-center flex items-center justify-center min-w-[60px] bg-[var(--count-color)]"
+                    style={{ "--count-color": countColor } as React.CSSProperties}
                 >
                     <span className="font-press-start text-[11px] text-white">
                         {memberCount}/6
@@ -98,8 +100,7 @@ export function TeamHeader({ onShareOpen, onSaveOpen }: TeamHeaderProps) {
                 <motion.button
                     onClick={handleCopyLink}
                     disabled={memberCount === 0}
-                    className="flex flex-col items-center gap-1 border-2 border-[#111111] py-2.5 px-2 font-nunito font-bold text-[11px] disabled:opacity-40 disabled:cursor-not-allowed bg-white"
-                    style={{ boxShadow: "2px 2px 0 #111111" }}
+                    className="flex flex-col items-center gap-1 border-2 border-[#111111] py-2.5 px-2 font-nunito font-bold text-[11px] disabled:opacity-40 disabled:cursor-not-allowed bg-white shadow-[2px_2px_0_#111111]"
                     whileHover={memberCount > 0 ? { x: 2, y: 2, boxShadow: "0px 0px 0 transparent" } : {}}
                 >
                     {copiedLink ? <CheckCheck size={15} className="text-[#22C55E]" /> : <Copy size={15} />}
@@ -110,8 +111,7 @@ export function TeamHeader({ onShareOpen, onSaveOpen }: TeamHeaderProps) {
                 <motion.button
                     onClick={handleSave}
                     disabled={memberCount === 0}
-                    className="flex flex-col items-center gap-1 border-2 border-[#111111] py-2.5 px-2 font-nunito font-bold text-[11px] bg-[#CC0000] text-white disabled:opacity-40 disabled:cursor-not-allowed"
-                    style={{ boxShadow: "2px 2px 0 #111111" }}
+                    className="flex flex-col items-center gap-1 border-2 border-[#111111] py-2.5 px-2 font-nunito font-bold text-[11px] bg-[#CC0000] text-white disabled:opacity-40 disabled:cursor-not-allowed shadow-[2px_2px_0_#111111]"
                     whileHover={memberCount > 0 ? { x: 2, y: 2, boxShadow: "0px 0px 0 transparent" } : {}}
                 >
                     {saved ? <Check size={15} /> : <Save size={15} />}

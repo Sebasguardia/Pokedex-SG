@@ -44,6 +44,7 @@ export function TypeCoverageMatrix({ analysis, members }: TypeCoverageMatrixProp
                             onMouseLeave={() => setShowInfo(false)}
                             className="w-5 h-5 rounded-full border border-[#111111] bg-[#EEEEEE] text-[#555555] flex items-center justify-center font-press-start text-[8px] shrink-0"
                             title="Información"
+                            aria-label="Información sobre la matriz de tipos"
                         >
                             ?
                         </button>

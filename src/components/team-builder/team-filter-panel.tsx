@@ -40,8 +40,7 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
 
     return (
         <div
-            className="relative border-2 border-[#E0E0E0] bg-[#FAFAFA] p-5 pt-6"
-            style={{ boxShadow: "3px 3px 0 #E0E0E0" }}
+            className="relative border-2 border-[#E0E0E0] bg-[#FAFAFA] p-5 pt-6 shadow-[3px_3px_0_#E0E0E0]"
         >
             {/* Etiqueta flotante */}
             <div className="absolute top-[-13px] left-4 bg-[#111111] px-3 py-1 flex items-center gap-1.5">
@@ -61,8 +60,8 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                         className="flex-1 font-nunito text-[14px] outline-none bg-transparent text-[#111111] placeholder:text-[#BBBBBB]"
                     />
                     {filters.query && (
-                        <button onClick={() => onChange({ query: "" })} className="text-[#888888] hover:text-[#CC0000]">
-                            <X size={13} />
+                        <button onClick={() => onChange({ query: "" })} className="text-[#888888] hover:text-[#CC0000]" aria-label="Limpiar búsqueda">
+                            <X size={13} aria-hidden="true" />
                         </button>
                     )}
                 </div>
@@ -73,12 +72,7 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                     <div className="flex flex-wrap gap-1.5">
                         <button
                             onClick={() => onChange({ type: null })}
-                            className="font-nunito font-bold text-[12px] px-3 py-1.5 border-2 transition-all"
-                            style={
-                                !filters.type
-                                    ? { backgroundColor: "#111111", borderColor: "#111111", color: "#ffffff" }
-                                    : { backgroundColor: "#ffffff", borderColor: "#E0E0E0", color: "#888888" }
-                            }
+                            className={`font-nunito font-bold text-[12px] px-3 py-1.5 border-2 transition-all ${!filters.type ? "bg-[#111111] border-[#111111] text-white" : "bg-white border-[#E0E0E0] text-[#888888]"}`}
                         >
                             Todos
                         </button>
@@ -89,12 +83,8 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                                 <motion.button
                                     key={t}
                                     onClick={() => onChange({ type: active ? null : t })}
-                                    className="font-press-start text-[7px] px-2 py-1.5 border-2 transition-all"
-                                    style={
-                                        active
-                                            ? { backgroundColor: color, borderColor: "#111111", color: "#ffffff", boxShadow: "2px 2px 0 #111111" }
-                                            : { backgroundColor: `${color}15`, borderColor: color, color }
-                                    }
+                                    className={`font-press-start text-[7px] px-2 py-1.5 border-2 transition-all ${active ? "bg-[var(--type-color)] border-[#111111] text-white shadow-[2px_2px_0_#111111]" : "bg-[var(--type-bg)] border-[var(--type-color)] text-[var(--type-color)]"}`}
+                                    style={{"--type-color": color, "--type-bg": `${color}15`} as React.CSSProperties}
                                     whileTap={{ scale: 0.92 }}
                                 >
                                     {TYPE_NAMES_ES[t]?.slice(0, 5).toUpperCase()}
@@ -110,12 +100,7 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                     <div className="flex flex-wrap gap-1.5">
                         <button
                             onClick={() => onChange({ gen: null })}
-                            className="font-nunito font-bold text-[12px] px-3 py-1.5 border-2 transition-all"
-                            style={
-                                filters.gen === null
-                                    ? { backgroundColor: "#111111", borderColor: "#111111", color: "#ffffff" }
-                                    : { backgroundColor: "#ffffff", borderColor: "#E0E0E0", color: "#888888" }
-                            }
+                            className={`font-nunito font-bold text-[12px] px-3 py-1.5 border-2 transition-all ${filters.gen === null ? "bg-[#111111] border-[#111111] text-white" : "bg-white border-[#E0E0E0] text-[#888888]"}`}
                         >
                             Todas
                         </button>
@@ -126,12 +111,8 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                                 <button
                                     key={g}
                                     onClick={() => onChange({ gen: active ? null : g })}
-                                    className="font-press-start text-[7px] px-2.5 py-1.5 border-2 transition-all"
-                                    style={
-                                        active
-                                            ? { backgroundColor: color, borderColor: "#111111", color: "#ffffff", boxShadow: "2px 2px 0 #111111" }
-                                            : { backgroundColor: `${color}18`, borderColor: color, color }
-                                    }
+                                    className={`font-press-start text-[7px] px-2.5 py-1.5 border-2 transition-all ${active ? "bg-[var(--gen-color)] border-[#111111] text-white shadow-[2px_2px_0_#111111]" : "bg-[var(--gen-bg)] border-[var(--gen-color)] text-[var(--gen-color)]"}`}
+                                    style={{"--gen-color": color, "--gen-bg": `${color}18`} as React.CSSProperties}
                                 >
                                     {`Gen ${["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"][g - 1]}`}
                                 </button>
@@ -151,12 +132,7 @@ export function TeamFilterPanel({ filters, onChange, onClear, count, totalAll }:
                                 <button
                                     key={key}
                                     onClick={() => toggleSort(key)}
-                                    className="flex items-center gap-1.5 font-press-start text-[8px] px-2.5 py-1.5 border-2 transition-all"
-                                    style={
-                                        active
-                                            ? { backgroundColor: "#111111", borderColor: "#111111", color: "#ffffff" }
-                                            : { backgroundColor: "#ffffff", borderColor: "#E0E0E0", color: "#888888" }
-                                    }
+                                    className={`flex items-center gap-1.5 font-press-start text-[8px] px-2.5 py-1.5 border-2 transition-all ${active ? "bg-[#111111] border-[#111111] text-white" : "bg-white border-[#E0E0E0] text-[#888888]"}`}
                                 >
                                     {labels[key]}
                                     {active && (filters.direction === "desc" ? <ArrowDown size={9} /> : <ArrowUp size={9} />)}

@@ -108,3 +108,44 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #990000;
 }
+
+/* ─── Pokémon Type Colors (via data-type attribute) ─────────────────── */
+/* Used by TypeIcon component to avoid inline styles                      */
+[data-type="normal"]   { --type-color: #A8A878; }
+[data-type="fire"]     { --type-color: #F08030; }
+[data-type="water"]    { --type-color: #6890F0; }
+[data-type="electric"] { --type-color: #F8D030; }
+[data-type="grass"]    { --type-color: #78C850; }
+[data-type="ice"]      { --type-color: #98D8D8; }
+[data-type="fighting"] { --type-color: #C03028; }
+[data-type="poison"]   { --type-color: #A040A0; }
+[data-type="ground"]   { --type-color: #E0C068; }
+[data-type="flying"]   { --type-color: #A890F0; }
+[data-type="psychic"]  { --type-color: #F85888; }
+[data-type="bug"]      { --type-color: #A8B820; }
+[data-type="rock"]     { --type-color: #B8A038; }
+[data-type="ghost"]    { --type-color: #705898; }
+[data-type="dragon"]   { --type-color: #7038F8; }
+[data-type="dark"]     { --type-color: #705848; }
+[data-type="steel"]    { --type-color: #B8B8D0; }
+[data-type="fairy"]    { --type-color: #EE99AC; }
+
+/* ─── Collection Colors (via data-collection-color) ──────────────────── */
+/* Used by CollectionCreateModal to avoid inline styles                   */
+[data-collection-color="#CC0000"] { --collection-color: #CC0000; }
+[data-collection-color="#EF4444"] { --collection-color: #EF4444; }
+[data-collection-color="#F97316"] { --collection-color: #F97316; }
+[data-collection-color="#F59E0B"] { --collection-color: #F59E0B; }
+[data-collection-color="#EAB308"] { --collection-color: #EAB308; }
+[data-collection-color="#84CC16"] { --collection-color: #84CC16; }
+[data-collection-color="#22C55E"] { --collection-color: #22C55E; }
+[data-collection-color="#10B981"] { --collection-color: #10B981; }
+[data-collection-color="#14B8A6"] { --collection-color: #14B8A6; }
+[data-collection-color="#06B6D4"] { --collection-color: #06B6D4; }
+[data-collection-color="#3B82F6"] { --collection-color: #3B82F6; }
+[data-collection-color="#6366F1"] { --collection-color: #6366F1; }
+[data-collection-color="#8B5CF6"] { --collection-color: #8B5CF6; }
+[data-collection-color="#A855F7"] { --collection-color: #A855F7; }
+[data-collection-color="#EC4899"] { --collection-color: #EC4899; }
+[data-collection-color="#111111"] { --collection-color: #111111; }
+[data-collection-color="#888888"] { --collection-color: #888888; }

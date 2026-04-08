@@ -68,8 +68,7 @@ export function CollectionCreateModal({ isOpen, onClose, editCollection }: Colle
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     >
                         <motion.div
-                            className="bg-white border-2 border-[#111111] w-full max-w-md pointer-events-auto"
-                            style={{ boxShadow: "6px 6px 0 #111111" }}
+                            className="bg-white border-2 border-[#111111] w-full max-w-md pointer-events-auto shadow-[6px_6px_0_#111111]"
                             initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
                         >
                             {/* Header */}
@@ -77,17 +76,19 @@ export function CollectionCreateModal({ isOpen, onClose, editCollection }: Colle
                                 <span className="font-press-start text-[10px] text-white">
                                     {editCollection ? "EDITAR COLECCIÓN" : "NUEVA COLECCIÓN"}
                                 </span>
-                                <button onClick={onClose} className="text-[#888888] hover:text-white">
-                                    <X size={14} />
+                                <button title="Cerrar modal" aria-label="Cerrar modal" onClick={onClose} className="text-[#888888] hover:text-white">
+                                    <X size={14} aria-hidden="true" />
                                 </button>
                             </div>
 
                             <div className="p-5 space-y-5">
                                 {/* Preview */}
                                 <div className="flex items-center gap-3 p-3 border-2 border-dashed border-[#DDDDDD]">
-                                    <div className="w-10 h-10 flex items-center justify-center"
-                                        style={{ backgroundColor: `${color}22`, border: `2px solid ${color}` }}>
-                                        <PreviewIcon size={18} color={color} />
+                                    <div
+                                        data-collection-color={color}
+                                        className="w-10 h-10 flex items-center justify-center border-2 border-[color:var(--collection-color)] bg-[color-mix(in_srgb,var(--collection-color),transparent_86%)]"
+                                    >
+                                        <PreviewIcon size={18} color={color} aria-hidden="true" />
                                     </div>
                                     <div>
                                         <p className="font-press-start text-[9px] text-[#111111]">
@@ -131,12 +132,10 @@ export function CollectionCreateModal({ isOpen, onClose, editCollection }: Colle
                                             <button
                                                 key={c}
                                                 onClick={() => setColor(c)}
-                                                className="w-7 h-7 border-2 transition-all"
-                                                style={{
-                                                    backgroundColor: c,
-                                                    borderColor: color === c ? "#111111" : "transparent",
-                                                    transform: color === c ? "scale(1.2)" : "scale(1)",
-                                                }}
+                                                className={`w-7 h-7 border-2 transition-all ${color === c ? 'border-[#111111] scale-110' : 'border-transparent scale-100'}`}
+                                                style={{ backgroundColor: c }}
+                                                aria-label={`Seleccionar color ${c}`}
+                                                aria-pressed={color === c ? "true" : "false"}
                                             />
                                         ))}
                                     </div>
@@ -155,10 +154,12 @@ export function CollectionCreateModal({ isOpen, onClose, editCollection }: Colle
                                                     className="w-9 h-9 border-2 flex items-center justify-center transition-all"
                                                     style={{
                                                         borderColor: icon === ic ? color : "#DDDDDD",
-                                                        backgroundColor: icon === ic ? `${color}22` : "white",
+                                                        backgroundColor: icon === ic ? `color-mix(in srgb, ${color} 15%, #FFFFFF)` : "#FFFFFF",
                                                     }}
+                                                    aria-label={`Seleccionar ícono ${ic}`}
+                                                    aria-pressed={icon === ic ? "true" : "false"}
                                                 >
-                                                    <Ic size={15} color={icon === ic ? color : "#888888"} />
+                                                    <Ic size={15} color={icon === ic ? color : "#888888"} aria-hidden="true" />
                                                 </button>
                                             );
                                         })}
@@ -176,8 +177,7 @@ export function CollectionCreateModal({ isOpen, onClose, editCollection }: Colle
                                     </button>
                                     <motion.button
                                         onClick={handleSubmit}
-                                        className="font-press-start text-[8px] px-4 py-2 bg-[#CC0000] text-white border-2 border-[#CC0000]"
-                                        style={{ boxShadow: "3px 3px 0 #111111" }}
+                                        className="font-press-start text-[8px] px-4 py-2 bg-[#CC0000] text-white border-2 border-[#CC0000] shadow-[3px_3px_0_#111111]"
                                         whileHover={{ x: 1, y: 1, boxShadow: "2px 2px 0 #111111" }}
                                     >
                                         {editCollection ? "Guardar" : "Crear"}

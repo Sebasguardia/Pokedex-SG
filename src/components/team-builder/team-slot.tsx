@@ -83,6 +83,7 @@ export function TeamSlot({
                         <button
                             className="ml-auto w-6 h-6 bg-[#CC0000] flex items-center justify-center border border-[#111111] shadow-[1px_1px_0_#111111]"
                             onClick={(e) => { e.stopPropagation(); onRemove(slot); }}
+                            aria-label="Eliminar Pokémon del equipo"
                         >
                             <X size={10} className="text-white" />
                         </button>

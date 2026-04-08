@@ -56,7 +56,7 @@ export function FavoriteTagEditor({ pokemonId, tags }: FavoriteTagEditorProps) {
                     animate={{ scale: 1, opacity: 1 }}
                 >
                     <span className="font-nunito text-[11px] text-[#555555]">{tag}</span>
-                    <button onClick={() => removeTag(pokemonId, tag)} className="text-[#AAAAAA] hover:text-[#CC0000] ml-0.5">
+                    <button title="Botón" aria-label="Botón" onClick={() => removeTag(pokemonId, tag)} className="text-[#AAAAAA] hover:text-[#CC0000] ml-0.5">
                         <X size={8} />
                     </button>
                 </motion.div>

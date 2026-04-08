@@ -192,12 +192,12 @@ export function FavoritesFilterPanel() {
                                     BST: {filterState.bstRange[0]} — {filterState.bstRange[1]}
                                 </p>
                                 <div className="flex gap-4 items-center">
-                                    <input type="range" min={0} max={780} step={10}
+                                    <input aria-label="Input field" type="range" min={0} max={780} step={10}
                                         value={filterState.bstRange[0]}
                                         onChange={(e) => setFilter({ bstRange: [+e.target.value, filterState.bstRange[1]] })}
                                         className="flex-1 accent-[#CC0000]"
                                     />
-                                    <input type="range" min={0} max={780} step={10}
+                                    <input aria-label="Input field" type="range" min={0} max={780} step={10}
                                         value={filterState.bstRange[1]}
                                         onChange={(e) => setFilter({ bstRange: [filterState.bstRange[0], +e.target.value] })}
                                         className="flex-1 accent-[#CC0000]"

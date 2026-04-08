@@ -92,10 +92,10 @@ export function FavoriteNoteEditor({ pokemonId, note }: FavoriteNoteEditorProps)
                             {draft.length}/{MAX_NOTE_LENGTH}
                         </span>
                         <div className="flex items-center gap-1">
-                            <button onClick={handleCancel} className="font-press-start text-[7px] px-2 py-1 border border-[#DDDDDD] text-[#888888] hover:text-[#CC0000]">
+                            <button title="Botón" aria-label="Botón" onClick={handleCancel} className="font-press-start text-[7px] px-2 py-1 border border-[#DDDDDD] text-[#888888] hover:text-[#CC0000]">
                                 <X size={9} />
                             </button>
-                            <button onClick={handleSave} className="font-press-start text-[7px] px-2 py-1 bg-[#CC0000] text-white border border-[#CC0000]">
+                            <button title="Botón" aria-label="Botón" onClick={handleSave} className="font-press-start text-[7px] px-2 py-1 bg-[#CC0000] text-white border border-[#CC0000]">
                                 <Check size={9} />
                             </button>
                         </div>

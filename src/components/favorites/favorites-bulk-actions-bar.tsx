@@ -52,15 +52,14 @@ export function FavoritesBulkActionsBar() {
                                         initial={{ opacity: 0, y: 4 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 4 }}
-                                        className="absolute bottom-full mb-2 left-0 bg-white border-2 border-[#111111] min-w-[160px]"
-                                        style={{ boxShadow: "4px -4px 0 #CC0000" }}
+                                        className="absolute bottom-full mb-2 left-0 bg-white border-2 border-[#111111] min-w-[160px] shadow-[4px_-4px_0_#CC0000]"
                                     >
                                         {userCols.map((col) => (
                                             <button key={col.id}
                                                 onClick={() => { bulkAddToCollection(col.id); setShowCols(false); }}
                                                 className="w-full text-left flex items-center gap-2 px-3 py-2 font-nunito text-[12px] text-[#333333] hover:bg-[#F5F5F5]"
                                             >
-                                                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: col.color }} />
+                                                <span className="w-2 h-2 rounded-full bg-[var(--col-color)]" style={{ "--col-color": col.color } as React.CSSProperties} />
                                                 {col.name}
                                             </button>
                                         ))}
@@ -83,14 +82,12 @@ export function FavoritesBulkActionsBar() {
                                         initial={{ opacity: 0, y: 4 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 4 }}
-                                        className="absolute bottom-full mb-2 left-0 bg-white border-2 border-[#111111] p-2 flex gap-1"
-                                        style={{ boxShadow: "4px -4px 0 #CC0000" }}
+                                        className="absolute bottom-full mb-2 left-0 bg-white border-2 border-[#111111] p-2 flex gap-1 shadow-[4px_-4px_0_#CC0000]"
                                     >
                                         {[1,2,3,4,5].map((r) => (
                                             <button key={r}
                                                 onClick={() => { bulkSetRating(r); setShowRating(false); }}
-                                                className="font-nunito text-[18px] hover:scale-125 transition-transform"
-                                                style={{ color: "#F59E0B" }}
+                                                className="font-nunito text-[18px] hover:scale-125 transition-transform text-[#F59E0B]"
                                             >★</button>
                                         ))}
                                     </motion.div>
@@ -110,8 +107,9 @@ export function FavoritesBulkActionsBar() {
                         <button
                             onClick={() => { clearSelection(); setSelectionMode(false); }}
                             className="text-[#888888] hover:text-white ml-2 transition-colors"
+                            aria-label="Cerrar barra de acciones"
                         >
-                            <X size={16} />
+                            <X size={16} aria-hidden="true" />
                         </button>
                     </div>
                 </motion.div>
