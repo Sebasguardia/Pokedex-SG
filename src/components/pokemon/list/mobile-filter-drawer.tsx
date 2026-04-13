@@ -16,15 +16,15 @@ export function MobileFilterButton({ count, onClick }: { count: number, onClick:
     return (
         <motion.button
             onClick={onClick}
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
             whileHover={{ scale: 1.02, backgroundColor: "#CC0000", color: "#FFFFFF", boxShadow: "4px 4px 0 #111111" }}
             whileTap={{ scale: 0.96 }}
-            className="fixed lg:hidden bottom-[24px] left-1/2 -translate-x-1/2 z-40 bg-[#111111] text-white font-nunito text-[13px] font-bold uppercase tracking-[0.05em] px-6 py-3 border-2 border-[#111111] flex items-center gap-2 shadow-[4px_4px_0_#CC0000] outline-none"
+            className="lg:hidden h-[46px] md:h-[52px] bg-[#111111] text-white font-nunito text-[12px] sm:text-[13px] font-bold uppercase tracking-[0.05em] px-4 md:px-6 border-2 border-[#111111] flex items-center justify-center gap-2 shadow-[4px_4px_0_#CC0000] outline-none relative"
         >
             <SlidersHorizontal size={16} />
-            FILTROS
+            <span className="hidden custom-sm:inline sm:inline">FILTROS</span>
             <AnimatePresence>
                 {count > 0 && (
                     <motion.div
@@ -84,7 +84,7 @@ export function MobileFilterDrawer({ open, onClose, activeFiltersCount, onClearA
                                     <div className="flex items-center gap-4">
                                         <button onClick={onClearAll} className="font-nunito text-[12px] text-[#CC0000] outline-none">Limpiar</button>
                                         <Dialog.Close asChild>
-                                            <button className="text-[#111111] outline-none p-1 rounded-full hover:bg-[#F2F2F2]"><X size={20} /></button>
+                                            <button aria-label="Cerrar filtros" className="text-[#111111] outline-none p-1 rounded-full hover:bg-[#F2F2F2]"><X size={20} /></button>
                                         </Dialog.Close>
                                     </div>
                                 </div>

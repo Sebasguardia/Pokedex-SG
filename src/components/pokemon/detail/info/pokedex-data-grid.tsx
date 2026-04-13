@@ -44,8 +44,8 @@ function DataCell({ cell, index }: { cell: Cell; index: number }) {
                         whileInView={{ scale: 1, opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: index * 0.04, type: "spring", stiffness: 300, damping: 25 }}
-                        whileHover={{ scale: 1.05, translateY: -4, boxShadow: "8px 8px 0 #111111" }}
-                        className="flex flex-col gap-3 p-5 cursor-default relative overflow-hidden group transition-all duration-200"
+                        whileHover={{ scale: 1.02, translateY: -2, boxShadow: "6px 6px 0 #111111" }}
+                        className="flex flex-col gap-2.5 p-4 sm:p-5 cursor-default relative overflow-hidden group transition-all duration-200"
                         style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "4px 4px 0 #111111" }}
                     >
                         <div className="absolute top-0 right-0 p-3 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -53,11 +53,11 @@ function DataCell({ cell, index }: { cell: Cell; index: number }) {
                         </div>
                         <div className="flex items-center gap-2">
                             <Icon size={18} className="text-[#CC0000]" strokeWidth={3} />
-                            <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">
+                            <span className="font-['Press_Start_2P'] text-[6px] sm:text-[7px] text-[#888888] font-black uppercase tracking-widest group-hover:text-[#111111] transition-colors leading-none">
                                 {cell.label}
                             </span>
                         </div>
-                        <div className="font-['Nunito'] text-[15px] font-black text-[#111111] mt-1 z-10 leading-tight">
+                        <div className="font-['Nunito'] text-[14px] sm:text-[15px] font-black text-[#111111] mt-1 z-10 leading-tight">
                             {cell.value}
                         </div>
                     </motion.div>
@@ -184,15 +184,15 @@ export function PokedexDataGrid({ pokemon, species }: Props) {
     }
 
     return (
-        <div className="mt-8 mb-12">
-            <div className="flex items-center gap-3 mb-8">
-                <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
+        <div className="mt-6 sm:mt-8 mb-8 sm:mb-12">
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
                     <span className="w-3 h-3 bg-[#CC0000]" />
                     DATOS POKÉDEX
                 </h3>
                 <div className="flex-1 h-[2px] bg-[#E0E0E0]" />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                 {cells.map((cell, i) => (
                     <DataCell key={cell.label} cell={cell} index={i} />
                 ))}

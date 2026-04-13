@@ -47,8 +47,8 @@ function TypewriterText({ text, prefersRM }: { text: string; prefersRM: boolean 
     }, [text, prefersRM])
 
     return (
-        <span className="relative">
-            <span className="font-['Press_Start_2P'] text-[11px] leading-[2.2] text-[#111111] uppercase break-words font-black">
+        <div className="relative w-full break-words whitespace-pre-wrap min-w-0">
+            <span className="font-['Press_Start_2P'] text-[9px] sm:text-[11px] leading-[2.2] text-[#111111] uppercase font-black" style={{ wordBreak: 'break-word' }}>
                 {displayed}
                 {!done && (
                     <motion.span
@@ -58,7 +58,7 @@ function TypewriterText({ text, prefersRM }: { text: string; prefersRM: boolean 
                     />
                 )}
             </span>
-        </span>
+        </div>
     )
 }
 
@@ -97,13 +97,13 @@ export function FlavorTextCarousel({ flavors }: Props) {
     }
 
     return (
-        <div className="mb-10">
-            <div className="flex items-center justify-between mb-6">
-                <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] flex items-center gap-3">
+        <div className="mb-8 sm:mb-10">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 gap-3">
+                <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] flex items-center gap-3">
                     <span className="w-3 h-3 bg-[#111111]" />
                     ENTRADA POKÉDEX
                 </h3>
-                <div className="relative group">
+                <div className="relative group self-start sm:self-auto">
                     <select
                         value={index}
                         onChange={(e) => {
@@ -125,7 +125,7 @@ export function FlavorTextCarousel({ flavors }: Props) {
                 </div>
             </div>
 
-            <div className="border-[3px] border-[#111111] bg-white p-8 relative overflow-hidden shadow-[6px_6px_0_#111111]">
+            <div className="border-[3px] border-[#111111] bg-white p-4 sm:p-8 relative overflow-hidden shadow-[6px_6px_0_#111111]">
                 {/* Decorative dots in corners */}
                 <div className="absolute top-2 left-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
                 <div className="absolute top-2 right-2 w-1.5 h-1.5 bg-[#111111] rounded-full opacity-20" />
@@ -139,9 +139,11 @@ export function FlavorTextCarousel({ flavors }: Props) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 1.05 }}
                         transition={{ duration: 0.15 }}
-                        className="min-h-[85px]"
+                        className="min-h-[60px] sm:min-h-[85px]"
                     >
+                    <div className="w-full min-w-0 pr-2 pb-2">
                         <TypewriterText text={cleanText} prefersRM={prefersRM} />
+                    </div>
                     </motion.div>
                 </AnimatePresence>
                 

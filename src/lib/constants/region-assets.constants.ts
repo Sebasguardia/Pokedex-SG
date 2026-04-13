@@ -35,7 +35,7 @@ export const GYM_LEADER_SPRITES: Record<string, string> = {
     // KANTO
     "brock": "https://play.pokemonshowdown.com/sprites/trainers/brock.png",  // https://play.pokemonshowdown.com/sprites/trainers/brock.png
     "misty": "https://play.pokemonshowdown.com/sprites/trainers/misty.png",  // https://play.pokemonshowdown.com/sprites/trainers/misty.png
-    "lt-surge": "https://play.pokemonshowdown.com/sprites/trainers/lt-surge.png",  // https://play.pokemonshowdown.com/sprites/trainers/lt-surge.png
+    "lt-surge": "https://play.pokemonshowdown.com/sprites/trainers/ltsurge.png",  // https://play.pokemonshowdown.com/sprites/trainers/lt-surge.png
     "erika": "https://play.pokemonshowdown.com/sprites/trainers/erika.png",  // https://play.pokemonshowdown.com/sprites/trainers/erika.png
     "koga": "https://play.pokemonshowdown.com/sprites/trainers/koga.png",  // https://play.pokemonshowdown.com/sprites/trainers/koga.png
     "sabrina": "https://play.pokemonshowdown.com/sprites/trainers/sabrina.png",  // https://play.pokemonshowdown.com/sprites/trainers/sabrina.png
@@ -57,15 +57,14 @@ export const GYM_LEADER_SPRITES: Record<string, string> = {
     "flannery": "https://play.pokemonshowdown.com/sprites/trainers/flannery.png",
     "norman": "https://play.pokemonshowdown.com/sprites/trainers/norman.png",
     "winona": "https://play.pokemonshowdown.com/sprites/trainers/winona.png",
-    "tate": "https://play.pokemonshowdown.com/sprites/trainers/tate.png",
-    "liza": "https://play.pokemonshowdown.com/sprites/trainers/liza.png",
+    "tate-liza": "https://play.pokemonshowdown.com/sprites/trainers/tateandliza-gen3.png",
     "juan": "https://play.pokemonshowdown.com/sprites/trainers/juan.png",
     "wallace": "https://play.pokemonshowdown.com/sprites/trainers/wallace.png",
     // SINNOH
     "roark": "https://play.pokemonshowdown.com/sprites/trainers/roark.png",
     "gardenia": "https://play.pokemonshowdown.com/sprites/trainers/gardenia.png",
     "maylene": "https://play.pokemonshowdown.com/sprites/trainers/maylene.png",
-    "crasher-wake": "https://play.pokemonshowdown.com/sprites/trainers/crasher-wake.png",
+    "crasher-wake": "https://play.pokemonshowdown.com/sprites/trainers/crasherwake.png",
     "fantina": "https://play.pokemonshowdown.com/sprites/trainers/fantina.png",
     "byron": "https://play.pokemonshowdown.com/sprites/trainers/byron.png",
     "candice": "https://play.pokemonshowdown.com/sprites/trainers/candice.png",
@@ -110,6 +109,8 @@ export const GYM_LEADER_SPRITES: Record<string, string> = {
     "melony": "https://play.pokemonshowdown.com/sprites/trainers/melony.png",
     "piers": "https://play.pokemonshowdown.com/sprites/trainers/piers.png",
     "raihan": "https://play.pokemonshowdown.com/sprites/trainers/raihan.png",
+    "mustard": "https://play.pokemonshowdown.com/sprites/trainers/mustard.png",
+    "peonia": "https://play.pokemonshowdown.com/sprites/trainers/peonia.png",
     // PALDEA
     "katy": "https://play.pokemonshowdown.com/sprites/trainers/katy.png",
     "brassius": "https://play.pokemonshowdown.com/sprites/trainers/brassius.png",
@@ -124,19 +125,20 @@ export const GYM_LEADER_SPRITES: Record<string, string> = {
 // ── Sprites del Alto Mando y Campeones ───────────────────────────
 export const ELITE_SPRITES: Record<string, string> = {
     // KANTO
-    "lorelei": "https://play.pokemonshowdown.com/sprites/trainers/lorelei.png",
+    "lorelei": "https://play.pokemonshowdown.com/sprites/trainers/lorelei-lgpe.png",
     "bruno": "https://play.pokemonshowdown.com/sprites/trainers/bruno.png",
-    "agatha": "https://play.pokemonshowdown.com/sprites/trainers/agatha.png",
+    "agatha": "https://play.pokemonshowdown.com/sprites/trainers/agatha-lgpe.png",
     "lance": "https://play.pokemonshowdown.com/sprites/trainers/lance.png",
     "blue": "https://play.pokemonshowdown.com/sprites/trainers/blue.png",
     // JOHTO
     "will": "https://play.pokemonshowdown.com/sprites/trainers/will.png",
     "karen": "https://play.pokemonshowdown.com/sprites/trainers/karen.png",
+    "koga": "https://play.pokemonshowdown.com/sprites/trainers/koga.png",
     // HOENN
     "sidney": "https://play.pokemonshowdown.com/sprites/trainers/sidney.png",
-    "phoebe": "https://play.pokemonshowdown.com/sprites/trainers/phoebe.png",
+    "phoebe": "https://play.pokemonshowdown.com/sprites/trainers/phoebe-masters.png",
     "glacia": "https://play.pokemonshowdown.com/sprites/trainers/glacia.png",
-    "drake": "https://play.pokemonshowdown.com/sprites/trainers/drake.png",
+    "drake": "https://play.pokemonshowdown.com/sprites/trainers/drake-gen3.png",
     "steven": "https://play.pokemonshowdown.com/sprites/trainers/steven.png",
     // SINNOH
     "aaron": "https://play.pokemonshowdown.com/sprites/trainers/aaron.png",
@@ -150,6 +152,7 @@ export const ELITE_SPRITES: Record<string, string> = {
     "grimsley": "https://play.pokemonshowdown.com/sprites/trainers/grimsley.png",
     "caitlin": "https://play.pokemonshowdown.com/sprites/trainers/caitlin.png",
     "alder": "https://play.pokemonshowdown.com/sprites/trainers/alder.png",
+    "iris": "https://play.pokemonshowdown.com/sprites/trainers/iris.png",
     // KALOS
     "malva": "https://play.pokemonshowdown.com/sprites/trainers/malva.png",
     "siebold": "https://play.pokemonshowdown.com/sprites/trainers/siebold.png",
@@ -157,13 +160,20 @@ export const ELITE_SPRITES: Record<string, string> = {
     "drasna": "https://play.pokemonshowdown.com/sprites/trainers/drasna.png",
     "diantha": "https://play.pokemonshowdown.com/sprites/trainers/diantha.png",
     // ALOLA
+    "hala": "https://play.pokemonshowdown.com/sprites/trainers/hala.png",
+    "olivia": "https://play.pokemonshowdown.com/sprites/trainers/olivia.png",
     "acerola": "https://play.pokemonshowdown.com/sprites/trainers/acerola.png",
     "kahili": "https://play.pokemonshowdown.com/sprites/trainers/kahili.png",
+    "kukui": "https://play.pokemonshowdown.com/sprites/trainers/kukui.png",
     // GALAR
+    "marnie": "https://play.pokemonshowdown.com/sprites/trainers/marnie.png",
+    "bede": "https://play.pokemonshowdown.com/sprites/trainers/bede.png",
+    "hop": "https://play.pokemonshowdown.com/sprites/trainers/hop.png",
     "leon": "https://play.pokemonshowdown.com/sprites/trainers/leon.png",
     // PALDEA
     "rika": "https://play.pokemonshowdown.com/sprites/trainers/rika.png",
     "poppy": "https://play.pokemonshowdown.com/sprites/trainers/poppy.png",
+    "larry": "https://play.pokemonshowdown.com/sprites/trainers/larry.png",
     "hassel": "https://play.pokemonshowdown.com/sprites/trainers/hassel.png",
     "geeta": "https://play.pokemonshowdown.com/sprites/trainers/geeta.png",
 };
@@ -173,68 +183,87 @@ export const ELITE_SPRITES: Record<string, string> = {
 // Busca en: https://archives.bulbagarden.net/wiki/Category:Badges
 export const BADGE_IMAGES: Record<string, string> = {
     // KANTO
-    "kanto_boulder": "",  // Medalla Roca (Brock)
-    "kanto_cascade": "",  // Medalla Cascada (Misty)
-    "kanto_thunder": "",  // Medalla Trueno (Lt. Surge)
-    "kanto_rainbow": "",  // Medalla Arcoíris (Erika)
-    "kanto_soul": "",  // Medalla Alma (Koga)
-    "kanto_marsh": "",  // Medalla Marcha (Sabrina)
-    "kanto_volcano": "",  // Medalla Volcán (Blaine)
-    "kanto_earth": "",  // Medalla Tierra (Giovanni)
+    "kanto_boulder": "/badges/1.png",
+    "kanto_cascade": "/badges/2.png",
+    "kanto_thunder": "/badges/3.png",
+    "kanto_rainbow": "/badges/4.png",
+    "kanto_soul": "/badges/5.png",
+    "kanto_marsh": "/badges/6.png",
+    "kanto_volcano": "/badges/7.png",
+    "kanto_earth": "/badges/8.png",
     // JOHTO
-    "johto_zephyr": "",
-    "johto_hive": "",
-    "johto_plain": "",
-    "johto_fog": "",
-    "johto_storm": "",
-    "johto_mineral": "",
-    "johto_glacier": "",
-    "johto_rising": "",
+    "johto_zephyr": "/badges/9.png",
+    "johto_hive": "/badges/10.png",
+    "johto_plain": "/badges/11.png",
+    "johto_fog": "/badges/12.png",
+    "johto_storm": "/badges/13.png",
+    "johto_mineral": "/badges/14.png",
+    "johto_glacier": "/badges/15.png",
+    "johto_rising": "/badges/16.png",
     // HOENN
-    "hoenn_stone": "",
-    "hoenn_knuckle": "",
-    "hoenn_dynamo": "",
-    "hoenn_heat": "",
-    "hoenn_balance": "",
-    "hoenn_feather": "",
-    "hoenn_mind": "",
-    "hoenn_rain": "",
+    "hoenn_stone": "/badges/17.png",
+    "hoenn_knuckle": "/badges/18.png",
+    "hoenn_dynamo": "/badges/19.png",
+    "hoenn_heat": "/badges/20.png",
+    "hoenn_balance": "/badges/21.png",
+    "hoenn_feather": "/badges/22.png",
+    "hoenn_mind": "/badges/23.png",
+    "hoenn_rain": "/badges/24.png",
     // SINNOH
-    "sinnoh_coal": "",
-    "sinnoh_forest": "",
-    "sinnoh_cobble": "",
-    "sinnoh_fen": "",
-    "sinnoh_relic": "",
-    "sinnoh_mine": "",
-    "sinnoh_icicle": "",
-    "sinnoh_beacon": "",
+    "sinnoh_coal": "/badges/25.png",
+    "sinnoh_forest": "/badges/26.png",
+    "sinnoh_cobble": "/badges/27.png",
+    "sinnoh_fen": "/badges/28.png",
+    "sinnoh_relic": "/badges/29.png",
+    "sinnoh_mine": "/badges/30.png",
+    "sinnoh_icicle": "/badges/31.png",
+    "sinnoh_beacon": "/badges/32.png",
     // UNOVA
-    "unova_trio": "",
-    "unova_basic": "",
-    "unova_insect": "",
-    "unova_bolt": "",
-    "unova_quake": "",
-    "unova_jet": "",
-    "unova_freeze": "",
-    "unova_legend": "",
+    "unova_trio": "/badges/33.png",
+    "unova_basic": "/badges/34.png",
+    "unova_toxic": "/badges/35.png",
+    "unova_insect": "/badges/36.png",
+    "unova_bolt": "/badges/37.png",
+    "unova_quake": "/badges/38.png",
+    "unova_jet": "/badges/39.png",
+    "unova_freeze": "/badges/40.png",
+    "unova_legend": "/badges/41.png",
+    "unova_wave": "/badges/42.png",
     // KALOS
-    "kalos_bug": "",
-    "kalos_cliff": "",
-    "kalos_rumble": "",
-    "kalos_plant": "",
-    "kalos_voltage": "",
-    "kalos_fairy": "",
-    "kalos_psychic": "",
-    "kalos_iceberg": "",
+    "kalos_bug": "/badges/43.png",
+    "kalos_cliff": "/badges/44.png",
+    "kalos_rumble": "/badges/45.png",
+    "kalos_plant": "/badges/46.png",
+    "kalos_voltage": "/badges/47.png",
+    "kalos_fairy": "/badges/48.png",
+    "kalos_psychic": "/badges/49.png",
+    "kalos_iceberg": "/badges/50.png",
     // GALAR
-    "galar_grass": "",
-    "galar_water": "",
-    "galar_fire": "",
-    "galar_fighting": "",
-    "galar_fairy": "",
-    "galar_rock": "",
-    "galar_dark": "",
-    "galar_dragon": "",
+    "galar_grass": "/badges/51.png",
+    "galar_water": "/badges/52.png",
+    "galar_fire": "/badges/53.png",
+    "galar_fighting": "/badges/54.png",
+    "galar_fairy": "/badges/55.png",
+    "galar_rock": "/badges/56.png",
+    "galar_dark": "/badges/57.png",
+    "galar_dragon": "/badges/58.png",
+    // ALOLA (Aro Z)
+    "alola_fight": "https://images.wikidexcdn.net/mwuploads/wikidex/6/6f/latest/20161129010934/Lizastal_Z_%28Dream_World%29.png",
+    "alola_rock": "https://images.wikidexcdn.net/mwuploads/wikidex/6/61/latest/20161129010938/Litostal_Z_%28Dream_World%29.png",
+    "alola_dark": "https://images.wikidexcdn.net/mwuploads/wikidex/2/2d/latest/20161129010939/Nictostal_Z_%28Dream_World%29.png",
+    "alola_ground": "https://images.wikidexcdn.net/mwuploads/wikidex/f/f1/latest/20161129010936/Geostal_Z_%28Dream_World%29.png",
+    // PALDEA
+    "paldea_bug": "/badges/70.png",
+    "paldea_grass": "/badges/71.png",
+    "paldea_electric": "/badges/72.png",
+    "paldea_water": "/badges/73.png",
+    "paldea_normal": "/badges/74.png",
+    "paldea_ghost": "/badges/75.png",
+    "paldea_psychic": "/badges/76.png",
+    "paldea_ice": "/badges/77.png",
+    // GALAR EXTENDED (Tower of Darkness/Flower)
+    "galar_steel": "/badges/59.png",
+    "galar_champion": "/badges/60.png",
 };
 
 // ── Mapas Regionales ──────────────────────────────────────────────────

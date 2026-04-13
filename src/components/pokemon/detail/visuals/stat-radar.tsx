@@ -46,7 +46,7 @@ export function StatRadar({ stats, typeColor = "#CC0000" }: Props) {
         <div
             className="mt-6 p-5 sm:p-6 bg-[#FFFFFF] border-[2px] border-[#111111] shadow-[4px_4px_0_rgba(17,17,17,0.15)] rounded-lg"
         >
-            <h3 className="font-['Press_Start_2P'] text-[12px] mb-4 tracking-wide text-center text-[#111111] border-b-2 border-[#E0E0E0] pb-2">RADAR DE STATS</h3>
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] mb-4 tracking-wide text-center text-[#111111] border-b-2 border-[#E0E0E0] pb-2">RADAR DE STATS</h3>
             <div className="relative z-10 w-full mt-4">
                 <ResponsiveContainer width="100%" height={260}>
                     <RadarChart data={data} margin={{ top: 20, right: 30, bottom: 20, left: 30 }}>

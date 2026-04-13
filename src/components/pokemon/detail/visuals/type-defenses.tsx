@@ -31,9 +31,9 @@ export function TypeDefenses({ types }: TypeDefensesProps) {
         if (multiplier === 0.25) multText = "×¼"
 
         return (
-            <span key={type} className="flex items-center gap-1.5 px-3 py-1.5 shadow-[2px_2px_0_rgba(17,17,17,1)] relative z-10" style={{ backgroundColor: TYPE_COLORS[type], border: "2px solid #111111" }}>
-                <Image src={`/icons/${type}.svg`} alt={type} width={14} height={14} className="brightness-0 invert" />
-                <span className="font-['Press_Start_2P'] text-[9px] flex gap-1 items-center mt-[1px] text-white">
+            <span key={type} className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 shadow-[2px_2px_0_rgba(17,17,17,1)] relative z-10" style={{ backgroundColor: TYPE_COLORS[type], border: "2px solid #111111" }}>
+                <Image src={`/icons/${type}.svg`} alt={type} width={12} height={12} className="brightness-0 invert" />
+                <span className="font-['Press_Start_2P'] text-[7px] sm:text-[9px] flex gap-1 items-center mt-[1px] text-white">
                     {TYPE_NAMES_ES[type].toUpperCase()}
                     {multText && <span className="opacity-80 font-bold">{multText}</span>}
                 </span>
@@ -43,7 +43,7 @@ export function TypeDefenses({ types }: TypeDefensesProps) {
 
     return (
         <div className="mt-6 p-5 sm:p-6 bg-[#FFFFFF] border-[2px] border-[#111111] shadow-[4px_4px_0_rgba(17,17,17,0.15)] rounded-lg">            
-            <h3 className="font-['Press_Start_2P'] text-[12px] mb-6 tracking-wide text-center text-[#111111] border-b-2 border-[#E0E0E0] pb-2">EFECTIVIDAD TIPOS</h3>
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] mb-6 tracking-wide text-center text-[#111111] border-b-2 border-[#E0E0E0] pb-2">EFECTIVIDAD TIPOS</h3>
             
             <div className="flex flex-col gap-6 w-full mx-auto">
                 {/* Debilidades */}

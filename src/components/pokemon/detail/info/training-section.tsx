@@ -24,8 +24,8 @@ function EVDots({ yield: yieldVal, label }: { yield: number; label: string }) {
 
     if (yieldVal <= 0) return null
     return (
-        <div ref={ref} className="flex items-center justify-between gap-3 py-3 border-b-2 border-[#F2F2F2]">
-            <span className="font-['Press_Start_2P'] text-[7px] text-[#111111] flex-1 uppercase tracking-tighter">{label}</span>
+        <div ref={ref} className="flex items-center justify-between gap-2 py-3 border-b-2 border-[#F2F2F2]">
+            <span className="font-['Press_Start_2P'] text-[6px] sm:text-[7px] text-[#111111] flex-1 uppercase tracking-tighter">{label}</span>
             <div className="flex gap-2 items-center">
                 {Array.from({ length: 3 }).map((_, i) => (
                     <motion.div
@@ -45,8 +45,8 @@ function EVDots({ yield: yieldVal, label }: { yield: number; label: string }) {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex items-center gap-3 mt-10 mb-6">
-            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-8 sm:mt-10 mb-4 sm:mb-6">
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#111111]" />
                 {children}
             </h3>
@@ -70,7 +70,7 @@ export function TrainingSection({ pokemon }: Props) {
             <SectionTitle>ENTRENAMIENTO</SectionTitle>
 
             {evYields.length > 0 && (
-                <div className="mb-6 bg-[#F9F9F9] p-5 border-2 border-[#111111] shadow-inner">
+                <div className="mb-6 bg-[#F9F9F9] p-4 sm:p-5 border-2 border-[#111111] shadow-inner">
                     <p className="font-['Press_Start_2P'] text-[7px] text-[#888888] mb-4 uppercase">
                         Puntos de esfuerzo al ser derrotado:
                     </p>
@@ -85,12 +85,12 @@ export function TrainingSection({ pokemon }: Props) {
             )}
 
             <div 
-                className="flex items-center justify-between p-6" 
+                className="flex items-center justify-between p-4 sm:p-6" 
                 style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}
             >
                 <div className="flex items-center gap-4">
                     <TrendingUp size={24} className="text-[#CC0000]" strokeWidth={3} />
-                    <span className="font-['Press_Start_2P'] text-[8px] text-[#111111] uppercase leading-tight">Exp. base al derrotarlo</span>
+                    <span className="font-['Press_Start_2P'] text-[7px] sm:text-[8px] text-[#111111] uppercase leading-tight">Exp. base al derrotarlo</span>
                 </div>
                 <div className="flex flex-col items-end">
                     <NumberFlow

@@ -91,9 +91,9 @@ export function RelatedPokemon({ currentId, currentTypes }: Props) {
 
     return (
         <div className="mt-12 pt-10 border-t-4 border-[#111111]">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
                 <span className="w-3 h-3 bg-[#CC0000]" />
-                <h2 className="font-['Press_Start_2P'] text-[12px] text-[#111111]">RELACIONADOS</h2>
+                <h2 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111]">RELACIONADOS</h2>
                 <div className="flex-1 h-[2px] bg-[#E0E0E0]" />
             </div>
 
@@ -107,16 +107,16 @@ export function RelatedPokemon({ currentId, currentTypes }: Props) {
                         transition={{ delay: i * 0.03, type: "spring", stiffness: 300, damping: 22 }}
                         className="flex-shrink-0"
                     >
-                        <Link href={`/pokemon/${p.id}`} className="flex flex-col items-center gap-3 group">
+                        <Link href={`/pokemon/${p.id}`} className="flex flex-col items-center gap-2 sm:gap-3 group">
                             <motion.div
                                 className="bg-white flex items-center justify-center shadow-[4px_4px_0_rgba(17,17,17,0.1)] group-hover:shadow-[6px_6px_0_#111111] group-hover:translate-x-[-2px] group-hover:translate-y-[-2px] transition-all"
-                                style={{ width: 80, height: 80, border: "3px solid #111111" }}
+                                style={{ width: 64, height: 64, border: "3px solid #111111" }}
                             >
                                 <Image
                                     src={getPokemonSpriteUrl(p.id)}
                                     alt={p.name}
-                                    width={64}
-                                    height={64}
+                                    width={52}
+                                    height={52}
                                     style={{ imageRendering: "pixelated" }}
                                 />
                             </motion.div>

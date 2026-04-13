@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Shield, Swords, MapPin, Target } from "lucide-react";
 import { REGION_GYM_LEADERS, REGION_ELITE, GymLeader, EliteMember } from "@/lib/constants/region-lore.constants";
-import { GYM_LEADER_SPRITES, BADGE_IMAGES } from "@/lib/constants/region-assets.constants";
+import { GYM_LEADER_SPRITES, BADGE_IMAGES, ELITE_SPRITES } from "@/lib/constants/region-assets.constants";
 import Image from "next/image";
 
 interface RegionLeagueSectionProps {
@@ -50,7 +50,7 @@ function GymLeaderCard({ leader, index, regionColor }: { leader: GymLeader; inde
             <div className="w-full sm:w-[150px] shrink-0 border-b-[3px] sm:border-b-0 sm:border-r-[3px] border-[#111111] flex flex-col items-center justify-center p-4 relative" style={{ backgroundColor: "#FAFAFA" }}>
                 {/* Background Pattern / Type Color Hint */}
                 <div className="absolute inset-0 opacity-10" style={{ backgroundColor: leader.typeColor }} />
-                
+
                 {/* Badge */}
                 <div className="absolute top-2 left-2 z-10">
                     <div className="w-9 h-9 flex items-center justify-center bg-white border-[2px] border-[#111] shadow-[2px_2px_0_#111]">
@@ -62,7 +62,7 @@ function GymLeaderCard({ leader, index, regionColor }: { leader: GymLeader; inde
                 <div className="absolute top-2 right-2 bg-[#111] text-white font-['Press_Start_2P'] text-[10px] px-2 py-1">
                     #{index + 1}
                 </div>
-                
+
                 {/* Sprite */}
                 <div className="relative w-28 h-28 mt-6 z-10 transition-transform duration-300 group-hover:scale-110">
                     {leaderSprite ? <Image src={leaderSprite} alt={leader.name} fill className="object-contain" unoptimized /> : null}
@@ -75,10 +75,10 @@ function GymLeaderCard({ leader, index, regionColor }: { leader: GymLeader; inde
                     <div>
                         <h3 className="font-['Press_Start_2P'] text-[13px] sm:text-[15px] text-[#111111] uppercase leading-relaxed">{leader.name}</h3>
                         <div className="flex flex-wrap items-center gap-2 mt-2">
-                             <TypeBadge type={leader.type} color={leader.typeColor} />
-                             {leader.city && (
+                            <TypeBadge type={leader.type} color={leader.typeColor} />
+                            {leader.city && (
                                 <span className="font-['Nunito'] font-bold text-[11px] bg-[#111] text-white px-2 py-0.5 uppercase tracking-wider">{leader.city}</span>
-                             )}
+                            )}
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ function GymLeaderCard({ leader, index, regionColor }: { leader: GymLeader; inde
                             "{leader.description}"
                         </p>
                     )}
-                    
+
                     {leader.strategy && (
                         <div className="bg-[#f5f5f5] border-[2px] border-[#111] p-2.5 relative shadow-[2px_2px_0_#111]">
                             <div className="flex items-center gap-1.5 mb-1.5 text-[#CC0000]">
@@ -125,7 +125,7 @@ function GymLeaderCard({ leader, index, regionColor }: { leader: GymLeader; inde
 function EliteCard({ member, index }: { member: EliteMember; index: number }) {
     const isChampion = member.role === "champion";
     const highlightColor = isChampion ? "#CC0000" : "#111111";
-    const leaderSprite = member.spriteKey ? GYM_LEADER_SPRITES[member.spriteKey as keyof typeof GYM_LEADER_SPRITES] : "";
+    const leaderSprite = member.spriteKey ? ELITE_SPRITES[member.spriteKey as keyof typeof ELITE_SPRITES] : "";
 
     return (
         <motion.div
@@ -140,14 +140,14 @@ function EliteCard({ member, index }: { member: EliteMember; index: number }) {
             {/* Left Area (Dark Mode for Elite) */}
             <div className={`w-full sm:w-[170px] shrink-0 border-b-[4px] sm:border-b-0 sm:border-r-[4px] border-[${highlightColor}] flex flex-col items-center justify-center p-4 relative overflow-hidden`} style={{ backgroundColor: "#151515" }}>
                 <div className="absolute inset-0 opacity-20" style={{ backgroundColor: member.typeColor }} />
-                
+
                 {/* Role Label */}
                 <div className="absolute top-2 left-2 bg-white border-[2px] px-2 py-1.5 z-10" style={{ borderColor: highlightColor, boxShadow: `2px 2px 0 ${highlightColor}` }}>
                     <span className="font-['Press_Start_2P'] text-[6px] tracking-widest uppercase" style={{ color: highlightColor }}>
                         {isChampion ? "CAMPEÓN REGIONAL" : "ALTO MANDO"}
                     </span>
                 </div>
-                
+
                 <div className="relative w-[110px] h-[110px] mt-8 z-10 transition-transform duration-500 group-hover:scale-110">
                     {leaderSprite ? <Image src={leaderSprite} alt={member.name} fill className="object-contain" unoptimized /> : null}
                 </div>
@@ -169,7 +169,7 @@ function EliteCard({ member, index }: { member: EliteMember; index: number }) {
                             "{member.description}"
                         </p>
                     )}
-                    
+
                     {member.strategy && (
                         <div className="bg-white border-[2px] border-[#111] p-3 shadow-[3px_3px_0_#111]">
                             <div className="flex items-center gap-2 mb-2 text-[#CC0000]">
@@ -298,9 +298,9 @@ export function RegionLeagueSection({ regionName, regionColor }: RegionLeagueSec
                             ))}
                         </div>
                     )}
-                    
+
                     <AnimatePresence mode="wait">
-                        <motion.div 
+                        <motion.div
                             key={activeEliteGame}
                             className="grid grid-cols-1 lg:grid-cols-2 gap-8 pb-4"
                             initial={{ opacity: 0 }}

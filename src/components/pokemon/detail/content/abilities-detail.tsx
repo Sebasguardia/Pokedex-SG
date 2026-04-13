@@ -78,7 +78,7 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
             }}
         >
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-5 gap-3 border-b-2 border-[#111111]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 gap-3 border-b-2 border-[#111111]">
                 <div className="flex items-center gap-3">
                     <span className="font-['Press_Start_2P'] text-[12px] text-[#111111] uppercase tracking-tighter">
                         {displayName}
@@ -105,15 +105,15 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
             {/* Divider Accent (Removed redundant ones) */}
 
             {isLoading ? (
-                <div className="p-6">
+                <div className="p-4 sm:p-6">
                     <div className="h-5 bg-[#F8F8F8] border border-[#E0E0E0] animate-pulse mb-3" />
                     <div className="h-5 bg-[#F8F8F8] border border-[#E0E0E0] animate-pulse w-3/4" />
                 </div>
             ) : (
-                <div className="p-6 space-y-6">
+                <div className="p-4 sm:p-6 space-y-6">
                     {/* Main Effect */}
                     {mainText && (
-                        <div className="relative p-5 bg-[#F9F9F9] border-2 border-[#111111] shadow-inner mt-4">
+                        <div className="relative p-4 sm:p-5 bg-[#F9F9F9] border-2 border-[#111111] shadow-inner mt-4">
                             <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#111111] font-['Press_Start_2P'] text-[8px] text-[#111111] shadow-[2px_2px_0_#111111]">EFECTO</span>
                             <p className="font-['Nunito'] text-[15px] font-black text-[#111111] leading-[1.6]">
                                 {mainText}
@@ -126,7 +126,7 @@ function AbilityCard({ abilitySlot, pokemonId, index }: { abilitySlot: PokemonAb
 
                     {/* Short effect */}
                     {showShortEffect && (
-                        <div className="relative p-5 border-l-4 border-[#CC0000] bg-[#FFF5F5] border-y border-r border-[#111111] shadow-[2px_2px_0_rgba(204,0,0,0.1)] mt-8">
+                        <div className="relative p-4 sm:p-5 border-l-4 border-[#CC0000] bg-[#FFF5F5] border-y border-r border-[#111111] shadow-[2px_2px_0_rgba(204,0,0,0.1)] mt-8">
                             <span className="absolute -top-[12px] left-4 px-3 py-[4px] bg-white border-2 border-[#CC0000] font-['Press_Start_2P'] text-[8px] text-[#CC0000] shadow-[2px_2px_0_rgba(204,0,0,0.1)]">RESUMEN</span>
                             <p className="font-['Nunito'] text-[14px] font-bold italic text-[#333333]">{shortEffectEntry.text}</p>
                         </div>
@@ -238,7 +238,7 @@ export function AbilitiesDetail({ abilities, pokemonId }: Props) {
 
     return (
         <div className="space-y-4">
-            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] mb-6 flex items-center gap-3">
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] mb-6 flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#111111]" />
                 HABILIDADES
                 <span className="flex-1 h-[2px] bg-[#E0E0E0]" />

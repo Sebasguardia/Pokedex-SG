@@ -2,108 +2,91 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import * as Tooltip from "@radix-ui/react-tooltip";
+import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
 import {
     GENERATION_ORDER,
-    GENERATION_COLORS,
     GENERATION_ROMAN,
-    GENERATION_NAMES_ES,
-    GENERATION_YEARS,
-    GENERATIONS,
 } from "@/lib/constants/generations.constants";
 
 interface GenerationNavStripProps {
     currentGeneration: string;
+    genColor: string;
 }
 
-export function GenerationNavStrip({ currentGeneration }: GenerationNavStripProps) {
+export function GenerationNavStrip({ currentGeneration, genColor }: GenerationNavStripProps) {
+    const currentIndex = GENERATION_ORDER.indexOf(currentGeneration as any);
+    const prevGen = currentIndex > 0 ? GENERATION_ORDER[currentIndex - 1] : null;
+    const nextGen = currentIndex < GENERATION_ORDER.length - 1 ? GENERATION_ORDER[currentIndex + 1] : null;
+
     return (
-        <section>
-            {/* Section header + separador doble */}
-            <div className="flex items-center gap-4 mb-4">
-                <h2 className="font-press-start text-[14px] uppercase tracking-tighter text-[#111111] whitespace-nowrap">
-                    Otras Generaciones
-                </h2>
-                <div className="h-px bg-[#E0E0E0] flex-1" />
-            </div>
-            <div className="relative h-[5px] mb-6">
-                <motion.div
-                    className="absolute top-0 left-0 w-full h-[3px] bg-[#111111] origin-left"
-                    initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
-                    transition={{ duration: 0.5 }}
-                />
-                <motion.div
-                    className="absolute bottom-0 right-0 w-full h-[2px] bg-[#CC0000] origin-right"
-                    initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.1 }}
-                />
-            </div>
-
-            <Tooltip.Provider delayDuration={150}>
-                <div className="flex flex-wrap gap-2 justify-center">
-                    {GENERATION_ORDER.map((name, i) => {
-                        const isCurrent = name === currentGeneration;
-                        const color = GENERATION_COLORS[name] ?? "#CC0000";
-                        const roman = GENERATION_ROMAN[name] ?? "?";
-                        const nameEs = GENERATION_NAMES_ES[name] ?? name;
-                        const year = GENERATION_YEARS[name] ?? "????";
-                        const count = GENERATIONS.find((g) => g.name === name)?.range;
-                        const pkCount = count ? count[1] - count[0] + 1 : "?";
-
-                        return (
-                            <Tooltip.Root key={name}>
-                                <Tooltip.Trigger asChild>
-                                    <Link href={`/generations/${name}`}>
-                                        <motion.div
-                                            className="px-4 py-2 font-press-start text-[10px] border-2 transition-all cursor-pointer"
-                                            style={
-                                                isCurrent
-                                                    ? {
-                                                        backgroundColor: color,
-                                                        borderColor: color,
-                                                        color: "#ffffff",
-                                                        boxShadow: `3px 3px 0 #111111`,
-                                                    }
-                                                    : {
-                                                        backgroundColor: `${color}18`,
-                                                        borderColor: color,
-                                                        color: color,
-                                                    }
-                                            }
-                                            initial={{ opacity: 0, y: 10 }}
-                                            whileInView={{ opacity: 1, y: 0 }}
-                                            viewport={{ once: true }}
-                                            transition={{ delay: i * 0.05 }}
-                                            whileHover={
-                                                isCurrent
-                                                    ? {}
-                                                    : {
-                                                        backgroundColor: color,
-                                                        color: "#ffffff",
-                                                        scale: 1.06,
-                                                        transition: { duration: 0.15 },
-                                                    }
-                                            }
-                                        >
-                                            {roman}
-                                        </motion.div>
-                                    </Link>
-                                </Tooltip.Trigger>
-                                <Tooltip.Portal>
-                                    <Tooltip.Content
-                                        className="bg-[#111111] text-white font-nunito text-[11px] px-3 py-2 z-50 text-center"
-                                        sideOffset={6}
-                                    >
-                                        <p className="font-bold">{nameEs}</p>
-                                        <p className="text-[#AAAAAA] text-[10px]">{pkCount} Pokémon · {year}</p>
-                                        <Tooltip.Arrow className="fill-[#111111]" />
-                                    </Tooltip.Content>
-                                </Tooltip.Portal>
-                            </Tooltip.Root>
-                        );
-                    })}
+        <section className="pt-8 border-t-[4px] border-[#111111] mt-12">
+            <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4">
+                
+                {/* Prev Button */}
+                <div className="flex-1">
+                    {prevGen ? (
+                        <Link href={`/generations/${prevGen}`} className="block w-full group">
+                            <div className="flex items-center gap-3 border-[3px] border-[#111111] bg-white p-4 transition-all group-hover:-translate-x-2 shadow-[4px_4px_0_#111111] group-hover:shadow-[6px_4px_0_#111111]">
+                                <div className="w-8 h-8 border-2 border-[#111111] bg-[#111111] text-white flex items-center justify-center shrink-0">
+                                    <ChevronLeft size={20} />
+                                </div>
+                                <div className="flex-1 text-left min-w-0">
+                                    <p className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-1">ANTERIOR</p>
+                                    <p className="font-['Press_Start_2P'] text-[12px] sm:text-[14px] text-[#111111] truncate">GEN {GENERATION_ROMAN[prevGen]}</p>
+                                </div>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className="flex items-center gap-3 border-[3px] border-[#E0E0E0] bg-[#FAFAFA] p-4 opacity-50 cursor-not-allowed">
+                            <div className="w-8 h-8 border-2 border-[#E0E0E0] bg-[#E0E0E0] text-white flex items-center justify-center shrink-0">
+                                <ChevronLeft size={20} />
+                            </div>
+                            <div className="flex-1 text-left min-w-0">
+                                <p className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-1">INICIO</p>
+                                <p className="font-['Press_Start_2P'] text-[12px] sm:text-[14px] text-[#AAAAAA] truncate">---</p>
+                            </div>
+                        </div>
+                    )}
                 </div>
-            </Tooltip.Provider>
+
+                {/* Back to list */}
+                <div className="flex justify-center sm:shrink-0">
+                    <Link href="/generations" className="group">
+                        <div className="flex flex-col items-center justify-center p-3 border-[3px] border-[#111111] bg-[#111111] text-white shadow-[4px_4px_0_#CC0000] group-hover:shadow-[0px_0px_0_#111111] group-hover:translate-y-[4px] transition-all">
+                            <Grid size={24} />
+                            <span className="font-['Press_Start_2P'] text-[8px] mt-2 tracking-widest hidden sm:block">TODAS</span>
+                        </div>
+                    </Link>
+                </div>
+
+                {/* Next Button */}
+                <div className="flex-1">
+                    {nextGen ? (
+                        <Link href={`/generations/${nextGen}`} className="block w-full group">
+                            <div className="flex items-center gap-3 border-[3px] border-[#111111] bg-white p-4 transition-all group-hover:translate-x-2 shadow-[4px_4px_0_#111111] group-hover:shadow-[2px_4px_0_#111111]">
+                                <div className="flex-1 text-right min-w-0">
+                                    <p className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-1">SIGUIENTE</p>
+                                    <p className="font-['Press_Start_2P'] text-[12px] sm:text-[14px] text-[#111111] truncate">GEN {GENERATION_ROMAN[nextGen]}</p>
+                                </div>
+                                <div className="w-8 h-8 border-2 border-[#111111] bg-[#111111] text-white flex items-center justify-center shrink-0">
+                                    <ChevronRight size={20} />
+                                </div>
+                            </div>
+                        </Link>
+                    ) : (
+                        <div className="flex items-center gap-3 border-[3px] border-[#E0E0E0] bg-[#FAFAFA] p-4 opacity-50 cursor-not-allowed">
+                            <div className="flex-1 text-right min-w-0">
+                                <p className="font-['Press_Start_2P'] text-[9px] text-[#888888] mb-1">FINAL</p>
+                                <p className="font-['Press_Start_2P'] text-[12px] sm:text-[14px] text-[#AAAAAA] truncate">---</p>
+                            </div>
+                            <div className="w-8 h-8 border-2 border-[#E0E0E0] bg-[#E0E0E0] text-white flex items-center justify-center shrink-0">
+                                <ChevronRight size={20} />
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+            </div>
         </section>
     );
 }

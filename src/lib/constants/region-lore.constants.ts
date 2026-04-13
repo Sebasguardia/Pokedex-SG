@@ -591,6 +591,11 @@ export const REGION_GYM_LEADERS: Record<string, { game: string; leaders: GymLead
                     team: [{ id: 507, name: "Herdier", level: 18 }, { id: 505, name: "Watchog", level: 20 }]
                 },
                 {
+                    name: "Roxie", spriteKey: "roxie", badge: "Toxic Badge", badgeKey: "unova_toxic", type: "Poison", typeColor: "#A040A0", city: "Ciudad Hormigon",
+                    description: "La líder del gimnasio de Ciudad Hormigon. Es una estrella del rock venenosa.", strategy: "Usa movimientos de estado y veneno. Su equipo es resistente.",
+                    team: [{ id: 109, name: "Koffing", level: 22 }, { id: 41, name: "Zubat", level: 22 }, { id: 545, name: "Scolipede", level: 24 }]
+                },
+                {
                     name: "Burgh", spriteKey: "burgh", badge: "Insecto", badgeKey: "unova_insect", type: "Bicho", typeColor: "#A8B820", city: "Ciudad Porcelana",
                     description: "Un artista y escultor que ve la belleza en los intrincados diseños de los Pokémon bicho.", strategy: "Leavanny es muy rápido. Los ataques de Fuego o Volador son tu mejor opción para quemar su estrategia.",
                     team: [{ id: 557, name: "Dwebble", level: 21 }, { id: 544, name: "Whirlipede", level: 21 }, { id: 542, name: "Leavanny", level: 23 }]
@@ -619,6 +624,11 @@ export const REGION_GYM_LEADERS: Record<string, { game: string; leaders: GymLead
                     name: "Drayden", spriteKey: "drayden", badge: "Leyenda", badgeKey: "unova_legend", type: "Dragón", typeColor: "#7038F8", city: "Ciudad Caolín",
                     description: "El alcalde de Ciudad Caolín y un veterano respetado que ha entrenado dragones por generaciones.", strategy: "Haxorus tiene un Ataque altísimo. Derrótalo antes de que use Danza Dragón.",
                     team: [{ id: 611, name: "Fraxure", level: 41 }, { id: 621, name: "Druddigon", level: 41 }, { id: 612, name: "Haxorus", level: 43 }]
+                },
+                {
+                    name: "Marlon", spriteKey: "marlon", badge: "Wave Badge", badgeKey: "unova_wave", type: "Water", typeColor: "#6690F0", city: "Ciudad Marga",
+                    description: "El líder del gimnasio de Ciudad Marga. Es un hombre relajado que vive en una ciudad costera.", strategy: "Usa Pokémon de agua. Su equipo es fuerte contra tipos fuego.",
+                    team: [{ id: 767, name: "Carracosta", level: 25 }, { id: 594, name: "Jellicent", level: 25 }, { id: 230, name: "Kingdra", level: 27 }]
                 },
             ],
         },
@@ -740,6 +750,16 @@ export const REGION_GYM_LEADERS: Record<string, { game: string; leaders: GymLead
                     name: "Raihan", spriteKey: "raihan", badge: "Dragón", badgeKey: "galar_dragon", type: "Dragón", typeColor: "#7038F8", city: "Ciudad Hammerlocke",
                     description: "El eterno rival del campeón. Utiliza el clima de arena para potenciar sus tácticas de combate doble.", strategy: "Es un Combate Doble. Usa el clima a tu favor o Pokémon resistentes a la Arena como el tipo Acero o Roca.",
                     team: [{ id: 832, name: "Dubwool", level: 47 }, { id: 844, name: "Sandaconda", level: 47 }, { id: 330, name: "Flygon", level: 47 }, { id: 884, name: "Duraludon", level: 48 }]
+                },
+                {
+                    name: "Mustard", spriteKey: "mustard", badge: "Acero", badgeKey: "galar_steel", type: "Acero", typeColor: "#B8B8D0", city: "Torre de los Pokémon",
+                    description: "El maestro de la Torre de los Pokémon. Un antiguo campeón que ahora entrena a los retadores.", strategy: "Su Urshifu usa Gigamax y Golpe Fractal. Necesitas ataques de tipo Fuego o Lucha para atravesar su defensa.",
+                    team: [{ id: 892, name: "Urshifu", level: 60 }]
+                },
+                {
+                    name: "Peonia", spriteKey: "peonia", badge: "Campeón", badgeKey: "galar_champion", type: "Normal", typeColor: "#A8A878", city: "Ciudad Wyndon",
+                    description: "La hermana del Campeón Leon. Gestora de la Torre de los Pokémon y entrenadora de élite.", strategy: "Su Coalossal usa Gigamax. Usa ataques de tipo Agua o Tierra para contrarrestar su poder rocoso.",
+                    team: [{ id: 713, name: "Quaxwell", level: 62 }, { id: 713, name: "Quaxwell", level: 62 }, { id: 839, name: "Coalossal", level: 65 }]
                 },
             ],
         },
@@ -1062,7 +1082,7 @@ export const REGION_ELITE: Record<string, { game: string; members: EliteMember[]
                     team: [{ id: 823, name: "Copperajah", level: 58 }, { id: 462, name: "Magnezone", level: 58 }, { id: 437, name: "Bronzong", level: 58 }, { id: 227, name: "Corviknight", level: 58 }, { id: 959, name: "Tinkaton", level: 59 }]
                 },
                 {
-                    name: "Larry", spriteKey: "larry-elite", type: "Volador", typeColor: "#98D8D8", role: "elite",
+                    name: "Larry", spriteKey: "larry", type: "Volador", typeColor: "#98D8D8", role: "elite",
                     description: "El pluriempleado de la liga. Ahora cambia su traje gris por el cielo infinito del tipo volador.", strategy: "Flamigo con Tera Volador es muy peligroso. El tipo Eléctrico o Hielo te dará la victoria rápidamente.",
                     team: [{ id: 823, name: "Tropius", level: 59 }, { id: 398, name: "Staraptor", level: 59 }, { id: 956, name: "Oricorio", level: 59 }, { id: 959, name: "Altaria", level: 59 }, { id: 973, name: "Flamigo", level: 60 }]
                 },

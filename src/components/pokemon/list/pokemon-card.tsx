@@ -51,7 +51,7 @@ export function PokemonCard({ name, url, index = 0, indexTypes }: PokemonCardPro
             <Link href={`/pokemon/${id}`} className="block h-full w-full outline-none group cursor-pointer">
                 <motion.div
                     whileHover="hover"
-                    className="relative w-full h-[220px] bg-white border-2 border-[#111111] flex flex-col justify-between transition-colors duration-300"
+                    className="relative w-full h-[180px] sm:h-[220px] bg-white border-2 border-[#111111] flex flex-col justify-between transition-colors duration-300"
                     variants={{
                         hover: {
                             x: -2, y: -2,
@@ -87,14 +87,15 @@ export function PokemonCard({ name, url, index = 0, indexTypes }: PokemonCardPro
                         <motion.div
                             variants={{ hover: { scale: 1.15, y: -5 } }}
                             transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                            className="scale-75 sm:scale-100"
                         >
                             <PokemonSprite id={id} name={name} shiny={shinyMode} size={90} useArtwork={false} className="drop-shadow-none" />
                         </motion.div>
                     </div>
 
                     {/* BOTTOM AREA */}
-                    <div className="z-10 p-3 pt-0 flex justify-center w-full bg-white/60 backdrop-blur-[2px]">
-                        <h3 className="font-nunito text-[14px] font-bold text-[#111111] group-hover:text-[#CC0000] truncate transition-colors text-center w-full">
+                    <div className="z-10 p-2 sm:p-3 pt-0 flex justify-center w-full bg-white/60 backdrop-blur-[2px]">
+                        <h3 className="font-nunito text-[12px] sm:text-[14px] font-bold text-[#111111] group-hover:text-[#CC0000] truncate transition-colors text-center w-full">
                             {formattedName}
                         </h3>
                     </div>

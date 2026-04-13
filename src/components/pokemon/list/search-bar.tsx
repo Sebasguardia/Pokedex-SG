@@ -48,7 +48,7 @@ export function SearchBar({ value, onChange, totalCount }: SearchBarProps) {
     }
 
     return (
-        <div className="relative w-full my-[20px]">
+        <div className="relative w-full">
             <motion.div
                 className="relative w-full bg-white h-[46px] md:h-[52px] flex items-center group placeholder-[#888888]"
                 animate={{

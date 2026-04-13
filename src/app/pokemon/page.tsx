@@ -327,10 +327,6 @@ function PokedexPageContent() {
                 </aside>
 
                 {/* MOBILE DRAWER */}
-                <MobileFilterButton
-                    count={activeFiltersCount}
-                    onClick={() => setIsMobileFilterOpen(true)}
-                />
                 <MobileFilterDrawer
                     open={isMobileFilterOpen}
                     onClose={() => setIsMobileFilterOpen(false)}
@@ -342,11 +338,19 @@ function PokedexPageContent() {
                 <div className="flex-1 w-full min-w-0 z-0 relative">
                     <PokedexHeader count={filteredAndSortedItems.length} />
 
-                    <SearchBar
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        totalCount={filteredAndSortedItems.length}
-                    />
+                    <div className="flex gap-3 lg:block my-[20px] w-full items-center">
+                        <div className="flex-1">
+                            <SearchBar
+                                value={searchQuery}
+                                onChange={handleSearchChange}
+                                totalCount={filteredAndSortedItems.length}
+                            />
+                        </div>
+                        <MobileFilterButton
+                            count={activeFiltersCount}
+                            onClick={() => setIsMobileFilterOpen(true)}
+                        />
+                    </div>
 
                     <ActiveFilterChips
                         typeFilter={typeFilter}

@@ -82,7 +82,7 @@ export function SpritesGallery({ sprites, pokemonId }: Props) {
 
     return (
         <div className="space-y-6 mb-8">
-            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] mb-6 flex items-center gap-3">
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] mb-6 flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#111111]" />
                 GALERÍA DE SPRITES
                 <span className="flex-1 h-[2px] bg-[#E0E0E0]" />

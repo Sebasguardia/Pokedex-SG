@@ -2,64 +2,89 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { GENERATION_ORDER, GENERATION_COLORS } from "@/lib/constants/generations.constants";
+import { Layers } from "lucide-react";
+import { GENERATION_ORDER, GENERATION_COLORS, GENERATION_ROMAN } from "@/lib/constants/generations.constants";
 
 export function PageTransitionGenerations() {
-    const [visible, setVisible] = useState(true);
+    const [phase, setPhase] = useState<"loading" | "exit-content" | "exit-bg" | "done">("loading");
 
     useEffect(() => {
-        const t = setTimeout(() => setVisible(false), 900);
-        return () => clearTimeout(t);
+        // Step 1: Hide inner text
+        const t1 = setTimeout(() => setPhase("exit-content"), 1200);
+        // Step 2: Open timeline bars
+        const t2 = setTimeout(() => setPhase("exit-bg"), 1600);
+        // Step 3: Done
+        const t3 = setTimeout(() => setPhase("done"), 3200);
+        return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     }, []);
 
     return (
         <AnimatePresence>
-            {visible && (
-                <motion.div
-                    className="fixed inset-0 z-[200] bg-[#111111] flex flex-col items-center justify-center pointer-events-none"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35, delay: 0.55 }}
-                >
-                    {/* 9 círculos de colores */}
-                    <div className="flex gap-3 mb-6">
-                        {GENERATION_ORDER.map((name, i) => (
-                            <motion.div
-                                key={name}
-                                className="rounded-full"
-                                style={{ backgroundColor: GENERATION_COLORS[name], width: 14, height: 14 }}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: [0, 1.3, 1], opacity: [0, 1, 1] }}
-                                exit={{ 
-                                    scale: 0, 
-                                    opacity: 0, 
-                                    transition: { duration: 0.2, delay: (8 - i) * 0.03 } 
-                                }}
-                                transition={{
-                                    scale: { duration: 0.35, delay: i * 0.05, ease: "backOut" },
-                                    opacity: { duration: 0.2, delay: i * 0.05 },
-                                }}
-                            />
-                        ))}
-                    </div>
+            {phase !== "done" && (
+                <div className="fixed inset-0 z-[200] pointer-events-none flex overflow-hidden bg-[#111111]">
+                    
+                    {/* 9 Franjas de colores por generación */}
+                    {GENERATION_ORDER.map((name, i) => (
+                        <motion.div 
+                            key={name}
+                            className="flex-1 h-full relative overflow-hidden flex items-end pb-8 justify-center border-r-[2px] border-black/50"
+                            style={{ 
+                                backgroundColor: GENERATION_COLORS[name] || "#CC0000",
+                            }}
+                            initial={{ y: "0%" }}
+                            animate={(phase === "exit-bg") ? { y: i % 2 === 0 ? "100%" : "-100%" } : { y: "0%" }}
+                            transition={{ 
+                                duration: 0.85, 
+                                delay: phase === "exit-bg" ? i * 0.06 : 0, 
+                                ease: [0.76, 0, 0.24, 1] 
+                            }}
+                        >
+                            {/* Número Romano grande como marca de agua */}
+                            <div 
+                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-['Press_Start_2P'] text-[40px] md:text-[80px] text-white opacity-20 pointer-events-none select-none"
+                            >
+                                {GENERATION_ROMAN[name]}
+                            </div>
 
-                    {/* Label */}
-                    <motion.p
-                        className="font-press-start text-[10px] text-white opacity-60 tracking-widest"
-                        initial={{ opacity: 0, y: 6 }}
-                        animate={{ opacity: 0.6, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                    >
-                        GENERACIONES
-                    </motion.p>
+                            {/* Textito inferior */}
+                            <div className="font-['JetBrains_Mono'] text-[10px] sm:text-[14px] text-white font-bold opacity-80" style={{ writingMode: "vertical-rl" }}>
+                                GEN {GENERATION_ROMAN[name]}
+                            </div>
+                        </motion.div>
+                    ))}
 
-                    {/* Panel negro slide-up al salir */}
-                    <motion.div
-                        className="absolute inset-0 bg-[#111111]"
-                        exit={{ y: "-100%" }}
-                        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+                    {/* Filtro oscuro para que el texto central destaque contundentemente */}
+                    <motion.div 
+                        className="absolute inset-0 bg-[#111111]/85"
+                        initial={{ opacity: 1 }}
+                        animate={(phase === "exit-bg") ? { opacity: 0 } : { opacity: 1 }}
+                        transition={{ duration: 0.4 }}
                     />
-                </motion.div>
+
+                    {/* Centered Overlay */}
+                    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+                        
+                        {/* Dossier Icon */}
+                        <motion.div 
+                            initial={{ scale: 0, rotate: 180 }}
+                            animate={(phase === "exit-content" || phase === "exit-bg") ? { scale: 0, opacity: 0 } : { scale: 1, rotate: 0, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.4 }}
+                            className="bg-white p-6 border-[8px] border-[#111111] shadow-[12px_12px_0_#111111] z-20 transform -translate-y-4"
+                        >
+                            <Layers size={70} className="text-[#111111]" strokeWidth={3} />
+                        </motion.div>
+
+                        {/* Text Label */}
+                        <motion.h2 
+                            className="font-['Press_Start_2P'] text-center mt-6 text-white bg-[#111111] border-[6px] border-[#111111] px-4 md:px-6 py-4 shadow-[8px_8px_0_#CC0000] text-[12px] md:text-[18px] z-20 uppercase"
+                            initial={{ scale: 0, opacity: 0 }}
+                            animate={(phase === "exit-content" || phase === "exit-bg") ? { scale: 0, opacity: 0 } : { scale: 1, opacity: 1 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.6 }}
+                        >
+                            Archivos Generacionales
+                        </motion.h2>
+                    </div>
+                </div>
             )}
         </AnimatePresence>
     );

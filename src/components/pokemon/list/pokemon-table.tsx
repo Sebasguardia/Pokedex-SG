@@ -55,7 +55,7 @@ function PokemonTableRow({ p, index }: { p: NamedAPIResource, index: number }) {
             <div className="flex-1 font-nunito text-[14px] font-bold text-[#111111] capitalize group-hover:text-[#CC0000] transition-colors">
                 {formatPokemonName(p.name)}
             </div>
-            <div className="w-[120px] hidden sm:flex gap-[4px] items-center">
+            <div className="w-[120px] hidden md:flex gap-[4px] items-center">
                 {details?.types?.map((t: any) => (
                     <TypeIcon
                         key={t.type.name}
@@ -64,7 +64,7 @@ function PokemonTableRow({ p, index }: { p: NamedAPIResource, index: number }) {
                     />
                 ))}
             </div>
-            <div className="w-[80px] text-right font-mono text-[13px] text-[#444444]">
+            <div className="w-[80px] hidden sm:block text-right font-mono text-[13px] text-[#444444]">
                 {totalStats > 0 ? (
                     <span className={isHighTotal ? "text-[#CC0000] font-bold" : ""}>
                         {totalStats} {isHighTotal && "✨"}
@@ -138,8 +138,8 @@ export function PokemonTable({ pokemon, isLoading }: PokemonTableProps) {
                         </motion.div>
                     )}
                 </div>
-                <div className="w-[120px] hidden sm:block font-pixel text-[8px]">TIPOS</div>
-                <div className="w-[80px] text-right font-pixel text-[8px]">TOTAL</div>
+                <div className="w-[120px] hidden md:block font-pixel text-[8px]">TIPOS</div>
+                <div className="w-[80px] hidden sm:block text-right font-pixel text-[8px]">TOTAL</div>
                 <div className="w-[60px]" />
             </div>
 

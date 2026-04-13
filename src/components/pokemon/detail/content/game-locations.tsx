@@ -70,18 +70,18 @@ export function GameLocations({ pokemonId }: Props) {
     return (
         <div className="mb-10">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
-                <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] flex items-center gap-3">
+                <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] flex items-center gap-3">
                     <span className="w-3 h-3 bg-[#111111]" />
                     UBICACIONES EN JUEGOS
                 </h3>
 
                 {versions.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-1.5 sm:gap-2">
                         {versions.map(ver => (
                             <button
                                 key={ver}
                                 onClick={() => setSelectedVersion(ver)}
-                                className="font-['Press_Start_2P'] text-[8px] px-3 py-2 transition-all relative"
+                                className="font-['Press_Start_2P'] text-[7px] sm:text-[8px] px-2 sm:px-3 py-1.5 sm:py-2 transition-all relative"
                                 style={{
                                     backgroundColor: activeVersion === ver ? "#CC0000" : "#FFFFFF",
                                     color: activeVersion === ver ? "white" : "#111111",

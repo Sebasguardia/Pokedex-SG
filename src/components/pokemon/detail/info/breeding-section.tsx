@@ -15,8 +15,8 @@ interface Props {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
     return (
-        <div className="flex items-center gap-3 mt-10 mb-6">
-            <h3 className="font-['Press_Start_2P'] text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
+        <div className="flex items-center gap-3 mt-8 sm:mt-10 mb-4 sm:mb-6">
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] text-[#111111] tracking-wide m-0 flex items-center gap-3">
                 <span className="w-3 h-3 bg-[#CC0000]" />
                 {children}
             </h3>
@@ -78,9 +78,9 @@ export function BreedingSection({ species }: Props) {
     return (
         <div className="mb-6">
             <SectionTitle>CRÍA</SectionTitle>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {/* Grupos Huevo */}
-                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                <div className="p-4 sm:p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
                     <Egg size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4">
                         <Egg size={20} className="text-[#CC0000]" strokeWidth={3} />
@@ -103,7 +103,7 @@ export function BreedingSection({ species }: Props) {
                 </div>
 
                 {/* Ciclos */}
-                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                <div className="p-4 sm:p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
                     <Timer size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4">
                         <Timer size={20} className="text-[#CC0000]" strokeWidth={3} />
@@ -122,7 +122,7 @@ export function BreedingSection({ species }: Props) {
                 </div>
 
                 {/* Género */}
-                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                <div className="p-4 sm:p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
                     <Mars size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4 z-10 relative">
                         <Mars size={20} className="text-[#CC0000]" strokeWidth={3} />
@@ -134,7 +134,7 @@ export function BreedingSection({ species }: Props) {
                 </div>
 
                 {/* Forma Bebé */}
-                <div className="p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
+                <div className="p-4 sm:p-5 relative overflow-hidden group hover:translate-y-[-2px] transition-all duration-200" style={{ backgroundColor: "#FFFFFF", border: "3px solid #111111", boxShadow: "6px 6px 0 #111111" }}>
                     <Baby size={48} className="absolute -top-2 -right-2 opacity-5 group-hover:opacity-10 transition-opacity" />
                     <div className="flex items-center gap-2 mb-4 z-10 relative">
                         <Baby size={20} className="text-[#CC0000]" strokeWidth={3} />

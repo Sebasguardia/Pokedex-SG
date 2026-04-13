@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, useRef, useEffect } from "react"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import * as Tabs from "@radix-ui/react-tabs"
 import { useParams, useRouter } from "next/navigation"
@@ -79,8 +79,6 @@ export default function PokemonDetailPage() {
     const [isShiny, setIsShiny] = useState(false)
     const [spriteMode, setSpriteMode] = useState<SpriteMode>("front")
     const [isCrying, setIsCrying] = useState(false)
-    const [activeTab, setActiveTab] = useState<string>("informacion")
-    const [expandedMove, setExpandedMove] = useState<string | null>(null)
 
     // Data
     const { data: pokemon, isLoading, isError } = usePokemon(params.id)
@@ -90,6 +88,60 @@ export default function PokemonDetailPage() {
         ? getIdFromUrl(species.evolution_chain.url)
         : null
     const { data: evolutionData } = useEvolutionChain(evolutionChainId ?? 0)
+
+    const [activeTab, setActiveTab] = useState<string>("informacion")
+    const [expandedMove, setExpandedMove] = useState<string | null>(null)
+
+    // Tab Scrolling Logic
+    const scrollerRef = useRef<HTMLDivElement>(null)
+    const [showLeftArrow, setShowLeftArrow] = useState(false)
+    const [showRightArrow, setShowRightArrow] = useState(false)
+
+    const checkScroll = useCallback(() => {
+        const el = scrollerRef.current
+        if (!el) return
+        
+        const hasOverflow = el.scrollWidth > el.clientWidth + 2
+        const isAtStart = el.scrollLeft <= 10
+        const isAtEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 10
+        
+        setShowLeftArrow(hasOverflow && !isAtStart)
+        setShowRightArrow(hasOverflow && !isAtEnd)
+    }, [])
+
+    useEffect(() => {
+        const el = scrollerRef.current
+        if (!el) return
+
+        const observer = new ResizeObserver(() => {
+            checkScroll()
+        })
+        observer.observe(el)
+        
+        el.addEventListener("scroll", checkScroll, { passive: true })
+        window.addEventListener("resize", checkScroll)
+        
+        checkScroll()
+        const timers = [100, 500, 1000, 2000].map(ms => setTimeout(checkScroll, ms))
+
+        return () => {
+            observer.disconnect()
+            el.removeEventListener("scroll", checkScroll)
+            window.removeEventListener("resize", checkScroll)
+            timers.forEach(clearTimeout)
+        }
+    }, [checkScroll])
+
+    useEffect(() => {
+        checkScroll()
+    }, [activeTab, pokemon, checkScroll])
+
+    const scroll = (direction: "left" | "right") => {
+        const el = scrollerRef.current
+        if (!el) return
+        const amount = direction === "left" ? -200 : 200
+        el.scrollBy({ left: amount, behavior: "smooth" })
+    }
 
     const { toggleFavorite, isFavorite } = useFavoritesStore()
     const { addPokemon, pokemonIds } = useCompareStore()
@@ -156,12 +208,13 @@ export default function PokemonDetailPage() {
     }, [pokemon])
 
     const handleShare = useCallback(() => {
+        const name = pokemon?.name.split("-").map((w: string) => w[0].toUpperCase() + w.slice(1)).join(" ")
         if (typeof navigator !== "undefined" && navigator.share) {
-            navigator.share({ url: window.location.href, title: pokemonName })
+            navigator.share({ url: window.location.href, title: name })
         } else if (typeof navigator !== "undefined") {
             navigator.clipboard?.writeText(window.location.href)
         }
-    }, [])
+    }, [pokemon])
 
     const renderTransition = () => {
         if (prefersRM) return null
@@ -194,7 +247,7 @@ export default function PokemonDetailPage() {
             {renderTransition()}
 
             <motion.main
-                className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6"
+                className="max-w-[1280px] mx-auto px-4 sm:px-6 py-4 sm:py-6 overflow-x-hidden sm:overflow-x-visible"
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4, duration: 0.4, ease: "easeOut" }}
@@ -210,13 +263,13 @@ export default function PokemonDetailPage() {
                 </Link>
 
                 {/* Main layout — LEAN HERO + CONTENT TABS */}
-                <div className="flex flex-col lg:flex-row gap-8 items-start">
+                <div className="flex flex-col lg:flex-row gap-8 items-start w-full min-w-0 sm:overflow-visible">
 
                     {/* ════════════════════════════════════════
                         LEAN HERO COLUMN (sticky on desktop)
                         Only visual + interactive — no data sections
                     ════════════════════════════════════════ */}
-                    <div className="w-full lg:w-[360px] lg:flex-shrink-0 lg:sticky lg:top-[80px] lg:self-start flex flex-col gap-4">
+                    <div className="w-full min-w-0 max-w-[420px] mx-auto lg:max-w-none lg:mx-0 lg:w-[360px] lg:flex-shrink-0 lg:sticky lg:top-[80px] lg:self-start flex flex-col gap-4">
 
                         {/* Variant Selector (if has multiple forms) */}
                         <PokemonVariantSelector
@@ -274,27 +327,76 @@ export default function PokemonDetailPage() {
                         6 tabs: Información · Estadísticas · Habilidades
                                 Movimientos · Evolución · Más
                     ════════════════════════════════════════ */}
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0 max-w-full">
                         <Tabs.Root value={activeTab} onValueChange={(v) => { setActiveTab(v); setExpandedMove(null) }}>
 
-                            {/* Tab List with traveling indicator */}
-                            <Tabs.List className="flex border-b-4 border-[#111111] mb-8 overflow-x-auto scrollbar-hide gap-2 p-1">
-                                {TABS.map(tab => (
-                                    <Tabs.Trigger key={tab.id} value={tab.id} asChild>
-                                        <button
-                                            className={cn(
-                                                "relative px-6 py-4 font-['Press_Start_2P'] text-[9px] uppercase transition-all duration-200",
-                                                "border-2 border-transparent",
-                                                activeTab === tab.id
-                                                    ? "bg-[#111111] text-white shadow-[4px_4px_0_#CC0000] translate-x-[-2px] translate-y-[-2px]"
-                                                    : "bg-white text-[#888888] hover:text-[#111111] hover:border-[#111111]"
-                                            )}
+                            {/* Tab List with Scroll Arrows */}
+                            <div className="relative mb-6 sm:mb-8 isolate w-full">
+                                <AnimatePresence>
+                                    {showLeftArrow && (
+                                        <motion.button
+                                            key="left-arrow"
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.8 }}
+                                            onClick={(e) => { e.preventDefault(); scroll("left"); }}
+                                            className="absolute left-0 top-1/2 -translate-y-1/2 z-[100] p-1.5 sm:p-2 bg-[#111111] text-white border-2 border-white shadow-[2px_2px_0_#111111] hover:bg-[#333333] transition-all active:scale-95 flex items-center justify-center rounded-sm"
+                                            aria-label="Scroll izquierda"
                                         >
-                                            {tab.label}
-                                        </button>
-                                    </Tabs.Trigger>
-                                ))}
-                            </Tabs.List>
+                                            <ChevronLeft size={20} className="sm:w-6 sm:h-6" strokeWidth={4} />
+                                        </motion.button>
+                                    )}
+                                </AnimatePresence>
+
+                                <Tabs.List asChild>
+                                    <div
+                                        ref={scrollerRef}
+                                        className="flex border-b-4 border-[#111111] overflow-x-auto scrollbar-hide gap-1 sm:gap-2 pt-2 pb-1 px-4 touch-pan-x scroll-smooth w-full max-w-full"
+                                    >
+                                        {TABS.map(tab => (
+                                            <Tabs.Trigger key={tab.id} value={tab.id} asChild>
+                                                <button
+                                                    className={cn(
+                                                        "relative px-3 sm:px-6 py-2.5 sm:py-4 font-['Press_Start_2P'] text-[7px] sm:text-[9px] uppercase transition-all duration-200 whitespace-nowrap flex-shrink-0",
+                                                        "border-2 border-transparent",
+                                                        activeTab === tab.id
+                                                            ? "bg-[#111111] text-white shadow-[4px_4px_0_#CC0000] translate-x-[-2px] translate-y-[-2px]"
+                                                            : "bg-white text-[#888888] hover:text-[#111111] hover:border-[#111111]"
+                                                    )}
+                                                >
+                                                    {tab.label}
+                                                </button>
+                                            </Tabs.Trigger>
+                                        ))}
+                                    </div>
+                                </Tabs.List>
+
+                                <AnimatePresence>
+                                    {showRightArrow && (
+                                        <motion.button
+                                            key="right-arrow"
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.8 }}
+                                            onClick={(e) => { e.preventDefault(); scroll("right"); }}
+                                            className="absolute right-0 top-1/2 -translate-y-1/2 z-[100] p-1.5 sm:p-2 bg-[#CC0000] text-white border-2 border-white shadow-[2px_2px_0_#111111] hover:bg-[#B30000] transition-all active:scale-95 flex items-center justify-center rounded-sm"
+                                            aria-label="Scroll derecha"
+                                        >
+                                            <ChevronRight size={20} className="sm:w-6 sm:h-6" strokeWidth={4} />
+                                        </motion.button>
+                                    )}
+                                </AnimatePresence>
+
+                                {/* Gradient hints for touch users */}
+                                <div className={cn(
+                                    "absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white via-white/40 to-transparent pointer-events-none z-10 transition-opacity duration-300",
+                                    showLeftArrow ? "opacity-100" : "opacity-0"
+                                )} />
+                                <div className={cn(
+                                    "absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white via-white/40 to-transparent pointer-events-none z-10 transition-opacity duration-300",
+                                    showRightArrow ? "opacity-100" : "opacity-0"
+                                )} />
+                            </div>
 
                             {/* Tab Panels with fade-in/out */}
                             <AnimatePresence mode="wait">

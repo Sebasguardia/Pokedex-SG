@@ -57,7 +57,7 @@ function StatRow({ stat, index, inView, prefersRM }: { stat: Stat, index: number
                         whileHover={{ backgroundColor: "#F9F9F9" }}
                         transition={{ duration: 0.15 }}
                     >
-                        <span className="font-['Press_Start_2P'] text-[10px] w-[56px] text-right transition-colors text-[#888888] group-hover:text-[#111111]">
+                        <span className="font-['Press_Start_2P'] text-[8px] sm:text-[10px] w-[46px] sm:w-[56px] text-right transition-colors text-[#888888] group-hover:text-[#111111]">
                             {label}
                         </span>
 
@@ -87,7 +87,7 @@ function StatRow({ stat, index, inView, prefersRM }: { stat: Stat, index: number
                         <div className="w-[42px] text-right">
                             <NumberFlow
                                 value={inView ? stat.base_stat : 0}
-                                className="font-['Press_Start_2P'] text-[10px]"
+                                className="font-['Press_Start_2P'] text-[8px] sm:text-[10px]"
                                 style={{ color }}
                             />
                         </div>
@@ -117,9 +117,9 @@ export function StatBars({ stats }: Props) {
     const TierIcon = tier.icon
 
     return (
-        <div ref={ref} className="mb-6 p-5 sm:p-6 bg-[#FFFFFF] border-[2px] border-[#111111] shadow-[4px_4px_0_rgba(17,17,17,0.15)] rounded-lg">
+        <div ref={ref} className="mb-6 p-4 sm:p-6 bg-[#FFFFFF] border-[2px] border-[#111111] shadow-[4px_4px_0_rgba(17,17,17,0.15)] rounded-lg">
             
-            <h3 className="font-['Press_Start_2P'] text-[12px] mb-4 tracking-wide text-[#111111] border-b-2 border-[#E0E0E0] pb-2 inline-block">ESTADÍSTICAS BASE</h3>
+            <h3 className="font-['Press_Start_2P'] text-[10px] sm:text-[12px] mb-4 tracking-wide text-[#111111] border-b-2 border-[#E0E0E0] pb-2 inline-block">ESTADÍSTICAS BASE</h3>
 
             <div className="relative z-10">
                 {stats.map((stat, i) => (
@@ -128,7 +128,7 @@ export function StatBars({ stats }: Props) {
 
                 {/* Total */}
                 <div className="flex items-center gap-3 pt-4 mt-2 border-t-[3px] border-[#111111]">
-                    <span className="font-['Press_Start_2P'] text-[10px] w-[56px] text-right text-[#111111]">TOT</span>
+                    <span className="font-['Press_Start_2P'] text-[8px] sm:text-[10px] w-[46px] sm:w-[56px] text-right text-[#111111]">TOT</span>
                     <div className="flex-1 h-[14px] relative overflow-hidden bg-[#F2F2F2] border-[2px] border-[#111111]">
                         {inView && (
                             <motion.div
@@ -144,7 +144,7 @@ export function StatBars({ stats }: Props) {
                     <div className="flex items-center gap-3 w-auto">
                         <NumberFlow
                             value={inView ? total : 0}
-                            className="font-['Press_Start_2P'] text-[14px] text-[#111111]"
+                            className="font-['Press_Start_2P'] text-[10px] sm:text-[14px] text-[#111111]"
                         />
                         {/* Tier Badge */}
                         <motion.span

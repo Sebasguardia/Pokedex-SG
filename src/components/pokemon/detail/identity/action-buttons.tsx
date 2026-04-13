@@ -65,11 +65,11 @@ export function ActionButtons({ isFavorite, isInCompare, onFavorite, onCompare, 
     }
 
     return (
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-1.5 sm:gap-2 mb-4 w-full">
             {/* Favorite */}
             <motion.button
                 onClick={handleFavorite}
-                className="relative flex-1 flex items-center justify-center gap-2 py-[10px] border-2 border-[#111111] font-['Nunito'] text-[13px] font-bold overflow-visible"
+                className="relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-[9px] sm:py-[10px] border-2 border-[#111111] font-['Nunito'] text-[12px] sm:text-[13px] font-black overflow-visible min-w-0"
                 style={{
                     backgroundColor: isFavorite ? "#CC0000" : "#FFFFFF",
                     color: isFavorite ? "white" : "#111111",

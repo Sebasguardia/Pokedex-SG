@@ -15,6 +15,18 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "play.pokemonshowdown.com",
             },
+            {
+                protocol: "https",
+                hostname: "images.wikidexcdn.net",
+            },
+            {
+                protocol: "https",
+                hostname: "static.wikia.nocookie.net",
+            },
+            {
+                protocol: "https",
+                hostname: "encrypted-tbn0.gstatic.com",
+            },
         ],
     },
 };

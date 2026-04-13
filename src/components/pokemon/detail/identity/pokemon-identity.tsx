@@ -34,7 +34,7 @@ function LetterName({ name }: { name: string }) {
     }, [name])
 
     return (
-        <h1 className="font-['Press_Start_2P'] text-[18px] md:text-[22px] text-[#111111] leading-tight my-2 flex flex-wrap">
+        <h1 className="font-['Press_Start_2P'] text-[15px] sm:text-[18px] md:text-[22px] text-[#111111] leading-[1.4] sm:leading-tight my-2 pb-4 flex flex-wrap">
             {letters.map((letter, realIdx) => {
                 const animOrder = indices.indexOf(realIdx)
                 return (
