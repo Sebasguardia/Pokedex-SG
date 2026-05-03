@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { Search, ChevronDown, ArrowUpDown } from "lucide-react"
 import * as Select from "@radix-ui/react-select"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 import { cn } from "@/lib/utils/cn"
 
 interface Props {

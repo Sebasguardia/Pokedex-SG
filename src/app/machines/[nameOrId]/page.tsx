@@ -4,16 +4,16 @@ import { useParams } from "next/navigation";
 import { notFound }  from "next/navigation";
 import { motion }    from "framer-motion";
 
-import { useMoveDetail }               from "@/lib/hooks/useMachines";
+import { useMoveDetail }               from "@/lib/hooks/moves/useMachines";
 import {
   TYPE_COLORS, getLatestTMLabel, formatMoveName,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 import { MachineDetailHero }    from "@/components/machines/machine-detail-hero";
 import { MachineMoveStats }     from "@/components/machines/machine-move-stats";
 import { MachineVersionTable }  from "@/components/machines/machine-version-table";
 import { MachineLearnerGrid }   from "@/components/machines/machine-learners-grid";
-import { PageTransitionMachine } from "@/components/shared/page-transition-machine";
-import { ScrollProgressBar }    from "@/components/shared/scroll-progress-bar";
+import { PageTransitionMachine } from "@/components/shared/page-transitions/machines/page-transition-machine";
+import { ScrollProgressBar }    from "@/components/shared/ui/scroll-progress-bar";
 
 // ── Loading skeleton ──────────────────────────────────────────────────────────
 function LoadingSkeleton() {

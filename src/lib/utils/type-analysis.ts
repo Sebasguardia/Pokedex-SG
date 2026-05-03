@@ -7,7 +7,7 @@ import {
 } from "@/types/api/team-builder.types";
 import {
     TYPE_CHART, ALL_TYPES, ABILITY_TYPE_OVERRIDES,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 // ── Helper base ───────────────────────────────────────────────────────────────
 

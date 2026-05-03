@@ -4,9 +4,9 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { Search } from "lucide-react"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { COMPARE_COLORS, STAT_KEYS, STAT_LABELS_ES, STAT_MAX } from "@/lib/constants/compare.constants"
-import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants"
-import { PokemonSprite } from "@/components/shared/pokemon-sprite"
+import { COMPARE_COLORS, STAT_KEYS, STAT_LABELS_ES, STAT_MAX } from "@/lib/constants/compare/compare.constants"
+import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants"
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite"
 
 interface CompareSingleStateProps {
     pokemon:   ComparedPokemon

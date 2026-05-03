@@ -4,8 +4,8 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Search, LayoutGrid, List, GalleryHorizontal, MousePointer, X, ChevronUp, ChevronDown } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { SORT_OPTIONS } from "@/lib/constants/favorites.constants";
-import { useFilteredFavorites } from "@/lib/hooks/useFavorites";
+import { SORT_OPTIONS } from "@/lib/constants/favorites/favorites.constants";
+import { useFilteredFavorites } from "@/lib/hooks/favorites/useFavorites";
 
 export function FavoritesToolbar() {
     const {

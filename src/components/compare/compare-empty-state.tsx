@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { POPULAR_COMPARISONS, COMPARE_COLORS } from "@/lib/constants/compare.constants"
+import { POPULAR_COMPARISONS, COMPARE_COLORS } from "@/lib/constants/compare/compare.constants"
 
 interface CompareEmptyStateProps {
     onAddFirst: () => void

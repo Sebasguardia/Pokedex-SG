@@ -8,7 +8,7 @@ import {
   TYPE_COLORS, TYPE_NAMES_ES, DAMAGE_CLASS_META,
   VERSION_GROUP_META, GEN_COLORS, getMachineLabel,
   formatMoveName,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 import { MachineTypeBadge } from "./machine-type-badge";
 
 interface MachineMoveCardProps {

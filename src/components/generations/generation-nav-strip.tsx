@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, Grid } from "lucide-react";
 import {
     GENERATION_ORDER,
     GENERATION_ROMAN,
-} from "@/lib/constants/generations.constants";
+} from "@/lib/constants/generations/generations.constants";
 
 interface GenerationNavStripProps {
     currentGeneration: string;

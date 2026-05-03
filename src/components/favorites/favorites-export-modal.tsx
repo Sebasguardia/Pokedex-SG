@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Download, Link2, Copy, X, Check } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { encodeCollectionToUrl } from "@/lib/constants/favorites.constants";
+import { encodeCollectionToUrl } from "@/lib/constants/favorites/favorites.constants";
 
 interface FavoritesExportModalProps {
     isOpen:  boolean;

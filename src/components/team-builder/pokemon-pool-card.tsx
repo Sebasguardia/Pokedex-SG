@@ -6,9 +6,9 @@ import { Plus, Check } from "lucide-react";
 import { PoolPokemon } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, PIXEL_URL,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { TypeBadgeTeam } from "./type-badge-team";
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 
 type CardLayout = "grid" | "list";
 

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { LayoutGrid, Table2, X, Search } from "lucide-react";
-import { TABLE_STATS, STAT_COLORS, STAT_ABBR } from "@/lib/constants/natures.constants";
+import { TABLE_STATS, STAT_COLORS, STAT_ABBR } from "@/lib/constants/natures/natures.constants";
 
 // ── PAGE HEADER ──────────────────────────────────────────────────────────────
 

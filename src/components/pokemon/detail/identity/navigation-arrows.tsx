@@ -2,10 +2,10 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import { usePokemon } from "@/lib/hooks/usePokemon"
+import { usePokemon } from "@/lib/hooks/pokemon/usePokemon"
 import { formatPokemonId, formatPokemonName } from "@/lib/utils/pokemon.utils"
 import { useQueryClient } from "@tanstack/react-query"
-import { pokemonKeys } from "@/lib/constants/query-keys"
+import { pokemonKeys } from "@/lib/constants/api/query-keys"
 import { getPokemonByIdOrName, getPokemonSpecies } from "@/lib/api/pokemon"
 
 interface Props {

@@ -7,9 +7,9 @@ import { ChevronRight, Disc } from "lucide-react";
 import { MoveDetail } from "@/types/api/machine.types";
 import {
   DAMAGE_CLASS_META, TYPE_NAMES_ES,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 import { MachineTypeBadge } from "./machine-type-badge";
-import { useMachineItem } from "@/lib/hooks/useMachines";
+import { useMachineItem } from "@/lib/hooks/moves/useMachines";
 
 interface MachineDetailHeroProps {
   move:        MoveDetail;

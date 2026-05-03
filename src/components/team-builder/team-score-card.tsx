@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import NumberFlow from "@number-flow/react";
 import { TeamAnalysis } from "@/types/api/team-builder.types";
 import { AlertTriangle, CheckCircle, Info } from "lucide-react";
-import { TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants";
+import { TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants";
 
 interface TeamScoreCardProps {
     analysis: TeamAnalysis;

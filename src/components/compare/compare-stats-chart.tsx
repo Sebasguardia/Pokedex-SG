@@ -9,7 +9,7 @@ import {
     STAT_LABELS_ES,
     STAT_MAX,
     getWinners,
-} from "@/lib/constants/compare.constants"
+} from "@/lib/constants/compare/compare.constants"
 
 interface CompareStatsChartProps {
     pokemon: (ComparedPokemon | null)[]

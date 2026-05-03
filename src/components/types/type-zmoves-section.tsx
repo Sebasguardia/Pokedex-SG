@@ -3,7 +3,7 @@
 import { useMemo } from "react"
 import { motion } from "framer-motion"
 import { Zap, Info } from "lucide-react"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 const TYPE_NAMES_ES: Record<string, string> = {
     normal: "Normal", fighting: "Lucha", flying: "Volador", poison: "Veneno",

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { PokemonTeam } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, PIXEL_URL, getScoreMeta,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { calculateTeamScore } from "@/lib/utils/team-scoring";
 
 type PreviewSize = "xs" | "sm" | "md";

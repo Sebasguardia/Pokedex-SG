@@ -1,24 +1,22 @@
 "use client"
 
-import { useState, Suspense } from "react"
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
-import { LayoutGrid, Table2, GripVertical } from "lucide-react"
+import { Suspense, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { LayoutGrid, Table2, Search, X } from "lucide-react"
 import { GiPunchBlast } from "react-icons/gi"
 import { useMovesStore } from "@/lib/store/useMovesStore"
 import Link from "next/link"
-import { useMovesList } from "@/lib/hooks/useMovesList"
+import { useMovesFull } from "@/lib/hooks/moves/useMovesList"
 import { MoveRow } from "@/components/moves/move-row"
 import { MoveCard } from "@/components/moves/move-card"
 import { MoveFilterBar } from "@/components/moves/move-filter-bar"
-import { PageTransitionMoves } from "@/components/shared/page-transition-moves"
-import { DAMAGE_CLASS_COLORS, DAMAGE_CLASS_LABELS } from "@/lib/constants/moves.constants"
+import { PageTransitionMoves } from "@/components/shared/page-transitions/moves/page-transition-moves"
+import { DAMAGE_CLASS_COLORS } from "@/lib/constants/moves/moves.constants"
 import { GiStarShuriken } from "react-icons/gi"
 import { Circle } from "lucide-react"
 
-const ITEMS_PER_PAGE = 60
-
 function MovesContent() {
-    const prefersRM = useReducedMotion()
+    const searchRef = useRef<HTMLInputElement>(null)
     const {
         viewMode, setViewMode,
         typeFilter, setTypeFilter,
@@ -28,11 +26,11 @@ function MovesContent() {
         maxPow, setMaxPow,
         sortField, setSortField,
         sortOrder, setSortOrder,
-        page, setPage,
+        search, setSearch,
         clearAllFilters
     } = useMovesStore()
 
-    const { data, isLoading, isFetching } = useMovesList({
+    const { data, totalCount, loadedCount, isLoading, isLoadingMore, loadProgress } = useMovesFull({
         type: typeFilter,
         damageClass: classFilter,
         generation: genFilter,
@@ -40,14 +38,10 @@ function MovesContent() {
         maxPower: parseInt(maxPow),
         sort: sortField,
         order: sortOrder,
-        page: parseInt(page),
-        limit: ITEMS_PER_PAGE,
+        search,
     })
 
     const currentMoves = data?.results ?? []
-    const totalCount = data?.count ?? 0
-    const totalPages = Math.max(1, Math.ceil(totalCount / ITEMS_PER_PAGE))
-    const currentPage = parseInt(page)
 
     const classes = [
         { key: "physical", label: "Físico", Icon: GiPunchBlast },
@@ -60,245 +54,264 @@ function MovesContent() {
             <PageTransitionMoves />
 
             <motion.main
-                className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10"
+                className="max-w-[1440px] mx-auto px-4 sm:px-6 py-10"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.35, duration: 0.4 }}
+                transition={{ delay: 0.3, duration: 0.4 }}
             >
-                {/* ── PAGE HEADER ─────────────────────────────────── */}
-                <div className="pb-7">
-                    {/* Breadcrumb */}
-                    <p className="font-nunito text-[12px] text-[#888888] mb-5">
-                        <Link href="/" className="hover:underline hover:text-[#111111]">Inicio</Link>
-                        <span className="mx-2">/</span>
-                        <span className="text-[#111111] font-bold">Movimientos</span>
-                    </p>
+                {/* ── HEADER ─────────────────────────────────────────── */}
+                <motion.div
+                    className="pb-6 border-b-2 border-[#111111] relative mb-6"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2, duration: 0.35, ease: "easeOut" }}
+                >
+                    {/* Línea roja debajo del borde */}
+                    <motion.div
+                        className="absolute bottom-[-2px] left-0 h-[2px] bg-[#CC0000] w-full origin-left"
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ delay: 0.05, duration: 0.35, ease: "easeOut" }}
+                    />
 
-                    <div className="flex items-end justify-between">
-                        {/* Left: decoration + title */}
-                        <div className="flex items-end gap-3">
-                            {/* Power bars decoration */}
-                            <div className="flex items-end gap-[3px]">
-                                {[
-                                    { h: "36px", color: "#CC0000" },
-                                    { h: "26px", color: "#444444" },
-                                    { h: "16px", color: "#888888" },
-                                ].map((bar, i) => (
-                                    <motion.div
-                                        key={i}
-                                        className="w-[4px]"
-                                        style={{ backgroundColor: bar.color, transformOrigin: "bottom", height: bar.h }}
-                                        initial={{ scaleY: 0 }}
-                                        animate={{ scaleY: 1 }}
-                                        transition={{ delay: i * 0.05, type: "spring", stiffness: 350, damping: 22 }}
-                                    />
-                                ))}
-                            </div>
 
-                            <h1 className="font-press-start text-[18px] text-[#111111]">MOVIMIENTOS</h1>
-
+                    {/* FILA PRINCIPAL */}
+                    <div className="flex justify-between items-end flex-wrap gap-4">
+                        {/* LADO IZQUIERDO */}
+                        <div className="flex items-center gap-4">
+                            {/* Barra vertical roja */}
                             <motion.div
-                                className="bg-[#CC0000] text-white font-press-start text-[8px] px-2 py-1 border-2 border-[#111111] mb-0.5"
-                                style={{ boxShadow: "2px 2px 0 #111111" }}
-                                initial={{ scale: 0, rotate: 5 }}
-                                animate={{ scale: 1, rotate: 0 }}
-                                transition={{ type: "spring", bounce: 0.6 }}
-                            >
-                                {totalCount}+ moves
-                            </motion.div>
+                                className="w-[4px] h-[32px] bg-[#CC0000] origin-top"
+                                initial={{ scaleY: 0 }}
+                                animate={{ scaleY: 1 }}
+                                transition={{ delay: 0.15, duration: 0.3, ease: "easeOut" }}
+                            />
+
+                            <div className="flex items-center gap-3">
+                                <h1 className="font-pixel text-[14px] md:text-[22px] text-[#111111] leading-none m-0 uppercase">
+                                    Movimientos
+                                </h1>
+
+                                {/* COUNT BADGE — igual al de Pokédex */}
+                                <motion.div
+                                    key={`badge-${totalCount}`}
+                                    className="bg-[#CC0000] text-white font-pixel text-[8px] px-[12px] py-[5px] border-2 border-[#111111] flex items-center h-[24px]"
+                                    style={{ boxShadow: "2px 2px 0 #111111" }}
+                                    initial={{ scale: 1, backgroundColor: "#CC0000" }}
+                                    animate={{
+                                        scale: [1, 1.25, 1],
+                                        backgroundColor: ["#CC0000", "#990000", "#CC0000"]
+                                    }}
+                                    transition={{
+                                        scale: { duration: 0.3, ease: "easeInOut" },
+                                        backgroundColor: { duration: 0.2 }
+                                    }}
+                                >
+                                    <motion.div
+                                        key={`text-${totalCount}`}
+                                        initial={{ y: -12, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ duration: 0.2, ease: "easeOut" }}
+                                    >
+                                        {isLoading ? "..." : totalCount}
+                                    </motion.div>
+                                </motion.div>
+                            </div>
                         </div>
 
-                        {/* Right: class shortcut badges */}
-                        <div className="hidden sm:flex items-center gap-2">
+                        {/* LADO DERECHO — filtros rápidos de clase */}
+                        <div className="flex items-center gap-2">
                             {classes.map(({ key, label, Icon }, i) => {
                                 const colors = DAMAGE_CLASS_COLORS[key]
+                                const isActive = classFilter === key
                                 return (
-                                    <motion.button
-                                        key={key}
-                                        onClick={() => setClassFilter(classFilter === key ? null : key)}
-                                        className="flex items-center gap-1.5 px-2.5 py-1 font-nunito text-[10px] font-bold border-2"
+                                    <motion.button key={key}
+                                        onClick={() => setClassFilter(isActive ? null : key)}
+                                        className="flex items-center gap-1.5 px-3 py-1.5 font-nunito text-[11px] font-bold border-2 transition-all"
                                         style={{
-                                            backgroundColor: classFilter === key ? colors.bg : "#F2F2F2",
-                                            borderColor: classFilter === key ? colors.border : "#E0E0E0",
-                                            color: classFilter === key ? colors.text : "#888888",
+                                            backgroundColor: isActive ? colors.bg : "#F8F8F8",
+                                            borderColor: isActive ? "#111111" : "#E0E0E0",
+                                            color: isActive ? colors.text : "#888888",
+                                            boxShadow: isActive ? "2px 2px 0 #111111" : "none"
                                         }}
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
+                                        initial={{ scale: 0 }} animate={{ scale: 1 }}
                                         transition={{ delay: 0.1 + i * 0.06, type: "spring", bounce: 0.5 }}
-                                        whileHover={{ scale: 1.1 }}
+                                        whileHover={{ borderColor: "#111111", boxShadow: "2px 2px 0 #111111" }}
+                                        whileTap={{ scale: 0.95 }}
                                     >
                                         <Icon size={12} />
-                                        <span className="hidden lg:inline">{label}</span>
+                                        <span className="hidden md:inline">{label}</span>
                                     </motion.button>
                                 )
                             })}
+
+                            {/* View toggle — igual al de Pokédex */}
+                            <div className="flex border-2 border-[#111111] ml-2" style={{ boxShadow: "2px 2px 0 #111111" }}>
+                                {([
+                                    { mode: "table" as const, Icon: Table2 },
+                                    { mode: "cards" as const, Icon: LayoutGrid },
+                                ]).map(({ mode, Icon }) => (
+                                    <motion.button key={mode}
+                                        onClick={() => setViewMode(mode)}
+                                        className="w-[36px] h-[36px] flex items-center justify-center border-r last:border-r-0 border-[#111111] transition-colors"
+                                        style={{ backgroundColor: viewMode === mode ? "#111111" : "#FFFFFF" }}
+                                        whileTap={{ scale: 0.9 }}
+                                    >
+                                        <motion.div
+                                            animate={viewMode === mode ? { scale: [0.6, 1], rotate: [-15, 0] } : {}}
+                                            transition={{ type: "spring" }}
+                                        >
+                                            <Icon size={17} color={viewMode === mode ? "#FFFFFF" : "#888888"} />
+                                        </motion.div>
+                                    </motion.button>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
-                    {/* Double separator */}
-                    <div className="mt-6">
-                        <motion.div className="h-[3px] bg-[#111111]" style={{ transformOrigin: "left" }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.5, ease: "easeOut" }} />
-                        <motion.div className="h-[2px] bg-[#CC0000]" style={{ transformOrigin: "right" }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.5, delay: 0.05, ease: "easeOut" }} />
+                    {/* Loading progress bar */}
+                    {isLoadingMore && (
+                        <div className="absolute bottom-[-4px] left-0 w-full h-[2px] bg-[#F2F2F2] overflow-hidden">
+                            <motion.div className="h-full bg-[#CC0000]"
+                                animate={{ width: `${loadProgress}%` }}
+                                transition={{ duration: 0.4, ease: "easeOut" }} />
+                        </div>
+                    )}
+                </motion.div>
+
+
+                {/* ── SEARCH BAR ────────────────────────────────────── */}
+                <div className="mb-4">
+                    <div className="flex items-center border-2 border-[#111111] bg-white"
+                        style={{ boxShadow: "4px 4px 0 #111111" }}
+                        onClick={() => searchRef.current?.focus()}
+                    >
+                        <div className="flex items-center gap-2 px-4 py-3 flex-1">
+                            <Search size={16} color="#CC0000" className="shrink-0" />
+                            <input
+                                ref={searchRef}
+                                type="text"
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                placeholder="Buscar movimiento por nombre..."
+                                className="flex-1 font-nunito text-[14px] text-[#111111] outline-none placeholder:text-[#AAAAAA] bg-transparent"
+                            />
+                        </div>
+                        {search && (
+                            <motion.button
+                                initial={{ scale: 0 }} animate={{ scale: 1 }}
+                                onClick={() => setSearch("")}
+                                className="px-4 py-3 border-l-2 border-[#111111] hover:bg-[#CC0000] hover:text-white transition-colors"
+                                aria-label="Limpiar búsqueda"
+                            >
+                                <X size={16} />
+                            </motion.button>
+                        )}
+                        {/* Retro accent */}
+                        <div className="px-3 py-3 border-l-2 border-[#111111] bg-[#111111]">
+                            <span className="font-press-start text-[7px] text-white">BUSCAR</span>
+                        </div>
                     </div>
                 </div>
 
-                {/* ── FILTER BAR ──────────────────────────────────── */}
+                {/* ── FILTER BAR ────────────────────────────────────── */}
                 <MoveFilterBar
-                    typeFilter={typeFilter} onTypeChange={v => { setTypeFilter(v); setPage("1"); window.scrollTo({ top: 0, behavior: "smooth" }) }}
-                    classFilter={classFilter} onClassChange={v => { setClassFilter(v); setPage("1"); window.scrollTo({ top: 0, behavior: "smooth" }) }}
-                    genFilter={genFilter} onGenChange={v => { setGenFilter(v); setPage("1"); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+                    typeFilter={typeFilter} onTypeChange={setTypeFilter}
+                    classFilter={classFilter} onClassChange={setClassFilter}
+                    genFilter={genFilter} onGenChange={setGenFilter}
                     minPow={parseInt(minPow)} maxPow={parseInt(maxPow)}
-                    onPowerChange={([mn, mx]) => { setMinPow(String(mn)); setMaxPow(String(mx)); setPage("1"); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+                    onPowerChange={([mn, mx]) => { setMinPow(String(mn)); setMaxPow(String(mx)) }}
                     sortField={sortField} onSortChange={setSortField}
                     sortOrder={sortOrder} onOrderChange={setSortOrder}
                     onClearAll={clearAllFilters}
                 >
-                    {/* The table header is now rendered as part of the sticky filter bar */}
+                    {/* Table header inside filter bar */}
                     {viewMode === "table" && !isLoading && currentMoves.length > 0 && (
-                        <div className="flex flex-col mt-1">
-                            <div className="flex items-center h-10 px-3 font-press-start text-[7px] text-white bg-[#111111] -mx-4 sm:mx-0">
-                                <div className="flex-1 min-w-[140px]">NOMBRE</div>
-                                <div className="w-[100px] text-left">TIPO</div>
-                                <div className="w-[90px] text-center">CLASE</div>
-                                <div className="w-[70px] text-center">POT.</div>
-                                <div className="w-[70px] text-center">PREC.</div>
-                                <div className="w-[54px] text-center">PP</div>
-                                <div className="w-[54px] text-center">GEN</div>
+                        <div className="mt-1">
+                            <div className="grid font-press-start text-[10px] text-white bg-[#111111] px-3 h-12 items-center"
+                                style={{ gridTemplateColumns: "60px 1fr 110px 95px 80px 70px 55px 60px" }}>
+                                <div>ID</div>
+                                <div>NOMBRE / DESCRIPCIÓN</div>
+                                <div>TIPO</div>
+                                <div>CLASE</div>
+                                <div className="text-center">POT.</div>
+                                <div className="text-center">PREC.</div>
+                                <div className="text-center">PP</div>
+                                <div className="text-center">GEN</div>
                             </div>
-                            <motion.div className="h-[2px] bg-[#CC0000] z-20 -mx-4 sm:mx-0" style={{ transformOrigin: "left" }} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.5 }} />
+                            <motion.div className="h-[2px] bg-[#CC0000]"
+                                style={{ transformOrigin: "left" }}
+                                initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                                transition={{ duration: 0.4 }} />
                         </div>
                     )}
                 </MoveFilterBar>
 
-                {/* ── RESULTS BAR ─────────────────────────────────── */}
-                <div className="flex items-center justify-between py-3">
-                    <p className="font-nunito text-[13px] text-[#888888]">
-                        <span className="font-bold text-[#111111]">{currentMoves.length}</span>
-                        {totalCount > currentMoves.length && <span> de {totalCount}</span>} movimientos
-                        {isFetching && <span className="ml-2 text-[#CC0000]">...</span>}
-                    </p>
 
-                    {/* View toggle */}
-                    <div className="flex gap-1">
-                        {[
-                            { mode: "table" as const, Icon: Table2 },
-                            { mode: "cards" as const, Icon: LayoutGrid },
-                        ].map(({ mode, Icon }) => (
-                            <motion.button
-                                key={mode}
-                                onClick={() => setViewMode(mode)}
-                                className="p-1.5 border border-[#E0E0E0] transition-colors"
-                                style={{ backgroundColor: viewMode === mode ? "#111111" : "#F2F2F2" }}
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <Icon size={16} color={viewMode === mode ? "#FFFFFF" : "#888888"} />
-                            </motion.button>
-                        ))}
-                    </div>
-                </div>
 
-                {/* ── TABLE / CARDS ───────────────────────────────── */}
+                {/* ── CONTENT ───────────────────────────────────────── */}
                 <AnimatePresence mode="wait">
                     {isLoading ? (
                         <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                            {/* Skeleton rows */}
-                            {viewMode === "table" ? (
-                                <div className="border border-[#E0E0E0]">
-                                    <div className="h-10 bg-[#111111]" />
-                                    {Array.from({ length: 10 }).map((_, i) => (
-                                        <div key={i} className="h-[52px] border-b border-[#E0E0E0] px-4 flex items-center gap-4 animate-pulse" style={{ backgroundColor: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA" }}>
-                                            <div className="flex-1 h-2.5 bg-[#E0E0E0] rounded" />
-                                            <div className="w-16 h-4 bg-[#E0E0E0] rounded" />
-                                            <div className="w-14 h-4 bg-[#E0E0E0] rounded" />
-                                            <div className="w-10 h-2.5 bg-[#E0E0E0] rounded" />
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {Array.from({ length: 9 }).map((_, i) => (
-                                        <div key={i} className="h-[180px] bg-[#F2F2F2] border-2 border-[#E0E0E0] animate-pulse" />
-                                    ))}
-                                </div>
-                            )}
-                        </motion.div>
-                    ) : currentMoves.length === 0 ? (
-                        <motion.div key="empty" className="flex flex-col items-center justify-center py-24 gap-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                            <motion.div animate={{ rotate: [0, -20, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-                                <GiPunchBlast size={56} color="#E0E0E0" />
-                            </motion.div>
-                            <motion.p className="font-press-start text-[10px] text-[#AAAAAA]"
-                                animate={{ opacity: [0, 1, 1, 0], y: [10, 0, 0, -10] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            >¡Fallo!</motion.p>
-                            <h2 className="font-press-start text-[12px] text-[#888888]">Ningún movimiento encontrado</h2>
-                            <p className="font-nunito text-[14px] text-[#AAAAAA]">Prueba con otros filtros</p>
-                            <button onClick={clearAllFilters} className="mt-2 px-4 py-2 bg-[#CC0000] text-white font-nunito text-[13px] font-bold hover:bg-[#990000] transition-colors">
-                                Limpiar filtros
-                            </button>
-                        </motion.div>
-                    ) : viewMode === "table" ? (
-                        <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
-                            <div className="flex flex-col">
-                                {currentMoves.map((move, idx) => (
-                                    <MoveRow
-                                        key={move.id}
-                                        move={move}
-                                        index={idx}
-                                        isFirst={idx < 15}
-                                    />
+                            <div className="border-2 border-[#E0E0E0]">
+                                <div className="h-10 bg-[#111111]" />
+                                {Array.from({ length: 12 }).map((_, i) => (
+                                    <div key={i} className="h-[58px] border-b border-[#E0E0E0] px-4 flex items-center gap-4 animate-pulse"
+                                        style={{ backgroundColor: i % 2 === 0 ? "#FFFFFF" : "#FAFAFA" }}>
+                                        <div className="w-8 h-3 bg-[#E0E0E0]" />
+                                        <div className="flex-1 h-4 bg-[#E0E0E0]" />
+                                        <div className="w-28 h-4 bg-[#E0E0E0]" />
+                                        <div className="w-20 h-4 bg-[#E0E0E0]" />
+                                        <div className="w-14 h-3 bg-[#E0E0E0]" />
+                                        <div className="w-10 h-3 bg-[#E0E0E0]" />
+                                    </div>
                                 ))}
                             </div>
                         </motion.div>
+                    ) : currentMoves.length === 0 ? (
+                        <motion.div key="empty" className="flex flex-col items-center justify-center py-28 gap-4"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                            <motion.div animate={{ rotate: [0, -20, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                                <GiPunchBlast size={64} color="#E0E0E0" />
+                            </motion.div>
+                            <motion.p className="font-press-start text-[10px] text-[#AAAAAA]"
+                                animate={{ opacity: [0, 1, 1, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                                ¡Fallo!
+                            </motion.p>
+                            <h2 className="font-press-start text-[12px] text-[#888888]">Ningún movimiento encontrado</h2>
+                            <p className="font-nunito text-[14px] text-[#AAAAAA]">Prueba con otros filtros o búsqueda</p>
+                            <motion.button onClick={clearAllFilters}
+                                className="mt-2 px-5 py-2 bg-[#CC0000] text-white font-nunito text-[13px] font-black border-2 border-[#111111]"
+                                style={{ boxShadow: "3px 3px 0 #111111" }}
+                                whileHover={{ x: -1, y: -1, boxShadow: "4px 4px 0 #111111" }}
+                                whileTap={{ x: 0, y: 0, boxShadow: "1px 1px 0 #111111" }}>
+                                Limpiar todo
+                            </motion.button>
+                        </motion.div>
+                    ) : viewMode === "table" ? (
+                        <motion.div key="table" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                            <div className="flex flex-col border-2 border-t-0 border-[#E0E0E0]">
+                                {currentMoves.map((move, idx) => (
+                                    <MoveRow key={move.id} move={move} index={idx} isFirst={idx < 20} sequentialNumber={idx + 1} />
+                                ))}
+                            </div>
+                            {isLoadingMore && (
+                                <div className="py-6 flex items-center justify-center gap-3 border-2 border-t-0 border-[#E0E0E0]">
+                                    <motion.div className="w-2 h-2 bg-[#CC0000]"
+                                        animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 0.6, repeat: Infinity }} />
+                                    <span className="font-nunito text-[13px] text-[#888888]">Cargando más movimientos...</span>
+                                </div>
+                            )}
+                        </motion.div>
                     ) : (
-                        <motion.div key="cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+                        <motion.div key="cards" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-1"
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
                             {currentMoves.map((move, i) => (
                                 <MoveCard key={move.id} move={move} index={i} />
                             ))}
                         </motion.div>
                     )}
                 </AnimatePresence>
-
-                {/* ── PAGINATION ──────────────────────────────────── */}
-                {!isLoading && totalPages > 1 && (
-                    <div className="flex items-center justify-center gap-2 mt-10 pt-6 border-t border-[#E0E0E0]">
-                        <button
-                            onClick={() => setPage(String(Math.max(1, currentPage - 1)))}
-                            disabled={currentPage === 1}
-                            className="px-3 py-1.5 border-2 border-[#E0E0E0] font-nunito text-[12px] text-[#888888] disabled:opacity-30 hover:border-[#111111] hover:text-[#111111] transition-colors"
-                        >
-                            ← Anterior
-                        </button>
-                        <div className="flex gap-1">
-                            {Array.from({ length: Math.min(totalPages, 7) }).map((_, i) => {
-                                const p = i + 1
-                                return (
-                                    <motion.button
-                                        key={p}
-                                        onClick={() => setPage(String(p))}
-                                        className="w-8 h-8 font-press-start text-[8px] border-2 transition-colors"
-                                        style={{
-                                            backgroundColor: currentPage === p ? "#CC0000" : "#FFFFFF",
-                                            borderColor: currentPage === p ? "#CC0000" : "#E0E0E0",
-                                            color: currentPage === p ? "#FFFFFF" : "#888888",
-                                            boxShadow: currentPage === p ? "2px 2px 0 #111111" : "none"
-                                        }}
-                                        whileTap={{ scale: 0.9 }}
-                                    >
-                                        {p}
-                                    </motion.button>
-                                )
-                            })}
-                        </div>
-                        <button
-                            onClick={() => setPage(String(Math.min(totalPages, currentPage + 1)))}
-                            disabled={currentPage >= totalPages}
-                            className="px-3 py-1.5 border-2 border-[#E0E0E0] font-nunito text-[12px] text-[#888888] disabled:opacity-30 hover:border-[#111111] hover:text-[#111111] transition-colors"
-                        >
-                            Siguiente →
-                        </button>
-                    </div>
-                )}
             </motion.main>
         </>
     )

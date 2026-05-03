@@ -8,7 +8,7 @@ import { Region } from "@/types/api/location.types";
 import {
     REGION_COLORS, REGION_NAMES_ES, REGION_DESCRIPTIONS,
     REGION_INSPIRATION, REGION_YEARS, REGION_GAMES,
-} from "@/lib/constants/locations.constants";
+} from "@/lib/constants/locations/locations.constants";
 
 interface RegionCardProps {
     region: Region;

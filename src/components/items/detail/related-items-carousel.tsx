@@ -3,8 +3,8 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { useItemsList } from "@/lib/hooks/useItemsList"
-import { POCKET_COLORS } from "@/lib/constants/items.constants"
+import { useItemsList } from "@/lib/hooks/items/useItemsList"
+import { POCKET_COLORS } from "@/lib/constants/items/items.constants"
 import { ChevronRight, LayoutGrid } from "lucide-react"
 
 interface Props {

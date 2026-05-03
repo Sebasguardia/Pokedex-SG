@@ -7,7 +7,7 @@ import { ChevronLeft, Box, Tag, BookOpen, Gem, Bone, Settings, Wrench, Coins, Sp
 import { ItemFlavorCarousel } from "../item-flavor-carousel"
 import { ItemHeldPokemon } from "../item-held-pokemon"
 import { RelatedItemsCarousel } from "../related-items-carousel"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 
 interface Props {
     item: any

@@ -11,14 +11,14 @@ import {
     Search, X, Crown, Sparkles, Baby, Info, Layers
 } from "lucide-react";
 
-import { usePokemonList, usePokemonForTeam, useAllPokemonTypesMap } from "@/lib/hooks/useTeamBuilder";
-import { COMPARE_COLORS } from "@/lib/constants/compare.constants";
+import { usePokemonList, usePokemonForTeam, useAllPokemonTypesMap } from "@/lib/hooks/team-builder/useTeamBuilder";
+import { COMPARE_COLORS } from "@/lib/constants/compare/compare.constants";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, GEN_COLORS,
     PIXEL_URL, extractId, getGenerationByPokemonId,
-} from "@/lib/constants/team-builder.constants";
-import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants";
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+} from "@/lib/constants/team-builder/team-builder.constants";
+import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/pokemon/special-pokemon.constants";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 
 interface CompareSelectorModalProps {
     isOpen:       boolean;

@@ -11,18 +11,18 @@ import {
     SlidersHorizontal, Search, X, LayoutGrid, List, Plus, Info, CheckCircle2, Star, Zap, Activity, ArrowRightLeft
 } from "lucide-react";
 
-import { useLightPokemonPool } from "@/lib/hooks/useTeamBuilder";
+import { useLightPokemonPool } from "@/lib/hooks/team-builder/useTeamBuilder";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { useTeamAnalysis } from "@/lib/hooks/useTeamAnalysis";
+import { useTeamAnalysis } from "@/lib/hooks/team-builder/useTeamAnalysis";
 import { getPokemonForTeam } from "@/lib/api/team-builder";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, GEN_COLORS,
     SPRITE_URL, PIXEL_URL, getGenerationByPokemonId,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { PoolPokemon } from "@/types/api/team-builder.types";
 import { generateRecommendations } from "@/lib/utils/team-recommendations";
 import { TypeBadgeTeam } from "./type-badge-team";
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 
 // ── COMPONENTE TOOLTIP PERSONALIZADO ──
 function CustomTooltip({ children, content, side = "top" }: { children: React.ReactNode; content: React.ReactNode; side?: "top" | "left" | "right" }) {

@@ -4,8 +4,8 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { getIdFromUrl } from "@/lib/utils/pokemon.utils"
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
-import { PokemonSprite } from "@/components/shared/pokemon-sprite"
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants"
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite"
 
 interface Props {
     pokemon?: any

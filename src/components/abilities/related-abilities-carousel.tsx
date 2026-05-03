@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import Link from "next/link"
-import { useAbilitiesList } from "@/lib/hooks/useAbilitiesList"
+import { useAbilitiesList } from "@/lib/hooks/abilities/useAbilitiesList"
 import { AbilityCategoryBadge } from "./ability-category-badge"
 
 interface Props {

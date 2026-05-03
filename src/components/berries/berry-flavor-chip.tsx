@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import * as Tooltip from "@radix-ui/react-tooltip";
-import { FLAVOR_META } from "@/lib/constants/berries.constants";
+import { FLAVOR_META } from "@/lib/constants/berries/berries.constants";
 
 interface BerryFlavorChipProps {
     flavor: string;

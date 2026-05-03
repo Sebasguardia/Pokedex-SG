@@ -4,7 +4,7 @@ import { motion, MotionValue } from "framer-motion"
 import { PokemonType } from "@/types/api/type.types"
 import { Calendar, Sword, Sparkles, Circle, Users, ArrowLeft } from "lucide-react"
 import Link from "next/link"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 interface Props {
     type: PokemonType

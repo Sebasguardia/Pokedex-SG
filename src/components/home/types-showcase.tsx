@@ -9,7 +9,7 @@ import {
     TYPE_COLORS, 
     TYPE_NAMES_ES,
     ALL_TYPES 
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 // ── BACKGROUND DECORATION ──
 function MatrixBackground() {

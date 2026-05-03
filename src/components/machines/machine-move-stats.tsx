@@ -9,7 +9,7 @@ import { MoveDetail } from "@/types/api/machine.types";
 import {
   getPowerCategory, getPriorityLabel, DAMAGE_CLASS_META,
   TYPE_NAMES_ES,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 
 interface MachineMoveStatsProps {
   move:      MoveDetail;

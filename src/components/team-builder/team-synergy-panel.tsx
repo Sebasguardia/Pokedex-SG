@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Cloud, RefreshCw, Layers, Link2, Shield, Zap, HelpCircle } from "lucide-react";
 import { TeamAnalysis } from "@/types/api/team-builder.types";
-import { PIXEL_URL } from "@/lib/constants/team-builder.constants";
+import { PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants";
 
 const SYNERGY_ICONS = {
     weather: Cloud,

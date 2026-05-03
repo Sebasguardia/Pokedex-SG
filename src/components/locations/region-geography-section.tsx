@@ -7,8 +7,8 @@ import {
     REGION_CITIES,
     REGION_VILLAINS,
     PALDEA_ZONES,
-} from "@/lib/constants/region-lore.constants";
-import { REGION_MAPS, CITY_IMAGES, VILLAIN_IMAGES } from "@/lib/constants/region-assets.constants";
+} from "@/lib/constants/locations/region-lore.constants";
+import { REGION_MAPS, CITY_IMAGES, VILLAIN_IMAGES } from "@/lib/constants/locations/region-assets.constants";
 import { ImageModal } from "@/components/ui/image-modal";
 
 interface RegionGeographySectionProps {

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ItemSpriteStage } from "./item-sprite-stage"
-import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items/items.constants"
 import { Heart, Share2, ChevronLeft, Layers, Sparkles, Key } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 

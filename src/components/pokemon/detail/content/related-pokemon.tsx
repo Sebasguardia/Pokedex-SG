@@ -5,8 +5,8 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
 import { getPokemonSpriteUrl, formatPokemonId, formatPokemonName } from "@/lib/utils/pokemon.utils"
-import { usePokemonIndex, PokemonIndexItem } from "@/lib/hooks/usePokemonIndex"
-import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants"
+import { usePokemonIndex, PokemonIndexItem } from "@/lib/hooks/pokemon/usePokemonIndex"
+import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/pokemon/special-pokemon.constants"
 
 interface Props {
     currentId: number;

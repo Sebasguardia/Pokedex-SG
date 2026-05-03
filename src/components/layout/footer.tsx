@@ -17,7 +17,7 @@ import { useUIStore } from "@/lib/store/ui.store"
 import { useTheme } from "next-themes"
 import { useFilterStore } from "@/lib/store/filter.store"
 import { useRef } from "react"
-import { PokeBallSVG } from "@/components/shared/pokeball-svg"
+import { PokeBallSVG } from "@/components/shared/icons/pokeball-svg"
 import { cn } from "@/lib/utils/cn"
 
 // ─── CONSTANTES ───────────────────────────────────────────────────────────────

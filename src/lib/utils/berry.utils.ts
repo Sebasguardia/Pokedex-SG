@@ -1,5 +1,5 @@
 import type { BerryFlavorMap } from "@/types/api/berry.types";
-import { FLAVOR_COLORS, FLAVOR_META, BERRY_CATEGORIES } from "../constants/berries.constants";
+import { FLAVOR_COLORS, FLAVOR_META, BERRY_CATEGORIES } from "../constants/berries/berries.constants";
 
 // ─────────────────────────────────────────────────────────────
 // getDominantFlavor

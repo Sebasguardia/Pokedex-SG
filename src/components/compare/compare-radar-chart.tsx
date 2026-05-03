@@ -2,7 +2,7 @@
 
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { COMPARE_COLORS, STAT_ABBR_ES, STAT_MAX, STAT_KEYS } from "@/lib/constants/compare.constants"
+import { COMPARE_COLORS, STAT_ABBR_ES, STAT_MAX, STAT_KEYS } from "@/lib/constants/compare/compare.constants"
 
 interface CompareRadarChartProps {
     pokemon: (ComparedPokemon | null)[]

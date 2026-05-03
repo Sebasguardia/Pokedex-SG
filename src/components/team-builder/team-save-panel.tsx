@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Trash2, Copy, Upload, Save, Clock } from "lucide-react";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { PIXEL_URL } from "@/lib/constants/team-builder.constants";
+import { PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants";
 import { calculateTeamScore } from "@/lib/utils/team-scoring";
-import { getScoreMeta } from "@/lib/constants/team-builder.constants";
+import { getScoreMeta } from "@/lib/constants/team-builder/team-builder.constants";
 
 function TeamSaveCard({ team, isActive, onLoad, onDelete, onDuplicate }: {
     team: import("@/types/api/team-builder.types").PokemonTeam;

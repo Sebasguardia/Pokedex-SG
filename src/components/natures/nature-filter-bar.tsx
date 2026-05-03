@@ -5,7 +5,7 @@ import { Search, X, SlidersHorizontal } from "lucide-react";
 import {
     TABLE_STATS, STAT_COLORS, STAT_NAMES_ES, STAT_ABBR,
     FLAVOR_COLORS, FLAVOR_NAMES_ES,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureFilterBarProps {
     statFilter: string | null;

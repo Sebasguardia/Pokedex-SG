@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Layers, ArrowRight } from "lucide-react";
-import { GENERATION_NAMES_ES, GENERATION_YEARS } from "@/lib/constants/generations.constants";
+import { GENERATION_NAMES_ES, GENERATION_YEARS } from "@/lib/constants/generations/generations.constants";
 
 interface RegionGenerationLinkProps {
     generation: string;   // "generation-i"

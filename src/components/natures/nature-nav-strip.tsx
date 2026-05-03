@@ -5,7 +5,7 @@ import Link from "next/link";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import {
     NATURES_DATA, TABLE_STATS, STAT_COLORS, STAT_NAMES_ES, STAT_ABBR,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureNavStripProps {
     currentNature: string;

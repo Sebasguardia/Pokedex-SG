@@ -1,4 +1,4 @@
-import { ABILITY_KEYWORDS } from "../constants/abilities.constants"
+import { ABILITY_KEYWORDS } from "../constants/abilities/abilities.constants"
 
 /**
  * Infers the category of an ability based on its effect text

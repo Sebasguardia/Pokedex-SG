@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { TeamAnalysis, TeamMember } from "@/types/api/team-builder.types";
 import {
     ALL_TYPES, TYPE_COLORS, TYPE_NAMES_ES, getCellMeta,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { getEffectivenessForMember, getEffectiveness } from "@/lib/utils/type-analysis";
 
 interface TypeCoverageMatrixProps {

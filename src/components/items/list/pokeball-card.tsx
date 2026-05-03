@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items/items.constants"
 import { Target } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 

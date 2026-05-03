@@ -4,8 +4,8 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Plus } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { useAllTags } from "@/lib/hooks/useFavorites";
-import { MAX_TAGS_PER_POKEMON } from "@/lib/constants/favorites.constants";
+import { useAllTags } from "@/lib/hooks/favorites/useFavorites";
+import { MAX_TAGS_PER_POKEMON } from "@/lib/constants/favorites/favorites.constants";
 
 interface FavoriteTagEditorProps {
     pokemonId: number;

@@ -4,13 +4,13 @@ import { useState } from "react"
 import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion"
 import { notFound } from "next/navigation"
 
-import { useType } from "@/lib/hooks/useTypes"
-import { useTypesData } from "@/lib/hooks/useTypesData"
-import { useMovesByType } from "@/lib/hooks/useMovesByType"
+import { useType } from "@/lib/hooks/types/useTypes"
+import { useTypesData } from "@/lib/hooks/types/useTypesData"
+import { useMovesByType } from "@/lib/hooks/moves/useMovesByType"
 
-import { TYPE_COLORS, TYPE_ORDER } from "@/lib/constants/types.constants"
+import { TYPE_COLORS, TYPE_ORDER } from "@/lib/constants/types/types.constants"
 
-import { PageTransitionType } from "@/components/shared/page-transition-type"
+import { PageTransitionType } from "@/components/shared/page-transitions/types/page-transition-type"
 import { TypeDetailHero } from "@/components/types/type-detail-hero"
 import { EffectivenessSection } from "@/components/types/effectiveness-section"
 import { TypeMatrixSection } from "@/components/types/type-matrix"

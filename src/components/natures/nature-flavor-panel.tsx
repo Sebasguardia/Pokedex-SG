@@ -8,7 +8,7 @@ import { Nature } from "@/types/api/nature.types";
 import {
     NatureMeta, FLAVOR_COLORS, FLAVOR_NAMES_ES,
     BERRIES_BY_FLAVOR, FLAVOR_STAT_RELATION, STAT_NAMES_ES,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureFlavorPanelProps {
     nature: Nature;

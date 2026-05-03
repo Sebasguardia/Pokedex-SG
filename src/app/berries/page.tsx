@@ -4,8 +4,8 @@ import { useState, Suspense } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useQueryState } from "nuqs";
 
-import { useBerriesList } from "@/lib/hooks/useBerriesList";
-import { PageTransitionBerries } from "@/components/shared/page-transition-berries";
+import { useBerriesList } from "@/lib/hooks/berries/useBerriesList";
+import { PageTransitionBerries } from "@/components/shared/page-transitions/berries/page-transition-berries";
 import { BerryCard } from "@/components/berries/berry-card";
 import { BerryFilterBar } from "@/components/berries/berry-filter-bar";
 import {

@@ -5,7 +5,7 @@ import Image from "next/image"
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import { Sparkles, RefreshCw, Volume2 } from "lucide-react"
-import { PokemonSprite } from "@/components/shared/pokemon-sprite"
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite"
 
 interface Props {
     sprite?: string | null

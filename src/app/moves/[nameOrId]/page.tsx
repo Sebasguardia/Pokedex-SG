@@ -3,9 +3,9 @@
 import { useParams } from "next/navigation"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { useMove } from "@/lib/hooks/useMoves"
-import { useMachines } from "@/lib/hooks/useMachines"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { useMove } from "@/lib/hooks/moves/useMoves"
+import { useMachines } from "@/lib/hooks/moves/useMachines"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import { MoveDetailHero } from "@/components/moves/move-detail-hero"
 import { MoveStatsGrid } from "@/components/moves/move-stats-grid"
 import { MoveEffectSection } from "@/components/moves/move-effect-section"
@@ -13,7 +13,7 @@ import { MoveContestSection } from "@/components/moves/move-contest-section"
 import { MovePokemonList } from "@/components/moves/move-pokemon-list"
 import { MoveMachinesSection } from "@/components/moves/move-machines-section"
 import { MoveVersionHistory } from "@/components/moves/move-version-history"
-import { PageTransitionMove } from "@/components/shared/page-transition-move"
+import { PageTransitionMove } from "@/components/shared/page-transitions/moves/page-transition-move"
 import { ArrowLeft } from "lucide-react"
 
 function MoveDetailSkeleton() {
@@ -58,7 +58,7 @@ export default function MoveDetailPage() {
 
     return (
         <>
-            <PageTransitionMove typeColor={typeColor} typeName={move.type?.name ?? ""} moveClass={moveClass} />
+            <PageTransitionMove typeColor={typeColor} typeName={move.type?.name ?? ""} moveName={move.name} moveClass={moveClass} />
 
             {/* Radial tint background */}
             <div

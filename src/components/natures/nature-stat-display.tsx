@@ -7,7 +7,7 @@ import { Nature } from "@/types/api/nature.types";
 import {
     NatureMeta, STAT_COLORS, STAT_NAMES_ES,
     STAT_COMPETITIVE_TIPS,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureStatDisplayProps {
     nature: Nature;

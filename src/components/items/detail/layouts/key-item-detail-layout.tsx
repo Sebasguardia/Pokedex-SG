@@ -6,7 +6,7 @@ import Image from "next/image"
 import { ChevronLeft, Key, Compass, BookOpen, MapPin } from "lucide-react"
 import { ItemFlavorCarousel } from "../item-flavor-carousel"
 import { RelatedItemsCarousel } from "../related-items-carousel"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 
 interface Props {
     item: any

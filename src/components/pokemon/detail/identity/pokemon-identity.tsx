@@ -5,9 +5,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Crown, Sparkles, Heart, Mars, Venus } from "lucide-react"
-import { TypeIcon } from "@/components/shared/type-icon"
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
-import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants"
+import { TypeIcon } from "@/components/shared/icons/type-icon"
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants"
+import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/pokemon/special-pokemon.constants"
 import { formatPokemonId } from "@/lib/utils/pokemon.utils"
 
 interface Props {

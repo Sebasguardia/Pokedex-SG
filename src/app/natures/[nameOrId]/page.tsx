@@ -4,16 +4,16 @@ import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 
-import { useNature } from "@/lib/hooks/useNatures";
-import { NATURES_DATA, STAT_COLORS } from "@/lib/constants/natures.constants";
+import { useNature } from "@/lib/hooks/natures/useNatures";
+import { NATURES_DATA, STAT_COLORS } from "@/lib/constants/natures/natures.constants";
 import { NatureDetailHero } from "@/components/natures/nature-detail-hero";
 import { NatureStatDisplay } from "@/components/natures/nature-stat-display";
 import { NatureFlavorPanel } from "@/components/natures/nature-flavor-panel";
 import { NatureCompetitiveTips } from "@/components/natures/nature-competitive-tips";
 import { NaturePokeathlonPanel } from "@/components/natures/nature-pokeathlon-panel";
 import { NatureNavStrip } from "@/components/natures/nature-nav-strip";
-import { PageTransitionNature } from "@/components/shared/page-transition-nature";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
+import { PageTransitionNature } from "@/components/shared/page-transitions/natures/page-transition-nature";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
 
 // ── Skeleton de carga ─────────────────────────────────────────────────────────
 function LoadingSkeleton() {

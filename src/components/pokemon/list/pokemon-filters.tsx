@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Search, X, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants";
-import { GENERATIONS } from "@/lib/constants/generations.constants";
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants";
+import { GENERATIONS } from "@/lib/constants/generations/generations.constants";
 import { cn } from "@/lib/utils/cn";
 
 interface PokemonFiltersProps {

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import * as Tabs from "@radix-ui/react-tabs"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import Link from "next/link"
 import { ArrowRight, ChevronRight, User } from "lucide-react"
 

@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Move } from "@/types/api/move.types"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
-import { AILMENT_COLORS, AILMENT_LABELS, STAT_LABELS_ES } from "@/lib/constants/moves.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
+import { AILMENT_COLORS, AILMENT_LABELS, STAT_LABELS_ES } from "@/lib/constants/moves/moves.constants"
 import * as Accordion from "@radix-ui/react-accordion"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import { ChevronDown } from "lucide-react"

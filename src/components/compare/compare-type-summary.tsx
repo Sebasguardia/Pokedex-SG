@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { getEffectiveness, COMPARE_COLORS } from "@/lib/constants/compare.constants"
-import { ALL_TYPES, TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants"
+import { getEffectiveness, COMPARE_COLORS } from "@/lib/constants/compare/compare.constants"
+import { ALL_TYPES, TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants"
 import Image from "next/image"
 
 

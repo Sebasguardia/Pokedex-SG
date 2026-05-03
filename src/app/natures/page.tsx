@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 
-import { useNaturesList } from "@/lib/hooks/useNatures";
-import { NATURES_DATA } from "@/lib/constants/natures.constants";
+import { useNaturesList } from "@/lib/hooks/natures/useNatures";
+import { NATURES_DATA } from "@/lib/constants/natures/natures.constants";
 import { NatureMasterTable } from "@/components/natures/nature-master-table";
 import { NatureCard } from "@/components/natures/nature-card";
 import { NatureFilterBar } from "@/components/natures/nature-filter-bar";
@@ -14,7 +14,7 @@ import {
     NaturesPageHeader, NatureViewToggle,
     NatureSkeletonTable, NatureEmptyState,
 } from "@/components/natures/nature-list-components";
-import { PageTransitionNatures } from "@/components/shared/page-transition-natures";
+import { PageTransitionNatures } from "@/components/shared/page-transitions/natures/page-transition-natures";
 import { useFilterStore } from "@/lib/store/filter.store";
 
 function NaturesContent() {
@@ -140,7 +140,7 @@ function NaturesContent() {
                             >
                                 <span className="font-press-start text-[9px] text-[#888888]">RESALTAR:</span>
                                 {[null, "attack", "defense", "special-attack", "special-defense", "speed"].map((stat) => {
-                                    const { STAT_COLORS: SC, STAT_ABBR: SA } = require("@/lib/constants/natures.constants");
+                                    const { STAT_COLORS: SC, STAT_ABBR: SA } = require("@/lib/constants/natures/natures.constants");
                                     const active = statFilter === stat;
                                     const color = stat ? SC[stat] : "#111111";
                                     return (

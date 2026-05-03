@@ -6,10 +6,10 @@ import {
     Globe2, Compass, Trees, Mountain, Waves, Building2, Fish, Leaf,
     Map, Zap, ChevronRight
 } from "lucide-react";
-import { useRegionsList } from "@/lib/hooks/useLocations";
-import { REGION_ORDER, REGION_COLORS, REGION_NAMES_ES } from "@/lib/constants/locations.constants";
+import { useRegionsList } from "@/lib/hooks/locations/useLocations";
+import { REGION_ORDER, REGION_COLORS, REGION_NAMES_ES } from "@/lib/constants/locations/locations.constants";
 import { RegionCard } from "@/components/locations/region-card";
-import { PageTransitionLocations } from "@/components/shared/page-transition-locations";
+import { PageTransitionLocations } from "@/components/shared/page-transitions/locations/page-transition-locations";
 
 // ── Tipos de Zona (datos estáticos) ──────────────────────────────────
 const ZONE_TYPES = [

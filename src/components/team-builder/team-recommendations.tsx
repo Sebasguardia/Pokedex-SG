@@ -8,11 +8,11 @@ import {
 } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { usePokemonForTeam } from "@/lib/hooks/useTeamBuilder";
-import { useTeamRecommendations } from "@/lib/hooks/useTeamBuilder";
-import { useTeamAnalysis } from "@/lib/hooks/useTeamBuilder";
+import { usePokemonForTeam } from "@/lib/hooks/team-builder/useTeamBuilder";
+import { useTeamRecommendations } from "@/lib/hooks/team-builder/useTeamBuilder";
+import { useTeamAnalysis } from "@/lib/hooks/team-builder/useTeamBuilder";
 
 // ── Card individual ───────────────────────────────────────────────────────────
 

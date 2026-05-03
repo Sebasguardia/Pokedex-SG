@@ -1,6 +1,6 @@
 "use client";
 
-import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/machines.constants";
+import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/machines/machines.constants";
 
 interface MachineTypeBadgeProps {
   type: string;

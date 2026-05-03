@@ -2,16 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, RotateCcw } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { apiClient } from "@/lib/api/client";
-import { TYPE_COLORS } from "@/lib/constants/colors";
+import { TYPE_COLORS } from "@/lib/constants/ui/colors";
 import { cn } from "@/lib/utils/cn";
 import { useFilterStore } from "@/lib/store/filter.store";
 
-const CLASSIC_IDS = [25, 1, 4, 7, 94, 143]; // Pikachu, Bulba, Charm, Squirtle, Gengar, Snorlax
+const CLASSIC_IDS = [25, 1, 4, 7, 94, 143, 149, 150, 248, 448];
 
 function fetchPokemonDetails(id: number) {
     return apiClient.get(`/pokemon/${id}`).then(res => res.data);
@@ -26,203 +25,276 @@ function PokemonCard({ id, index }: { id: number, index: number }) {
 
     const typeName = pokemon?.types[0]?.type?.name || "normal";
     const typeColor = TYPE_COLORS[typeName as keyof typeof TYPE_COLORS] || TYPE_COLORS.normal;
-
-    // Format ID to 3 digits
-    const formattedId = `#${String(id).padStart(3, '0')}`;
+    const formattedId = String(id).padStart(3, '0');
     const name = pokemon?.name ? pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) : "???";
+    
+    // Showdown Animated Sprite
+    const spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`;
 
     return (
         <motion.div
             variants={{
-                hidden: { opacity: 0, x: 60 },
-                visible: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 200, damping: 25 } },
-                hover: { y: -10, boxShadow: "6px 6px 0 #CC0000" }
+                hidden: { opacity: 0, y: 40 },
+                visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 200, damping: 25 } },
+                hover: { y: -12, boxShadow: `10px 10px 0 ${typeColor}` }
             }}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
+            viewport={{ once: true, margin: "-50px" }}
             whileHover="hover"
-            className="shrink-0 w-[150px] md:w-[180px] bg-white border-2 border-gray-900 flex flex-col relative snap-start"
-            style={{ boxShadow: "4px 4px 0 #111111" }}
-            data-cursor="hover"
+            className="shrink-0 w-[220px] md:w-[260px] bg-white border-[4px] border-[#111111] flex flex-col relative snap-start group"
+            style={{ boxShadow: "6px 6px 0 #111111" }}
         >
-            {/* Float animation wrapper */}
-            <motion.div
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.5 }}
-                className="flex flex-col h-full pointer-events-none"
-            >
-                <div className="p-3 flex items-center justify-between z-10">
-                    <span className="font-mono text-[10px] text-gray-400">{formattedId}</span>
-                    <div className="flex gap-1">
+            <Link href={`/pokemon/${id}`} className="flex flex-col h-full">
+                {/* Header info */}
+                <div className="p-4 flex items-center justify-between border-b-[3px] border-[#111111] bg-[#F8F8F8]">
+                    <div className="flex flex-col">
+                        <span className="font-['Press_Start_2P'] text-[7px] text-[#888888] leading-none mb-2">NO.</span>
+                        <span className="font-['Press_Start_2P'] text-[11px] md:text-[13px] text-[#111111] leading-none">{formattedId}</span>
+                    </div>
+                    <div className="flex gap-2">
                         {pokemon?.types.map((t: any) => (
                             <div
                                 key={t.type.name}
-                                className="w-2.5 h-2.5 rounded-full"
-                                style={{ backgroundColor: TYPE_COLORS[t.type.name as keyof typeof TYPE_COLORS] || TYPE_COLORS.normal }}
+                                data-type={t.type.name}
+                                className="w-6 h-6 border-2 border-[#111111] shadow-[2px_2px_0_#111111] flex items-center justify-center p-0.5 bg-[var(--type-color)]"
                                 title={t.type.name}
-                            />
+                            >
+                                <img 
+                                    src={`/icons/${t.type.name}.svg`} 
+                                    alt={t.type.name}
+                                    className="w-full h-full object-contain brightness-[100] drop-shadow-[1px_1px_0_rgba(0,0,0,0.5)]"
+                                />
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col items-center justify-center p-4 relative pt-0">
-                    <div
-                        className="absolute inset-0 opacity-5"
-                        style={{ backgroundColor: typeColor }}
-                    />
-                    <div className="relative w-24 h-24 md:w-28 md:h-28 flex items-center justify-center z-10 filter drop-shadow-md">
+                {/* Sprite Container */}
+                <div 
+                    className="flex-1 flex flex-col items-center justify-center p-8 relative overflow-hidden bg-white min-h-[180px] md:min-h-[220px]"
+                    style={{ "--type-color": typeColor } as any}
+                >
+                    {/* Decorative Background */}
+                    <div className="absolute inset-0 opacity-[0.05] pointer-events-none bg-type-grid" />
+                    
+                    <div className="absolute top-2 right-4 opacity-10 pointer-events-none uppercase font-black text-[50px] leading-none tracking-tighter text-[var(--type-color)]">
+                        {typeName.slice(0, 3)}
+                    </div>
+                    
+                    <div className="relative w-full h-full flex items-center justify-center z-10">
                         {isLoading ? (
-                            <motion.div
-                                animate={{ opacity: [0.4, 0.8, 0.4] }}
-                                transition={{ repeat: Infinity, duration: 1.5 }}
-                                className="w-16 h-16 bg-gray-200 rounded-md"
-                            />
+                            <div className="w-16 h-16 bg-[#F2F2F2] border-4 border-dashed border-[#E0E0E0] animate-pulse" />
                         ) : (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full h-full relative" variants={{ hover: { scale: 1.12, transition: { type: "spring" } } }}>
-                                <Image
-                                    src={pokemon?.sprites?.other?.["official-artwork"]?.front_default || pokemon?.sprites?.front_default || "/placeholder.png"}
+                            <motion.div 
+                                className="relative flex items-center justify-center"
+                                animate={{ y: [0, -6, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: (index % 10) * 0.2 }}
+                            >
+                                <img
+                                    src={spriteUrl}
                                     alt={name}
-                                    fill
-                                    sizes="(max-width: 768px) 96px, 112px"
-                                    priority={index < 3}
-                                    className="object-contain"
+                                    className="scale-[2] md:scale-[2.5] object-contain pixelated pointer-events-none group-hover:scale-[2.8] md:group-hover:scale-[3.2] transition-transform duration-500 origin-center"
+                                    onError={(e) => {
+                                        (e.target as HTMLImageElement).src = pokemon?.sprites?.other?.["official-artwork"]?.front_default || "";
+                                        (e.target as HTMLImageElement).className = "w-32 h-32 object-contain group-hover:scale-110 transition-transform duration-500";
+                                    }}
                                 />
                             </motion.div>
                         )}
                     </div>
                 </div>
 
-                <div className="p-3 text-center border-t border-gray-100 z-10 bg-white">
-                    <span className="font-nunito font-bold text-[13px] text-gray-900">{name}</span>
+                {/* Footer */}
+                <div className="p-4 text-center border-t-[3px] border-[#111111] z-10 bg-white">
+                    <span className="font-['Press_Start_2P'] text-[11px] md:text-[12px] text-[#111111] uppercase block mb-2 truncate font-bold tracking-tight">{name}</span>
+                    <div className="flex items-center gap-2">
+                         <div className="h-[6px] flex-1 bg-[#EEEEEE] border border-[#111111] overflow-hidden">
+                            <motion.div 
+                                initial={{ width: 0 }}
+                                whileInView={{ width: "100%" }}
+                                className="h-full" 
+                                style={{ backgroundColor: typeColor }} 
+                            />
+                        </div>
+                    </div>
                 </div>
-
-                {/* Bottom Color Bar */}
-                <div className="h-[3px] w-full" style={{ backgroundColor: typeColor }} />
-            </motion.div>
+            </Link>
         </motion.div>
     );
 }
 
 export function FeaturedPokemon() {
     const { pokedexFilters } = useFilterStore();
+    const [featuredIds, setFeaturedIds] = useState(CLASSIC_IDS);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const pokedexHref = pokedexFilters ? `/pokemon?${pokedexFilters}` : "/pokemon";
 
     const containerRef = useRef<HTMLDivElement>(null);
-    const [canScrollLeft, setCanScrollLeft] = useState(false);
+    const [canScrollLeft, setCanScrollLeft] = useState(true);
     const [canScrollRight, setCanScrollRight] = useState(true);
 
-    const checkScroll = () => {
-        if (containerRef.current) {
-            const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-            setCanScrollLeft(scrollLeft > 0);
-            setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth);
+    // Triple the items to create a seamless loop
+    const loopedIds = [...featuredIds, ...featuredIds, ...featuredIds];
+
+    const randomizePokemon = () => {
+        setIsRefreshing(true);
+        const newIds: number[] = [];
+        while (newIds.length < 10) {
+            const rand = Math.floor(Math.random() * 800) + 1;
+            if (!newIds.includes(rand)) newIds.push(rand);
+        }
+        
+        setTimeout(() => {
+            setFeaturedIds(newIds);
+            setIsRefreshing(false);
+            // After changing IDs, reset scroll to middle
+            if (containerRef.current) {
+                const { scrollWidth } = containerRef.current;
+                containerRef.current.scrollLeft = scrollWidth / 3;
+            }
+        }, 500);
+    };
+
+    const handleInfiniteScroll = () => {
+        if (!containerRef.current) return;
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        const segmentWidth = scrollWidth / 3;
+        
+        // Use a small buffer to trigger the jump before hitting the absolute edge
+        const threshold = 10; 
+
+        if (scrollLeft < threshold) {
+            // Jump from start of first segment to start of second segment
+            containerRef.current.scrollTo({
+                left: segmentWidth + scrollLeft,
+                behavior: 'instant' as any
+            });
+        } else if (scrollLeft + clientWidth > (segmentWidth * 2) + (segmentWidth - threshold)) {
+            // Jump from end of third segment back to end of second segment
+            containerRef.current.scrollTo({
+                left: scrollLeft - segmentWidth,
+                behavior: 'instant' as any
+            });
         }
     };
 
     useEffect(() => {
-        checkScroll();
-        window.addEventListener("resize", checkScroll);
-        return () => window.removeEventListener("resize", checkScroll);
-    }, []);
+        // Initial scroll to the start of the middle segment
+        if (containerRef.current) {
+            const { scrollWidth } = containerRef.current;
+            containerRef.current.scrollTo({
+                left: scrollWidth / 3,
+                behavior: 'instant' as any
+            });
+        }
+        
+        window.addEventListener("resize", handleInfiniteScroll);
+        return () => window.removeEventListener("resize", handleInfiniteScroll);
+    }, [featuredIds]);
 
     const scrollBy = (offset: number) => {
         containerRef.current?.scrollBy({ left: offset, behavior: "smooth" });
     };
 
     return (
-        <section className="bg-[#F8F8F8] py-20 overflow-hidden relative">
-            <div className="max-w-7xl mx-auto px-4">
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
-                    <div className="flex items-center gap-4">
-                        <motion.div
-                            initial={{ scaleY: 0 }} whileInView={{ scaleY: 1 }} viewport={{ once: true, margin: "-80px" }}
-                            className="w-1 h-8 bg-poke-red origin-bottom"
-                        />
+        <section className="bg-white py-28 overflow-hidden relative border-y-4 border-[#111111]">
+            <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-section-grid" />
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-20 gap-8">
+                    <div className="flex items-center gap-6">
+                        <div className="relative">
+                            <div className="w-3 h-12 bg-[#CC0000] border-2 border-[#111111]" />
+                            <div className="w-3 h-5 bg-[#111111] border-2 border-[#111111] mt-1" />
+                            <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-1 h-8 bg-[#111111]" />
+                        </div>
                         <div>
-                            <h2 className="font-pixel text-[14px] md:text-[16px] text-gray-900 uppercase">POKÉMON POPULARES</h2>
-                            <p className="font-nunito text-[14px] text-gray-500 mt-2">Algunos de los favoritos de todos</p>
+                            <h2 className="font-['Press_Start_2P'] text-[16px] md:text-[24px] text-[#111111] uppercase leading-none tracking-tight mb-4">
+                                POKÉMON <span className="text-[#CC0000]">Destacados</span>
+                            </h2>
+                            <div className="flex items-center gap-4">
+                                <span className="w-12 h-[3px] bg-[#CC0000]" />
+                                <p className="font-['Press_Start_2P'] text-[8px] md:text-[10px] text-[#111111] uppercase tracking-wider">Inspiración Infinita</p>
+                            </div>
                         </div>
                     </div>
 
-                    <motion.div
-                        animate={{ rotate: [-1, 1, -1] }}
-                        transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-                        className="bg-poke-red text-white font-pixel text-[8px] px-3 py-1.5 border-2 border-gray-900 whitespace-nowrap"
-                        title="Se actualizan aleatoriamente en el futuro"
-                        data-cursor="hover"
-                    >
-                        RANDOM
-                    </motion.div>
+                    <div className="flex items-center gap-4">
+                        <motion.button
+                            onClick={randomizePokemon}
+                            disabled={isRefreshing}
+                            className="flex items-center gap-3 bg-[#CC0000] text-white font-['Press_Start_2P'] text-[10px] px-6 py-4 border-[3px] border-[#111111] transition-all group relative"
+                            style={{ boxShadow: "5px 5px 0 #111111" }}
+                            whileTap={{ scale: 0.95, boxShadow: "0px 0px 0 #111111", x: 3, y: 3 }}
+                        >
+                            <RotateCcw size={18} className={cn("transition-transform duration-700", isRefreshing ? "animate-spin" : "group-hover:rotate-180")} />
+                            <span className="hidden sm:inline">RANDOMIZAR</span>
+                        </motion.button>
+
+                        <div className="flex border-[3px] border-[#111111] bg-white overflow-hidden shadow-[5px_5px_0_#111111]">
+                            <button
+                                onClick={() => scrollBy(-520)}
+                                aria-label="Anterior"
+                                className="p-3 transition-colors border-r-[3px] border-[#111111] hover:bg-[#111111] hover:text-white"
+                            >
+                                <ChevronLeft size={24} strokeWidth={3} />
+                            </button>
+                            <button
+                                onClick={() => scrollBy(520)}
+                                aria-label="Siguiente"
+                                className="p-3 transition-colors hover:bg-[#111111] hover:text-white"
+                            >
+                                <ChevronRight size={24} strokeWidth={3} />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            {/* Carousel */}
-            <div className="relative group/carousel max-w-[1400px] mx-auto">
+            <div className="relative max-w-[1440px] mx-auto z-10">
                 <motion.div
                     ref={containerRef}
-                    className="flex gap-5 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-8 pt-2 px-4 md:px-[max(1rem,calc((100vw-80rem)/2))]"
-                    onScroll={checkScroll}
-                    drag="x"
-                    dragConstraints={containerRef}
-                    dragElastic={0.1}
-                    whileDrag={{ cursor: "grabbing" }}
-                    style={{ cursor: "grab" }}
+                    className="flex gap-10 overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-16 pt-4 px-6 md:px-[max(1.5rem,calc((100vw-80rem)/2))]"
+                    onScroll={handleInfiniteScroll}
                 >
-                    {/* Apply stagger manually via index prop directly or let Framer handle if wrapped */}
-                    {CLASSIC_IDS.map((id, index) => (
-                        <PokemonCard key={id} id={id} index={index} />
+                    {loopedIds.map((id, index) => (
+                        <PokemonCard key={`${id}-${index}`} id={id} index={index} />
                     ))}
                 </motion.div>
-
-                {/* Desktop Navigation Arrows */}
-                <div className="hidden md:block absolute top-[40%] -translate-y-1/2 left-4 z-20">
-                    <motion.button
-                        onClick={() => scrollBy(-300)}
-                        disabled={!canScrollLeft}
-                        className={cn("w-12 h-12 bg-white border-2 border-gray-900 flex items-center justify-center transition-colors", !canScrollLeft ? "opacity-30 pointer-events-none" : "hover:bg-gray-900 hover:text-white")}
-                        style={{ boxShadow: "3px 3px 0 #111111" }}
-                        whileTap={{ scale: 0.95 }}
-                        data-cursor="hover"
-                    >
-                        <ChevronLeft className="w-6 h-6" />
-                    </motion.button>
-                </div>
-                <div className="hidden md:block absolute top-[40%] -translate-y-1/2 right-4 z-20">
-                    <motion.button
-                        onClick={() => scrollBy(300)}
-                        disabled={!canScrollRight}
-                        className={cn("w-12 h-12 bg-white border-2 border-gray-900 flex items-center justify-center transition-colors", !canScrollRight ? "opacity-30 pointer-events-none" : "hover:bg-gray-900 hover:text-white")}
-                        style={{ boxShadow: "3px 3px 0 #111111" }}
-                        whileTap={{ scale: 0.95 }}
-                        data-cursor="hover"
-                    >
-                        <ChevronRight className="w-6 h-6" />
-                    </motion.button>
-                </div>
             </div>
 
-            <div className="flex justify-center mt-6">
+            <div className="flex justify-center mt-12">
                 <Link href={pokedexHref}>
-                    <motion.button
+                    <motion.div
                         whileHover="hover"
                         whileTap={{ scale: 0.97 }}
-                        className="flex items-center justify-center bg-transparent text-gray-900 font-nunito font-bold text-sm px-6 py-3 border-2 border-gray-900"
-                        style={{ boxShadow: "4px 4px 0 #888888" }}
-                        variants={{ hover: { x: 4, y: 4, boxShadow: "0px 0px 0 #888888" } }}
+                        className="flex items-center justify-center bg-white text-[#111111] font-['Press_Start_2P'] text-[12px] px-12 py-6 border-[4px] border-[#111111] cursor-pointer group"
+                        style={{ boxShadow: "10px 10px 0 #CC0000" }}
+                        variants={{ hover: { x: 5, y: 5, boxShadow: "0px 0px 0 #CC0000" } }}
                         transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                        data-cursor="hover"
                     >
-                        Ver los 1025 Pokémon <motion.span variants={{ hover: { x: 8 } }} className="ml-2 block"><ArrowRight className="w-4 h-4" /></motion.span>
-                    </motion.button>
+                        EXPLORAR TODA LA POKÉDEX
+                        <motion.span variants={{ hover: { x: 12 } }} className="ml-5 block">
+                            <ArrowRight size={24} strokeWidth={3} />
+                        </motion.span>
+                    </motion.div>
                 </Link>
             </div>
 
             <style jsx global>{`
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+                .hide-scrollbar::-webkit-scrollbar { display: none; }
+                .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+                .pixelated { image-rendering: pixelated; }
+                .bg-type-grid {
+                    background-image: radial-gradient(var(--type-color) 2px, transparent 0);
+                    background-size: 16px 16px;
+                }
+                .bg-section-grid {
+                    background-image: linear-gradient(#111111 1px, transparent 1px), linear-gradient(90deg, #111111 1px, transparent 1px);
+                    background-size: 40px 40px;
+                }
+            `}</style>
         </section>
     );
 }

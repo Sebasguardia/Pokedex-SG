@@ -8,7 +8,7 @@ import {
     CheckCircle2, AlertTriangle, Info
 } from "lucide-react";
 import { TeamMember } from "@/types/api/team-builder.types";
-import { ROLE_META, PIXEL_URL, TYPE_COLORS } from "@/lib/constants/team-builder.constants";
+import { ROLE_META, PIXEL_URL, TYPE_COLORS } from "@/lib/constants/team-builder/team-builder.constants";
 import { detectRole as detectRoleFn } from "@/lib/utils/team-scoring";
 
 const ROLE_ICONS = {

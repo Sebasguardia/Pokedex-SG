@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BarChart2 } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Cell } from "recharts";
-import { useFavoritesStats } from "@/lib/hooks/useFavorites";
-import { TYPE_COLORS, TYPE_NAMES_ES, GEN_COLORS, GEN_LABELS, ALL_TYPES } from "@/lib/constants/favorites.constants";
+import { useFavoritesStats } from "@/lib/hooks/favorites/useFavorites";
+import { TYPE_COLORS, TYPE_NAMES_ES, GEN_COLORS, GEN_LABELS, ALL_TYPES } from "@/lib/constants/favorites/favorites.constants";
 
 export function FavoritesStatsDashboard() {
     const [isOpen, setIsOpen] = useState(false);

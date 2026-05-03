@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import NumberFlow from "@number-flow/react"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 import { cn } from "@/lib/utils/cn"
 
 interface Props {

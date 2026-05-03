@@ -6,7 +6,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import { Compass, Calendar } from "lucide-react";
 import {
     REGION_ORDER, REGION_COLORS, REGION_NAMES_ES, REGION_YEARS,
-} from "@/lib/constants/locations.constants";
+} from "@/lib/constants/locations/locations.constants";
 
 interface RegionNavStripProps {
     currentRegion: string;  // "kanto"

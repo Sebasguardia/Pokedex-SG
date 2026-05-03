@@ -10,7 +10,7 @@ import {
 import {
     DEFAULT_COLLECTION, DEFAULT_COLLECTION_ID, DEFAULT_FILTER_STATE,
     generateId, favoritesToExportJSON, importFromJSON as parseImportJSON, MAX_FAVORITES,
-} from "@/lib/constants/favorites.constants";
+} from "@/lib/constants/favorites/favorites.constants";
 
 // ── Tipo adicional para el pokemon de entrada (sin los campos de favorito) ────
 export type FavoritePokemonInput = Omit<FavoritePokemon,

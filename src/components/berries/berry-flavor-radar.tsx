@@ -7,7 +7,7 @@ import {
 } from "recharts";
 import { Leaf } from "lucide-react";
 import NumberFlow from "@number-flow/react";
-import { FLAVOR_COLORS, FLAVOR_META } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS, FLAVOR_META } from "@/lib/constants/berries/berries.constants";
 
 interface RadarEntry {
   flavor: string;

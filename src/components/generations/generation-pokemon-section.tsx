@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Book, Star, Crown, ChevronRight } from "lucide-react";
 import { TypeBadge } from "@/components/pokemon/type-badge";
-import { GENERATION_LEGENDARIES_LORE } from "@/lib/constants/generations.constants";
+import { GENERATION_LEGENDARIES_LORE } from "@/lib/constants/generations/generations.constants";
 
 interface GenerationPokemonSectionProps {
     generationName: string;

@@ -6,10 +6,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pin, Star, MoreVertical, CheckSquare, Square } from "lucide-react";
 import { FavoritePokemon } from "@/types/api/favorites.types";
-import { TYPE_COLORS, TYPE_NAMES_ES, GEN_LABELS, timeAgo } from "@/lib/constants/favorites.constants";
+import { TYPE_COLORS, TYPE_NAMES_ES, GEN_LABELS, timeAgo } from "@/lib/constants/favorites/favorites.constants";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
 import { FavoriteActionsMenu } from "./favorite-actions-menu";
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 
 interface FavoriteCardProps {
     pokemon: FavoritePokemon;

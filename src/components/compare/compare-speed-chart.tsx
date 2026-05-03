@@ -7,7 +7,7 @@ import {
     COMPARE_COLORS,
     SPEED_REFERENCES,
     getWinners,
-} from "@/lib/constants/compare.constants"
+} from "@/lib/constants/compare/compare.constants"
 
 interface CompareSpeedChartProps {
     pokemon:      (ComparedPokemon | null)[]

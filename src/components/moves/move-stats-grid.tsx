@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Move } from "@/types/api/move.types"
 import { Zap, Target, Battery, Clock, Percent, Calendar } from "lucide-react"
-import { getPowerColor, isPowerDevastating, GEN_NAMES, GEN_YEARS, GEN_ROMAN } from "@/lib/constants/moves.constants"
+import { getPowerColor, isPowerDevastating, GEN_NAMES, GEN_YEARS, GEN_ROMAN } from "@/lib/constants/moves/moves.constants"
 
 interface Props {
     move: Move

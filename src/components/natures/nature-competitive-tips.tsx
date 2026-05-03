@@ -9,7 +9,7 @@ import {
     NatureMeta, STAT_COLORS, STAT_NAMES_ES,
     STAT_COMPETITIVE_TIPS, NATURE_ICONIC_POKEMON,
     NATURES_DATA, getNaturesWithSameStat,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureCompetitiveTipsProps {
     nature: Nature;

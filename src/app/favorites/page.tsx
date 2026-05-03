@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { useFilteredFavorites, useFavorites } from "@/lib/hooks/useFavorites";
+import { useFilteredFavorites, useFavorites } from "@/lib/hooks/favorites/useFavorites";
 import { PageTransitionFavorites } from "@/components/favorites/page-transition-favorites";
 import { FavoritesPageHeader } from "@/components/favorites/favorites-page-header";
 import { FavoritesSidebar } from "@/components/favorites/favorites-sidebar";
@@ -20,7 +20,7 @@ import { CollectionCreateModal } from "@/components/favorites/collection-create-
 import { FavoritesExportModal } from "@/components/favorites/favorites-export-modal";
 import { FavoritesImportModal } from "@/components/favorites/favorites-import-modal";
 import type { FavoriteCollection } from "@/types/api/favorites.types";
-import { decodeCollectionFromUrl } from "@/lib/constants/favorites.constants";
+import { decodeCollectionFromUrl } from "@/lib/constants/favorites/favorites.constants";
 
 function FavoritesPageInner() {
     const searchParams = useSearchParams();

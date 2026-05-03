@@ -4,8 +4,8 @@ import { notFound, useParams } from "next/navigation";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 
-import { useGeneration } from "@/lib/hooks/useGenerations";
-import { getGenMeta } from "@/lib/constants/generations.constants";
+import { useGeneration } from "@/lib/hooks/generations/useGenerations";
+import { getGenMeta } from "@/lib/constants/generations/generations.constants";
 import { useFilterStore } from "@/lib/store/filter.store";
 
 import { GenerationDetailHero } from "@/components/generations/generation-detail-hero";
@@ -17,8 +17,8 @@ import { GenerationEvolutionsSection } from "@/components/generations/generation
 import { GenerationPokemonSection } from "@/components/generations/generation-pokemon-section";
 import { GenerationRegionSection } from "@/components/generations/generation-region-section";
 import { GenerationNavStrip } from "@/components/generations/generation-nav-strip";
-import { PageTransitionGeneration } from "@/components/shared/page-transition-generation";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
+import { PageTransitionGeneration } from "@/components/shared/page-transitions/generations/page-transition-generation";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
 
 // ── Loading skeleton ───────────────────────────────────────────
 function LoadingSkeleton() {

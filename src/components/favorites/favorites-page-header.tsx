@@ -3,9 +3,9 @@
 import { motion } from "framer-motion";
 import { Heart, Download, Upload, Plus, Layers } from "lucide-react";
 import Link from "next/link";
-import { useFavoritesStats } from "@/lib/hooks/useFavorites";
+import { useFavoritesStats } from "@/lib/hooks/favorites/useFavorites";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { ALL_TYPES } from "@/lib/constants/favorites.constants";
+import { ALL_TYPES } from "@/lib/constants/favorites/favorites.constants";
 
 interface FavoritesPageHeaderProps {
     onExport:          () => void;

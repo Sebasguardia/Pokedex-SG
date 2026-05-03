@@ -7,7 +7,7 @@ import { Plus, X, ArrowLeftRight, Crown } from "lucide-react";
 import { TeamMember, DefensiveWeaknessEntry } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, getCellMeta, PIXEL_URL,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 interface TeamSlotProps {
     slot: number;

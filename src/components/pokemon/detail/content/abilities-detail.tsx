@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import * as Accordion from "@radix-ui/react-accordion"
-import { useAbility } from "@/lib/hooks/useAbilities"
+import { useAbility } from "@/lib/hooks/abilities/useAbilities"
 import { getSpanish, getSpanishText } from "@/lib/utils/locale.utils"
 import { EyeOff, HelpCircle, ChevronDown, Footprints } from "lucide-react"
 import Image from "next/image"

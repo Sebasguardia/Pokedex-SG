@@ -4,9 +4,9 @@ import { useMemo } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { usePokemonIndex } from "@/lib/hooks/usePokemonIndex"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { usePokemonIndex } from "@/lib/hooks/pokemon/usePokemonIndex"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 
 interface RawPokemon {
     name: string

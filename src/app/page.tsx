@@ -6,10 +6,10 @@ import { FeaturedPokemon } from "@/components/home/featured-pokemon";
 import { TypesShowcase } from "@/components/home/types-showcase";
 import { GenerationsTimeline } from "@/components/home/generations-timeline";
 import { ComparatorBanner } from "@/components/home/comparator-banner";
-import { SectionDivider } from "@/components/shared/section-divider";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
-import { PageCurtain } from "@/components/shared/page-curtain";
-import { CustomCursor } from "@/components/shared/custom-cursor";
+import { SectionDivider } from "@/components/shared/ui/section-divider";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
+import { PageCurtain } from "@/components/shared/ui/page-curtain";
+import { CustomCursor } from "@/components/shared/ui/custom-cursor";
 
 // Basic Skeletons for Suspense
 function StatsSectionSkeleton() { return <div className="h-[200px] bg-[#111]" />; }

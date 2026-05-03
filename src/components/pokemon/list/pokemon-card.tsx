@@ -3,15 +3,15 @@
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { useQueryClient } from "@tanstack/react-query"
-import { PokemonSprite } from "@/components/shared/pokemon-sprite"
-import { FavoriteButton } from "@/components/shared/favorite-button"
-import { TypeIcon } from "@/components/shared/type-icon"
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite"
+import { FavoriteButton } from "@/components/shared/favorites/favorite-button"
+import { TypeIcon } from "@/components/shared/icons/type-icon"
 import { formatPokemonId, formatPokemonName, getIdFromUrl } from "@/lib/utils/pokemon.utils"
 import { useUIStore } from "@/lib/store/ui.store"
-import { usePokemon } from "@/lib/hooks/usePokemon"
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
+import { usePokemon } from "@/lib/hooks/pokemon/usePokemon"
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants"
 import { getPokemonByIdOrName } from "@/lib/api/pokemon"
-import { pokemonKeys } from "@/lib/constants/query-keys"
+import { pokemonKeys } from "@/lib/constants/api/query-keys"
 
 interface PokemonCardProps {
     name: string;

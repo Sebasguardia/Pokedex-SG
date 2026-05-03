@@ -1,7 +1,7 @@
 "use client"
 
 import { motion, useReducedMotion } from "framer-motion"
-import { ABILITY_CATEGORIES } from "@/lib/constants/abilities.constants"
+import { ABILITY_CATEGORIES } from "@/lib/constants/abilities/abilities.constants"
 import { AbilityCategoryBadge } from "./ability-category-badge"
 import Link from "next/link"
 import { GiEyeTarget } from "react-icons/gi"

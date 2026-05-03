@@ -8,8 +8,8 @@ import {
     COMPARE_COLORS,
     getCellStyle,
     getEffectiveness,
-} from "@/lib/constants/compare.constants"
-import { ALL_TYPES, TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants"
+} from "@/lib/constants/compare/compare.constants"
+import { ALL_TYPES, TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants"
 import { Shield } from "lucide-react"
 
 interface CompareTypeAnalysisProps {

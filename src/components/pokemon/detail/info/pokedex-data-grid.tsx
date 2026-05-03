@@ -12,7 +12,7 @@ interface Props {
     species?: any
 }
 
-import { MEGA_STONES } from "@/lib/constants/mega-stones"
+import { MEGA_STONES } from "@/lib/constants/items/mega-stones"
 
 const GEN_MAP: Record<string, string> = {
     "generation-i": "Primera (1996)", "generation-ii": "Segunda (1999)", "generation-iii": "Tercera (2002)",

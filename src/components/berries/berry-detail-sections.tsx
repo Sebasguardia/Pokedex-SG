@@ -5,7 +5,7 @@ import { Sprout, Clock, Gem, Sparkles, Ruler, Info, Zap, ChevronRight, Apple, Pa
 import NumberFlow from "@number-flow/react";
 import * as Accordion from "@radix-ui/react-accordion";
 import Link from "next/link";
-import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries/berries.constants";
 import { formatPokemonName } from "@/lib/utils/pokemon.utils";
 
 // ──────────────────────────────────────────────────────────────

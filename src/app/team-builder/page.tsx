@@ -6,11 +6,11 @@ import { useQueryState } from "nuqs";
 import { Users, Upload, FolderOpen, ChevronRight } from "lucide-react";
 
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { useTeamAnalysis, useTeamRecommendations } from "@/lib/hooks/useTeamAnalysis";
+import { useTeamAnalysis, useTeamRecommendations } from "@/lib/hooks/team-builder/useTeamAnalysis";
 import { encodeTeam, decodeTeamFromUrl } from "@/lib/utils/team-sharing";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
 
-import { PageTransitionTeamBuilder } from "@/components/shared/page-transition-team-builder";
+import { PageTransitionTeamBuilder } from "@/components/shared/page-transitions/team-builder/page-transition-team-builder";
 import { TeamHeader } from "@/components/team-builder/team-header";
 import { TeamSlotsRow } from "@/components/team-builder/team-slots-row";
 import { PokemonSearchModal } from "@/components/team-builder/pokemon-search-modal";

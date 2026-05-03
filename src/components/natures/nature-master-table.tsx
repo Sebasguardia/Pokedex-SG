@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import {
     TABLE_STATS, NATURE_TABLE, STAT_COLORS,
     STAT_NAMES_ES, STAT_ABBR, NATURES_DATA,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 import { Nature } from "@/types/api/nature.types";
 
 interface NatureMasterTableProps {

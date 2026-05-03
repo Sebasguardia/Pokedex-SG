@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import { Disc, Zap, Activity } from "lucide-react"
-import { TYPE_COLORS, TYPE_ICON } from "@/lib/constants/types.constants"
+import { TYPE_COLORS, TYPE_ICON } from "@/lib/constants/types/types.constants"
 
 interface Props {
     item: any

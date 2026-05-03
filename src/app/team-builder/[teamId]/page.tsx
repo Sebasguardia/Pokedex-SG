@@ -8,9 +8,9 @@ import Link from "next/link";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
 import { decodeTeamFromUrl } from "@/lib/utils/team-sharing";
 import { buildFullAnalysis } from "@/lib/utils/team-scoring";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
 
-import { PageTransitionTeamBuilder } from "@/components/shared/page-transition-team-builder";
+import { PageTransitionTeamBuilder } from "@/components/shared/page-transitions/team-builder/page-transition-team-builder";
 import { TeamSlotsRow } from "@/components/team-builder/team-slots-row";
 import { TeamMiniPreview } from "@/components/team-builder/team-mini-preview";
 import { TeamScoreCard } from "@/components/team-builder/team-score-card";

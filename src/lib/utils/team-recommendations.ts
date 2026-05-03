@@ -6,7 +6,7 @@ import {
     TeamMember, PoolPokemon, PokemonRecommendation, TeamAnalysis,
 } from "@/types/api/team-builder.types";
 import { getEffectiveness, getEffectivenessForMember } from "./type-analysis";
-import { TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants";
+import { TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants";
 
 function buildReason(coversTypes: string[], fixesWeaknesses: string[], utilityInfo?: string, roleInfo?: string): string {
     const parts: string[] = [];

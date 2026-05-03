@@ -5,7 +5,7 @@ import { CheckCircle2, ExternalLink } from "lucide-react"
 import Link from "next/link"
 
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { COMPARE_COLORS } from "@/lib/constants/compare.constants"
+import { COMPARE_COLORS } from "@/lib/constants/compare/compare.constants"
 
 interface CompareAbilitiesRowProps {
     pokemon: (ComparedPokemon | null)[]

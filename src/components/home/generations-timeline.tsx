@@ -16,7 +16,7 @@ import {
     GENERATION_STARTERS,
     GENERATION_MECHANICS,
     GENERATION_GAMES_ARTWORK,
-} from "@/lib/constants/generations.constants";
+} from "@/lib/constants/generations/generations.constants";
 
 const TIMELINE_DATA = GENERATIONS.map((g) => ({
     id: GENERATION_ROMAN[g.name] ? `GEN ${GENERATION_ROMAN[g.name]}` : g.label,

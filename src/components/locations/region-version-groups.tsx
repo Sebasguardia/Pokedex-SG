@@ -3,8 +3,8 @@
 import { motion } from "framer-motion";
 import { Gamepad2, RefreshCw, Calendar, Disc3, Info, Star, Flame, Skull } from "lucide-react";
 import { NamedAPIResource } from "@/types/api/common.types";
-import { REMAKE_VERSION_GROUPS, GENERATION_ROMAN } from "@/lib/constants/generations.constants";
-import { REGION_YEARS, REGION_GENERATION } from "@/lib/constants/locations.constants";
+import { REMAKE_VERSION_GROUPS, GENERATION_ROMAN } from "@/lib/constants/generations/generations.constants";
+import { REGION_YEARS, REGION_GENERATION } from "@/lib/constants/locations/locations.constants";
 
 interface RegionVersionGroupsProps {
     versionGroups: NamedAPIResource[];

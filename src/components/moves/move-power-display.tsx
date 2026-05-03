@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { getPowerColor, isPowerDevastating } from "@/lib/constants/moves.constants"
+import { getPowerColor, isPowerDevastating } from "@/lib/constants/moves/moves.constants"
 
 interface Props {
     power: number | null
@@ -43,7 +43,7 @@ export function MovePowerDisplay({ power, showBar = true, index = 0 }: Props) {
 
             {showBar && (
                 <motion.div
-                    className="h-[2px] rounded-full"
+                    className="h-[2px]"
                     style={{ backgroundColor: color, width: 0 }}
                     whileInView={{ width: barWidth }}
                     viewport={{ once: true }}

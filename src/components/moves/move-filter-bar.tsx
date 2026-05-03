@@ -1,13 +1,12 @@
 "use client"
 
 import { motion, AnimatePresence } from "framer-motion"
-import { useState, useEffect, useRef } from "react"
 import * as Select from "@radix-ui/react-select"
-import { ChevronDown, ChevronUp, X, ArrowUpDown, ArrowUp, ArrowDown, SlidersHorizontal } from "lucide-react"
+import { ChevronDown, X, ArrowUp, ArrowDown } from "lucide-react"
 import { Circle } from "lucide-react"
 import { GiPunchBlast, GiStarShuriken } from "react-icons/gi"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
-import { DAMAGE_CLASS_LABELS, DAMAGE_CLASS_COLORS, GEN_ROMAN } from "@/lib/constants/moves.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
+import { DAMAGE_CLASS_LABELS, DAMAGE_CLASS_COLORS, GEN_ROMAN } from "@/lib/constants/moves/moves.constants"
 
 const TYPES = [
     "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison",
@@ -52,7 +51,6 @@ export function MoveFilterBar({
     children
 }: Props) {
 
-
     const activeCount = [typeFilter, classFilter, genFilter,
         (minPow > 0 || maxPow < 250) ? "power" : null,
         searchQuery
@@ -62,14 +60,15 @@ export function MoveFilterBar({
     const classIcons = { physical: GiPunchBlast, special: GiStarShuriken, status: Circle }
 
     return (
-        <div className="bg-white flex flex-col border-b border-[#E0E0E0]">
+        <div className="bg-white flex flex-col border-b-2 border-[#111111]">
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-3">
 
                 {/* Active filter count badge */}
                 <AnimatePresence>
                     {activeCount > 0 && (
                         <motion.div
-                            className="flex-shrink-0 bg-[#CC0000] text-white font-press-start text-[7px] px-2 py-1 border border-[#111111]"
+                            className="flex-shrink-0 bg-[#CC0000] text-white font-press-start text-[7px] px-2 py-1 border-2 border-[#111111]"
+                            style={{ boxShadow: "2px 2px 0 #111111" }}
                             initial={{ scale: 0, x: -10 }}
                             animate={{ scale: 1, x: 0 }}
                             exit={{ scale: 0, x: -10 }}
@@ -95,15 +94,17 @@ export function MoveFilterBar({
                     value={typeFilter ?? "all"}
                     onValueChange={v => onTypeChange(v === "all" ? null : v)}
                 >
-                    <Select.Trigger className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 border font-nunito text-[12px] outline-none cursor-pointer transition-colors"
+                    <Select.Trigger
+                        className="flex-shrink-0 flex items-center gap-2 px-3 py-1.5 border-2 font-nunito text-[12px] font-bold outline-none cursor-pointer transition-all"
                         style={{
-                            backgroundColor: typeFilter ? `${TYPE_COLORS[typeFilter]}22` : "#F2F2F2",
+                            backgroundColor: typeFilter ? `${TYPE_COLORS[typeFilter]}18` : "#F2F2F2",
                             borderColor: typeFilter ? TYPE_COLORS[typeFilter] : "#E0E0E0",
                             color: typeFilter ? "#111111" : "#888888",
+                            boxShadow: typeFilter ? `2px 2px 0 ${TYPE_COLORS[typeFilter]}` : "none",
                         }}
                     >
                         {typeFilter ? (
-                            <span className="font-bold">{TYPE_LABELS_ES[typeFilter]}</span>
+                            <span>{TYPE_LABELS_ES[typeFilter]}</span>
                         ) : (
                             <span>Todos los tipos</span>
                         )}
@@ -112,12 +113,22 @@ export function MoveFilterBar({
                         </Select.Icon>
                     </Select.Trigger>
                     <Select.Portal>
-                        <Select.Content position="popper" side="bottom" align="start" sideOffset={8} className="bg-white border-2 border-[#111111] z-50 p-2" style={{ boxShadow: "4px 4px 0 #111111" }}>
+                        <Select.Content
+                            position="popper"
+                            side="bottom"
+                            align="start"
+                            sideOffset={8}
+                            className="bg-white border-2 border-[#111111] z-50 p-2"
+                            style={{ boxShadow: "4px 4px 0 #111111" }}
+                        >
                             <Select.Viewport>
-                                <div className="font-press-start text-[7px] text-[#888888] px-2 py-1 border-b border-[#F2F2F2] mb-2">
+                                <div className="font-press-start text-[7px] text-[#888888] px-2 py-1 border-b-2 border-[#111111] mb-2">
                                     FILTRAR POR TIPO
                                 </div>
-                                <Select.Item value="all" className="flex items-center gap-1.5 px-2 py-1 text-[11px] font-nunito font-bold bg-[#F2F2F2] cursor-pointer mb-1 outline-none hover:bg-[#E0E0E0]">
+                                <Select.Item
+                                    value="all"
+                                    className="flex items-center gap-1.5 px-2 py-1.5 text-[11px] font-nunito font-bold bg-[#F2F2F2] cursor-pointer mb-1 outline-none hover:bg-[#E0E0E0] border-2 border-transparent hover:border-[#111111]"
+                                >
                                     <Select.ItemText>Todos los tipos</Select.ItemText>
                                 </Select.Item>
                                 <div className="grid grid-cols-3 gap-1">
@@ -125,7 +136,7 @@ export function MoveFilterBar({
                                         <Select.Item
                                             key={t}
                                             value={t}
-                                            className="flex items-center gap-1 px-2 py-1 font-nunito text-[10px] font-bold text-white cursor-pointer outline-none hover:scale-105 transition-transform border-2 border-transparent hover:border-[#111111]"
+                                            className="flex items-center gap-1 px-2 py-1 font-nunito text-[10px] font-bold text-white cursor-pointer outline-none transition-all border-2 border-transparent hover:border-[#111111]"
                                             style={{ backgroundColor: TYPE_COLORS[t] }}
                                         >
                                             <Select.ItemText>{TYPE_LABELS_ES[t]}</Select.ItemText>
@@ -146,13 +157,14 @@ export function MoveFilterBar({
                         <motion.button
                             key={cls}
                             onClick={() => onClassChange(isActive ? null : cls)}
-                            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 border-2 font-nunito text-[11px] font-bold transition-colors"
+                            className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 border-2 font-nunito text-[11px] font-bold transition-all"
                             style={{
                                 backgroundColor: isActive ? colors.bg : "#FFFFFF",
-                                borderColor: isActive ? colors.border : "#E0E0E0",
+                                borderColor: isActive ? "#111111" : "#E0E0E0",
                                 color: isActive ? colors.text : "#888888",
+                                boxShadow: isActive ? "2px 2px 0 #111111" : "none",
                             }}
-                            animate={{ scale: 1 }}
+                            whileHover={{ borderColor: "#111111", boxShadow: "2px 2px 0 #111111" }}
                             whileTap={{ scale: 0.95 }}
                             transition={{ type: "spring", bounce: 0.5 }}
                         >
@@ -169,11 +181,13 @@ export function MoveFilterBar({
                     value={genFilter ?? "all"}
                     onValueChange={v => onGenChange(v === "all" ? null : v)}
                 >
-                    <Select.Trigger className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 border font-nunito text-[11px] outline-none cursor-pointer"
+                    <Select.Trigger
+                        className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 border-2 font-nunito text-[11px] font-bold outline-none cursor-pointer transition-all"
                         style={{
                             backgroundColor: genFilter ? "#111111" : "#F2F2F2",
                             borderColor: genFilter ? "#111111" : "#E0E0E0",
                             color: genFilter ? "#FFFFFF" : "#888888",
+                            boxShadow: genFilter ? "2px 2px 0 #CC0000" : "none",
                         }}
                     >
                         {genFilter ? (
@@ -184,13 +198,23 @@ export function MoveFilterBar({
                         <Select.Icon asChild><ChevronDown size={12} /></Select.Icon>
                     </Select.Trigger>
                     <Select.Portal>
-                        <Select.Content position="popper" side="bottom" align="start" sideOffset={8} className="bg-white border-2 border-[#111111] z-50 p-2" style={{ boxShadow: "4px 4px 0 #111111" }}>
+                        <Select.Content
+                            position="popper"
+                            side="bottom"
+                            align="start"
+                            sideOffset={8}
+                            className="bg-white border-2 border-[#111111] z-50 p-1"
+                            style={{ boxShadow: "4px 4px 0 #111111" }}
+                        >
                             <Select.Viewport>
-                                <Select.Item value="all" className="px-3 py-1 font-nunito text-[11px] cursor-pointer hover:bg-[#F2F2F2] outline-none">
-                                    <Select.ItemText>Todas las gens</Select.ItemText>
+                                <div className="font-press-start text-[7px] text-[#888888] px-2 py-1 border-b-2 border-[#111111] mb-1">
+                                    GENERACIÓN
+                                </div>
+                                <Select.Item value="all" className="px-3 py-1.5 font-nunito text-[11px] font-bold cursor-pointer hover:bg-[#F2F2F2] outline-none border-2 border-transparent hover:border-[#E0E0E0]">
+                                    <Select.ItemText>Todas</Select.ItemText>
                                 </Select.Item>
                                 {GENERATIONS.map(g => (
-                                    <Select.Item key={g} value={g} className="px-3 py-1 font-press-start text-[8px] cursor-pointer hover:bg-[#F2F2F2] outline-none">
+                                    <Select.Item key={g} value={g} className="px-3 py-1.5 font-press-start text-[8px] cursor-pointer hover:bg-[#F2F2F2] outline-none border-2 border-transparent hover:border-[#E0E0E0]">
                                         <Select.ItemText>Gen {g}</Select.ItemText>
                                     </Select.Item>
                                 ))}
@@ -204,13 +228,23 @@ export function MoveFilterBar({
                     value={sortField ?? "id"}
                     onValueChange={onSortChange}
                 >
-                    <Select.Trigger className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 border border-[#E0E0E0] font-nunito text-[11px] text-[#888888] bg-[#F2F2F2] outline-none cursor-pointer">
+                    <Select.Trigger className="flex-shrink-0 flex items-center gap-1 px-2.5 py-1.5 border-2 border-[#E0E0E0] font-nunito text-[11px] font-bold text-[#888888] bg-[#F2F2F2] outline-none cursor-pointer hover:border-[#111111] transition-all">
                         <Select.Value />
                         <Select.Icon asChild><ChevronDown size={12} /></Select.Icon>
                     </Select.Trigger>
                     <Select.Portal>
-                        <Select.Content position="popper" side="bottom" align="start" sideOffset={8} className="bg-white border-2 border-[#111111] z-50" style={{ boxShadow: "4px 4px 0 #111111" }}>
+                        <Select.Content
+                            position="popper"
+                            side="bottom"
+                            align="start"
+                            sideOffset={8}
+                            className="bg-white border-2 border-[#111111] z-50"
+                            style={{ boxShadow: "4px 4px 0 #111111" }}
+                        >
                             <Select.Viewport>
+                                <div className="font-press-start text-[7px] text-[#888888] px-2 py-1 border-b-2 border-[#111111]">
+                                    ORDENAR POR
+                                </div>
                                 {[
                                     { value: "id", label: "N.° Dex" },
                                     { value: "name", label: "Nombre (A-Z)" },
@@ -218,7 +252,11 @@ export function MoveFilterBar({
                                     { value: "accuracy", label: "Precisión" },
                                     { value: "pp", label: "PP" },
                                 ].map(o => (
-                                    <Select.Item key={o.value} value={o.value} className="px-3 py-1.5 font-nunito text-[12px] cursor-pointer hover:bg-[#F2F2F2] outline-none">
+                                    <Select.Item
+                                        key={o.value}
+                                        value={o.value}
+                                        className="px-3 py-1.5 font-nunito text-[12px] font-bold cursor-pointer hover:bg-[#F2F2F2] outline-none border-l-2 border-transparent hover:border-[#CC0000]"
+                                    >
                                         <Select.ItemText>{o.label}</Select.ItemText>
                                     </Select.Item>
                                 ))}
@@ -229,10 +267,16 @@ export function MoveFilterBar({
 
                 {/* SORT ORDER TOGGLE */}
                 <motion.button
+                    aria-label={`Ordenar ${sortOrder === "asc" ? "ascendente" : "descendente"}`}
                     onClick={() => onOrderChange(sortOrder === "asc" ? "desc" : "asc")}
-                    className="flex-shrink-0 p-1.5 border border-[#E0E0E0] transition-colors"
-                    style={{ backgroundColor: sortOrder === "desc" ? "#111111" : "#F2F2F2" }}
+                    className="flex-shrink-0 p-1.5 border-2 transition-all"
+                    style={{
+                        backgroundColor: sortOrder === "desc" ? "#111111" : "#F2F2F2",
+                        borderColor: sortOrder === "desc" ? "#111111" : "#E0E0E0",
+                        boxShadow: sortOrder === "desc" ? "2px 2px 0 #CC0000" : "none",
+                    }}
                     whileTap={{ scale: 0.9 }}
+                    whileHover={{ borderColor: "#111111" }}
                 >
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -255,11 +299,13 @@ export function MoveFilterBar({
                     {activeCount > 0 && (
                         <motion.button
                             onClick={onClearAll}
-                            className="flex-shrink-0 flex items-center gap-1 font-nunito text-[12px] text-[#CC0000] hover:text-[#990000]"
+                            className="flex-shrink-0 flex items-center gap-1.5 font-nunito text-[11px] font-bold text-[#CC0000] hover:text-white hover:bg-[#CC0000] px-2 py-1 border-2 border-[#CC0000] transition-all"
+                            style={{ boxShadow: "2px 2px 0 #111111" }}
                             initial={{ scale: 0, x: -10, opacity: 0 }}
                             animate={{ scale: 1, x: 0, opacity: 1 }}
                             exit={{ scale: 0, x: -10, opacity: 0 }}
                             transition={{ type: "spring", bounce: 0.5 }}
+                            whileTap={{ scale: 0.95 }}
                         >
                             Limpiar
                             <motion.div whileHover={{ rotate: 90 }} transition={{ type: "spring", stiffness: 400 }}>

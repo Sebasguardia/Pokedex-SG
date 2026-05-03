@@ -6,7 +6,7 @@ import Image from "next/image";
 import { X, Copy, Check, Download, Upload } from "lucide-react";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
 import { encodeTeam, decodeTeamFromUrl, exportToShowdown } from "@/lib/utils/team-sharing";
-import { PIXEL_URL } from "@/lib/constants/team-builder.constants";
+import { PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants";
 import { PackageOpen } from "lucide-react";
 
 // ── SHARE MODAL ───────────────────────────────────────────────────────────────

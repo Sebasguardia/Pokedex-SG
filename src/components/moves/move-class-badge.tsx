@@ -1,6 +1,6 @@
 "use client"
 
-import { DAMAGE_CLASS_COLORS, DAMAGE_CLASS_LABELS } from "@/lib/constants/moves.constants"
+import { DAMAGE_CLASS_COLORS, DAMAGE_CLASS_LABELS } from "@/lib/constants/moves/moves.constants"
 import { GiPunchBlast, GiStarShuriken } from "react-icons/gi"
 import { Circle } from "lucide-react"
 

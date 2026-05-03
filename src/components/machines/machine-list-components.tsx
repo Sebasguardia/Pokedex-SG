@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { List, LayoutGrid, X, Search, Disc } from "lucide-react";
 import {
   TYPE_COLORS, TYPE_NAMES_ES, DAMAGE_CLASS_META,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 
 // ── PAGE HEADER ───────────────────────────────────────────────────────────────
 export function MachinesPageHeader() {

@@ -1,6 +1,6 @@
 import { apiClient } from "./client"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { formatPokemonName } from "@/lib/constants/compare.constants"
+import { formatPokemonName } from "@/lib/constants/compare/compare.constants"
 
 export async function getPokemonForCompare(idOrName: string | number): Promise<ComparedPokemon> {
     // Parallel fetch — species can fail for alternate forms

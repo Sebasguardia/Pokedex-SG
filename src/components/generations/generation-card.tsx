@@ -14,7 +14,7 @@ import {
     GENERATION_GAMES_ES,
     GENERATION_MASCOTS,
     GENERATIONS,
-} from "@/lib/constants/generations.constants";
+} from "@/lib/constants/generations/generations.constants";
 
 interface GenerationCardProps {
     generation: Generation;

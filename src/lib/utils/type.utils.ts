@@ -1,4 +1,4 @@
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants";
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants";
 
 export function getTypeColor(typeName: string): string {
     return TYPE_CONSTANTS[typeName]?.color ?? "#A8A878";

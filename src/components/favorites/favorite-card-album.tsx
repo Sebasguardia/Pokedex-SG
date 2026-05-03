@@ -5,9 +5,9 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Pin, CheckSquare, Square } from "lucide-react";
 import { FavoritePokemon } from "@/types/api/favorites.types";
-import { TYPE_COLORS } from "@/lib/constants/favorites.constants";
+import { TYPE_COLORS } from "@/lib/constants/favorites/favorites.constants";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 
 interface FavoriteCardAlbumProps {
     pokemon: FavoritePokemon;

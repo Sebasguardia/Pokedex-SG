@@ -2,11 +2,11 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { useMachineById } from "@/lib/hooks/useMachines";
+import { useMachineById } from "@/lib/hooks/moves/useMachines";
 import {
   VERSION_GROUP_META, GEN_COLORS, GEN_LABELS,
   getMachineLabel, TR_VERSION_GROUPS,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 import { NamedAPIResource } from "@/types/api/common.types";
 
 interface MachineVersionTableProps {

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Heart, Star, Trophy, Zap, Flame, Leaf, Snowflake, Mountain, Waves, Sword, Shield, Crown, Gem, Package, BookOpen, Globe, Plus, Trash2, Edit2, X, LucideIcon } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { DEFAULT_COLLECTION_ID } from "@/lib/constants/favorites.constants";
+import { DEFAULT_COLLECTION_ID } from "@/lib/constants/favorites/favorites.constants";
 import type { FavoriteCollection } from "@/types/api/favorites.types";
 
 const ICON_MAP: Record<string, LucideIcon> = {

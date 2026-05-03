@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Leaf } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS } from "@/lib/constants/berries/berries.constants";
 import { getDominantFlavor } from "@/lib/utils/berry.utils";
 
 const FLAVOR_KEYS = ["spicy", "dry", "sweet", "bitter", "sour"] as const;

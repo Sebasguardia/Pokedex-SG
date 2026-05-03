@@ -5,7 +5,7 @@
 import {
     TeamMember, PokemonRole, TeamSynergy, TeamAnalysis,
 } from "@/types/api/team-builder.types";
-import { getScoreMeta } from "@/lib/constants/team-builder.constants";
+import { getScoreMeta } from "@/lib/constants/team-builder/team-builder.constants";
 import {
     analyzeDefensiveWeaknesses, analyzeOffensiveCoverage,
 } from "./type-analysis";

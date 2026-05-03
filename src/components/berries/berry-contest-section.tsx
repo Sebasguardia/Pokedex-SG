@@ -2,7 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { Sparkles, Heart } from "lucide-react";
-import { FLAVOR_META } from "@/lib/constants/berries.constants";
+import { FLAVOR_META } from "@/lib/constants/berries/berries.constants";
 
 const CONTEST_MAP: Record<string, { type: string; color: string }> = {
     spicy: { type: "Cool", color: "#EF4444" },

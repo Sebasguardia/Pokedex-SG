@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Sprout, Gem, Sparkles, Leaf } from "lucide-react";
 import Link from "next/link";
 import { BerryFlavorChip } from "./berry-flavor-chip";
-import { FIRMNESS_COLORS } from "@/lib/constants/berries.constants";
+import { FIRMNESS_COLORS } from "@/lib/constants/berries/berries.constants";
 
 interface BerryDetailHeroProps {
   berry: any;

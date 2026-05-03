@@ -5,10 +5,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { AlertCircle, CheckCircle2, Info, ShieldAlert } from "lucide-react";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { useTeamAnalysis } from "@/lib/hooks/useTeamAnalysis";
+import { useTeamAnalysis } from "@/lib/hooks/team-builder/useTeamAnalysis";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 // ── COMPONENTE TOOLTIP PERSONALIZADO ──
 function CustomTooltip({ children, content, side = "top" }: { children: React.ReactNode; content: React.ReactNode; side?: "top" | "left" | "right" }) {

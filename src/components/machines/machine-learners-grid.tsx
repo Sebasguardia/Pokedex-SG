@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Search, X, LayoutGrid, List, ChevronDown } from "lucide-react";
 import Fuse from "fuse.js";
 import { NamedAPIResource } from "@/types/api/common.types";
-import { extractPokemonId, formatMoveName } from "@/lib/constants/machines.constants";
+import { extractPokemonId, formatMoveName } from "@/lib/constants/machines/machines.constants";
 
 interface MachineLearnerGridProps {
   learnedByPokemon: NamedAPIResource[];

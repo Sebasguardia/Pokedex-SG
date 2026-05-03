@@ -1,6 +1,6 @@
 "use client";
 
-import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants";
+import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants";
 
 interface TypeBadgeTeamProps {
     type: string;

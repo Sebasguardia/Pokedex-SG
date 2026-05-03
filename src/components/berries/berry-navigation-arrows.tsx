@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 import { getBerryByIdOrName } from "@/lib/api/berries";
 import { getItemByIdOrName } from "@/lib/api/items";
-import { FLAVOR_COLORS } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS } from "@/lib/constants/berries/berries.constants";
 import { getDominantFlavor } from "@/lib/utils/berry.utils";
 
 interface BerryNavigationArrowsProps {

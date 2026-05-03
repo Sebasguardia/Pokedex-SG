@@ -2,7 +2,7 @@
 
 import { Volume2, VolumeX } from "lucide-react";
 import { useState } from "react";
-import { usePokemonCry } from "@/lib/hooks/usePokemonCry";
+import { usePokemonCry } from "@/lib/hooks/pokemon/usePokemonCry";
 import { cn } from "@/lib/utils/cn";
 
 interface CryButtonProps {

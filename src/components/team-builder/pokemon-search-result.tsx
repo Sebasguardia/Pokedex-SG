@@ -6,9 +6,9 @@ import { CheckCircle2 } from "lucide-react";
 import {
     TYPE_COLORS, PIXEL_URL,
     GEN_COLORS, getGenerationByPokemonId,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { TypeBadgeTeam, EffectivenessBadge } from "./type-badge-team";
-import { useTeamAnalysis } from "@/lib/hooks/useTeamAnalysis";
+import { useTeamAnalysis } from "@/lib/hooks/team-builder/useTeamAnalysis";
 import { getEffectiveness } from "@/lib/utils/type-analysis";
 
 interface PokemonSearchResultProps {

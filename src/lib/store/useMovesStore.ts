@@ -18,6 +18,8 @@ interface MovesStore {
     setSortField: (sort: string) => void
     sortOrder: string
     setSortOrder: (order: string) => void
+    search: string
+    setSearch: (search: string) => void
     page: string
     setPage: (page: string) => void
     clearAllFilters: () => void
@@ -29,19 +31,21 @@ export const useMovesStore = create<MovesStore>()(
             viewMode: "table",
             setViewMode: (viewMode) => set({ viewMode }),
             typeFilter: null,
-            setTypeFilter: (typeFilter) => set({ typeFilter, page: "1" }),
+            setTypeFilter: (typeFilter) => set({ typeFilter }),
             classFilter: null,
-            setClassFilter: (classFilter) => set({ classFilter, page: "1" }),
+            setClassFilter: (classFilter) => set({ classFilter }),
             genFilter: null,
-            setGenFilter: (genFilter) => set({ genFilter, page: "1" }),
+            setGenFilter: (genFilter) => set({ genFilter }),
             minPow: "0",
-            setMinPow: (minPow) => set({ minPow, page: "1" }),
+            setMinPow: (minPow) => set({ minPow }),
             maxPow: "250",
-            setMaxPow: (maxPow) => set({ maxPow, page: "1" }),
+            setMaxPow: (maxPow) => set({ maxPow }),
             sortField: "id",
             setSortField: (sortField) => set({ sortField }),
             sortOrder: "asc",
             setSortOrder: (sortOrder) => set({ sortOrder }),
+            search: "",
+            setSearch: (search) => set({ search }),
             page: "1",
             setPage: (page) => set({ page }),
             clearAllFilters: () => set({
@@ -50,6 +54,7 @@ export const useMovesStore = create<MovesStore>()(
                 genFilter: null,
                 minPow: "0",
                 maxPow: "250",
+                search: "",
                 page: "1"
             })
         }),

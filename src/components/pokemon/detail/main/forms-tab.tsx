@@ -1,6 +1,6 @@
 "use client";
 
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
 import { TypeBadge } from "@/components/pokemon/shared/type-badge";
 import { formatPokemonId, formatPokemonName, getIdFromUrl } from "@/lib/utils/pokemon.utils";
 

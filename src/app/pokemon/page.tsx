@@ -10,16 +10,16 @@ import { MobileFilterDrawer, MobileFilterButton } from "@/components/pokemon/lis
 import { ActiveFilterChips } from "@/components/pokemon/list/active-filter-chips"
 import { PokemonGrid } from "@/components/pokemon/list/pokemon-grid"
 import { PokemonTable } from "@/components/pokemon/list/pokemon-table"
-import { Pagination } from "@/components/shared/pagination"
-import { PageTransitionPokemons } from "@/components/shared/page-transition-pokemons"
-import { usePokemonIndex } from "@/lib/hooks/usePokemonIndex"
+import { Pagination } from "@/components/shared/ui/pagination"
+import { PageTransitionPokemons } from "@/components/shared/page-transitions/pokemon/page-transition-pokemons"
+import { usePokemonIndex } from "@/lib/hooks/pokemon/usePokemonIndex"
 import { getPokemonByIdOrName } from "@/lib/api/pokemon"
 import { useUIStore } from "@/lib/store/ui.store"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useFilterStore } from "@/lib/store/filter.store"
 import Fuse from "fuse.js"
 
-import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/special-pokemon.constants"
+import { LEGENDARY_IDS, MYTHICAL_IDS, BABY_IDS } from "@/lib/constants/pokemon/special-pokemon.constants"
 
 // Pre-compute Sets once at module level for O(1) lookups — much faster than Array.includes in filter loops
 const LEGENDARY_SET = new Set(LEGENDARY_IDS)

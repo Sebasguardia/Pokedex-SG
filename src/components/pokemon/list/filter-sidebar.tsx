@@ -8,7 +8,7 @@ import * as Select from "@radix-ui/react-select"
 import { motion, AnimatePresence } from "framer-motion"
 import { SlidersHorizontal, ChevronDown, Check, Crown, Baby, Layers, ChevronUp, Sparkles, Sprout, TrendingUp, Gem, Weight, Ruler } from "lucide-react"
 import { useQueryState } from "nuqs"
-import { TYPE_CONSTANTS } from "@/lib/constants/types.constants"
+import { TYPE_CONSTANTS } from "@/lib/constants/types/types.constants"
 
 const TYPES_ORDER = [
     "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying",

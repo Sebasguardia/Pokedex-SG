@@ -5,9 +5,9 @@ import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useQueryState } from "nuqs";
 
-import { useRegion, useRegionalPokedex } from "@/lib/hooks/useLocations";
-import { getRegionMeta } from "@/lib/constants/locations.constants";
-import { GENERATION_COLORS, GENERATION_ROMAN } from "@/lib/constants/generations.constants";
+import { useRegion, useRegionalPokedex } from "@/lib/hooks/locations/useLocations";
+import { getRegionMeta } from "@/lib/constants/locations/locations.constants";
+import { GENERATION_COLORS, GENERATION_ROMAN } from "@/lib/constants/generations/generations.constants";
 
 import { RegionDetailHero } from "@/components/locations/region-detail-hero";
 import { RegionStatsRow } from "@/components/locations/region-stats-row";
@@ -18,8 +18,8 @@ import { RegionVersionGroups } from "@/components/locations/region-version-group
 import { RegionNavStrip } from "@/components/locations/region-nav-strip";
 import { RegionLeagueSection } from "@/components/locations/region-league-section";
 import { RegionGeographySection } from "@/components/locations/region-geography-section";
-import { PageTransitionRegion } from "@/components/shared/page-transition-region";
-import { ScrollProgressBar } from "@/components/shared/scroll-progress-bar";
+import { PageTransitionRegion } from "@/components/shared/page-transitions/locations/page-transition-region";
+import { ScrollProgressBar } from "@/components/shared/ui/scroll-progress-bar";
 
 // ── Loading skeleton ──────────────────────────────────────────────
 function LoadingSkeleton() {

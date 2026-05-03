@@ -8,7 +8,7 @@ import { persist } from "zustand/middleware";
 import {
     PokemonTeam, TeamMember, TeamSearchFilters,
 } from "@/types/api/team-builder.types";
-import { generateId, ARTWORK_URL, SPRITE_URL } from "@/lib/constants/team-builder.constants";
+import { generateId, ARTWORK_URL, SPRITE_URL } from "@/lib/constants/team-builder/team-builder.constants";
 import { createEmptyTeam } from "@/lib/utils/team-sharing";
 
 const DEFAULT_FILTERS: TeamSearchFilters = {

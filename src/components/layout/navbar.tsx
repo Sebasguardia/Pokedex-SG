@@ -21,7 +21,7 @@ import {
     useState, useEffect, useCallback, memo, useRef, type ReactNode,
 } from "react";
 import { useFilterStore } from "@/lib/store/filter.store";
-import { SearchCommand } from "@/components/shared/search-command";
+import { SearchCommand } from "@/components/shared/search/search-command";
 import { cn } from "@/lib/utils/cn";
 
 /* ──────────────────────────────────────────────────────────

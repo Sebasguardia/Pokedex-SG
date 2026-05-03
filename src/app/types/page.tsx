@@ -2,10 +2,10 @@
 
 import { motion, useReducedMotion } from "framer-motion"
 import { useState } from "react"
-import { useTypesData } from "@/lib/hooks/useTypesData"
+import { useTypesData } from "@/lib/hooks/types/useTypesData"
 import { TypeCard } from "@/components/types/type-card"
-import { TYPE_ORDER } from "@/lib/constants/types.constants"
-import { PageTransitionTypes } from "@/components/shared/page-transition-types"
+import { TYPE_ORDER } from "@/lib/constants/types/types.constants"
+import { PageTransitionTypes } from "@/components/shared/page-transitions/types/page-transition-types"
 import { TrendingUp, TrendingDown, Ban } from "lucide-react"
 
 export default function TypesPage() {

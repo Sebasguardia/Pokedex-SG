@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 import { ArrowRight, Star, RefreshCw, Heart, Sun, Moon, Zap } from "lucide-react"
 import { formatPokemonName, formatPokemonId, getIdFromUrl } from "@/lib/utils/pokemon.utils"
 import type { ChainLink, EvolutionDetail } from "@/types/api/evolution.types"
-import { PokemonSprite } from "@/components/shared/pokemon-sprite"
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite"
 import { ITEMS_ES } from "@/lib/utils/locale.utils"
 
 interface Props {

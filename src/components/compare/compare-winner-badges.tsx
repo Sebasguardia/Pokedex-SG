@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { COMPARE_COLORS, getWinners } from "@/lib/constants/compare.constants"
+import { COMPARE_COLORS, getWinners } from "@/lib/constants/compare/compare.constants"
 import { Star, Zap, Shield } from "lucide-react"
 
 interface CompareWinnerBadgesProps {

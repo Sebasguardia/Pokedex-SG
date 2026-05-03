@@ -6,8 +6,8 @@ import { Swords, ChevronDown, ChevronUp, ChevronRight, Zap } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 import { ComparedPokemon } from "@/types/api/compare.types"
-import { useMove } from "@/lib/hooks/useMoves"
-import { TYPE_COLORS } from "@/lib/constants/team-builder.constants"
+import { useMove } from "@/lib/hooks/moves/useMoves"
+import { TYPE_COLORS } from "@/lib/constants/team-builder/team-builder.constants"
 
 function SharedMoveCard({ moveSlug }: { moveSlug: string }) {
     const { data: move, isLoading } = useMove(moveSlug)

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Zap, Timer, Activity } from "lucide-react";
 import { TeamMember } from "@/types/api/team-builder.types";
-import { PIXEL_URL } from "@/lib/constants/team-builder.constants";
+import { PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants";
 
 interface Props {
     members: TeamMember[];

@@ -1,7 +1,7 @@
 "use client";
 
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer, Cell } from "recharts";
-import { STAT_CONSTANTS } from "@/lib/constants/stats.constants";
+import { STAT_CONSTANTS } from "@/lib/constants/pokemon/stats.constants";
 
 interface PokemonStatsData {
     id: number;

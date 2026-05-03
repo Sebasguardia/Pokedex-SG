@@ -9,7 +9,7 @@ import {
     AlertTriangle, ChevronDown, Sun, Moon, Sunrise, Clock, Bug,
 } from "lucide-react";
 import { LocationArea } from "@/types/api/location.types";
-import { ENCOUNTER_METHOD_META } from "@/lib/constants/locations.constants";
+import { ENCOUNTER_METHOD_META } from "@/lib/constants/locations/locations.constants";
 
 /* ── Icon map ──────────────────────────────────────────────────────── */
 const ICON_MAP: Record<string, React.ElementType> = {

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { Crown, Baby, Sparkles, Sprout, TrendingUp, Gem, Weight, Ruler, ArrowUpDown } from "lucide-react"
-import { TYPE_COLORS } from "@/lib/constants/colors"
+import { TYPE_COLORS } from "@/lib/constants/ui/colors"
 
 interface ActiveFilterChipsProps {
     typeFilter: string | null;

@@ -1,6 +1,6 @@
 "use client"
 
-import { ABILITY_CATEGORIES } from "@/lib/constants/abilities.constants"
+import { ABILITY_CATEGORIES } from "@/lib/constants/abilities/abilities.constants"
 import { cn } from "@/lib/utils/cn"
 import { motion } from "framer-motion"
 

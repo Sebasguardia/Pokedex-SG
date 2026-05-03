@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Search, X, SlidersHorizontal, Swords, Sparkles, Shield } from "lucide-react";
 import {
   TYPE_COLORS, TYPE_NAMES_ES, DAMAGE_CLASS_META,
-} from "@/lib/constants/machines.constants";
+} from "@/lib/constants/machines/machines.constants";
 
 const ALL_TYPES = [
   "fire","water","electric","grass","ice","fighting","poison","ground",

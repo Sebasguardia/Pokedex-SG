@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Activity, TrendingUp, TrendingDown } from "lucide-react";
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from "recharts";
 import { TeamMember } from "@/types/api/team-builder.types";
-import { PIXEL_URL } from "@/lib/constants/team-builder.constants";
+import { PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants";
 
 interface Props {
     members: TeamMember[];

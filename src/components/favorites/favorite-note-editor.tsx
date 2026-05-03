@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Edit2, Check, X } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { MAX_NOTE_LENGTH } from "@/lib/constants/favorites.constants";
+import { MAX_NOTE_LENGTH } from "@/lib/constants/favorites/favorites.constants";
 
 interface FavoriteNoteEditorProps {
     pokemonId: number;

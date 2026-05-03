@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Shield, Swords, MapPin, Target } from "lucide-react";
-import { REGION_GYM_LEADERS, REGION_ELITE, GymLeader, EliteMember } from "@/lib/constants/region-lore.constants";
-import { GYM_LEADER_SPRITES, BADGE_IMAGES, ELITE_SPRITES } from "@/lib/constants/region-assets.constants";
+import { REGION_GYM_LEADERS, REGION_ELITE, GymLeader, EliteMember } from "@/lib/constants/locations/region-lore.constants";
+import { GYM_LEADER_SPRITES, BADGE_IMAGES, ELITE_SPRITES } from "@/lib/constants/locations/region-assets.constants";
 import Image from "next/image";
 
 interface RegionLeagueSectionProps {

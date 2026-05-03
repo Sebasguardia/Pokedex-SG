@@ -11,7 +11,7 @@ import { NamedAPIResource } from "@/types/api/common.types";
 import {
     inferLocationType, formatLocationName,
     LOCATION_TYPE_META, LocationType,
-} from "@/lib/constants/locations.constants";
+} from "@/lib/constants/locations/locations.constants";
 import { RegionLocationDetail } from "./region-location-detail";
 
 /* ── Types ─────────────────────────────────────────────────────────── */

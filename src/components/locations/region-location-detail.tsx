@@ -7,11 +7,11 @@ import {
     Building2, MapPin, Loader2, Key, Layers,
 } from "lucide-react";
 import { NamedAPIResource } from "@/types/api/common.types";
-import { useLocation, useLocationArea } from "@/lib/hooks/useLocations";
+import { useLocation, useLocationArea } from "@/lib/hooks/locations/useLocations";
 import { RegionEncounterTable } from "./region-encounter-table";
 import {
     inferLocationType, formatLocationName, LOCATION_TYPE_META,
-} from "@/lib/constants/locations.constants";
+} from "@/lib/constants/locations/locations.constants";
 
 const TYPE_ICON_MAP: Record<string, React.ElementType> = {
     city: Building2, cave: Mountain, route: Map, water: Waves,

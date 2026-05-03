@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import * as Accordion from "@radix-ui/react-accordion"
 import { Move, PastMoveStatValues } from "@/types/api/move.types"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import { ChevronDown, History } from "lucide-react"
 
 interface Props {

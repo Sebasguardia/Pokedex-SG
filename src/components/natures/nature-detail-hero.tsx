@@ -8,7 +8,7 @@ import { Nature } from "@/types/api/nature.types";
 import {
     NatureMeta, STAT_COLORS, STAT_NAMES_ES,
     FLAVOR_COLORS, FLAVOR_NAMES_ES,
-} from "@/lib/constants/natures.constants";
+} from "@/lib/constants/natures/natures.constants";
 
 interface NatureDetailHeroProps {
     nature: Nature;

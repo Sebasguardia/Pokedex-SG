@@ -7,9 +7,9 @@ import { Suspense, useMemo } from "react"
 import { Loader2, Search, X, Fingerprint, MapPin, Shield, PlusSquare } from "lucide-react"
 import { GiPunchBlast } from "react-icons/gi"
 
-import { useAbilitiesList } from "@/lib/hooks/useAbilitiesList"
+import { useAbilitiesList } from "@/lib/hooks/abilities/useAbilitiesList"
 import { AbilityCard } from "@/components/abilities/ability-card"
-import { PageTransitionAbilities } from "@/components/shared/page-transition-abilities"
+import { PageTransitionAbilities } from "@/components/shared/page-transitions/abilities/page-transition-abilities"
 
 function AbilitiesContent() {
     const [search, setSearch] = useQueryState("q", parseAsString.withDefault(""))

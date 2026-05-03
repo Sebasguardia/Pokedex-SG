@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import * as Accordion from "@radix-ui/react-accordion"
 import { ChevronDown, BookOpen, AlertCircle, UserCircle } from "lucide-react"
-import { POCKET_COLORS } from "@/lib/constants/items.constants"
+import { POCKET_COLORS } from "@/lib/constants/items/items.constants"
 import { cn } from "@/lib/utils/cn"
 
 interface Props {

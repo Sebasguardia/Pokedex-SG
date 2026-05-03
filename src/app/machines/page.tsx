@@ -4,15 +4,15 @@ import { useState, useMemo, Suspense } from "react";
 import { motion } from "framer-motion";
 import Fuse from "fuse.js";
 
-import { usePopularTMMoves, useMoveList } from "@/lib/hooks/useMachines";
-import { TYPE_COLORS }                    from "@/lib/constants/machines.constants";
+import { usePopularTMMoves, useMoveList } from "@/lib/hooks/moves/useMachines";
+import { TYPE_COLORS }                    from "@/lib/constants/machines/machines.constants";
 import { MachineMoveCard }                from "@/components/machines/machine-move-card";
 import { MachineFilterBar }               from "@/components/machines/machine-filter-bar";
 import { MachineMoveList }                from "@/components/machines/machine-move-list";
 import {
   MachinesPageHeader, MachineViewToggle,
 } from "@/components/machines/machine-list-components";
-import { PageTransitionMachines } from "@/components/shared/page-transition-machines";
+import { PageTransitionMachines } from "@/components/shared/page-transitions/machines/page-transition-machines";
 
 function MachinesContent() {
   const { data: popularMoves, isLoading } = usePopularTMMoves();

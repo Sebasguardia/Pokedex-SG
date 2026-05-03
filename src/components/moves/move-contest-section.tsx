@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Move } from "@/types/api/move.types"
-import { CONTEST_TYPE_COLORS, CONTEST_TYPE_LABELS } from "@/lib/constants/moves.constants"
+import { CONTEST_TYPE_COLORS, CONTEST_TYPE_LABELS } from "@/lib/constants/moves/moves.constants"
 import { Star, Heart, Music, ArrowUp, ArrowDown } from "lucide-react"
 import Link from "next/link"
 

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import { getSpriteAnimationByPocket } from "@/lib/utils/item.utils"
-import { POCKET_COLORS } from "@/lib/constants/items.constants"
+import { POCKET_COLORS } from "@/lib/constants/items/items.constants"
 import { cn } from "@/lib/utils/cn"
 
 interface Props {

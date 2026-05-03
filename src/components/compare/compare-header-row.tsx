@@ -8,8 +8,8 @@ import {
     getGenerationByPokemonId,
     GEN_LABELS,
     GEN_COLORS,
-} from "@/lib/constants/compare.constants"
-import { TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL } from "@/lib/constants/team-builder.constants"
+} from "@/lib/constants/compare/compare.constants"
+import { TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL } from "@/lib/constants/team-builder/team-builder.constants"
 
 interface CompareHeaderRowProps {
     pokemon: (ComparedPokemon | null)[]

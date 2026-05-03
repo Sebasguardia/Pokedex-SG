@@ -7,7 +7,7 @@ import { Shield, AlertCircle, Info, CheckCircle2 } from "lucide-react";
 import { TeamAnalysis, TeamMember } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL, ALL_TYPES,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 interface DefensiveWeaknessesChartProps {
     analysis: TeamAnalysis;

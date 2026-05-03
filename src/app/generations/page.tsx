@@ -3,16 +3,16 @@
 import { Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { useGenerationsList } from "@/lib/hooks/useGenerations";
+import { useGenerationsList } from "@/lib/hooks/generations/useGenerations";
 import {
     GENERATION_ORDER,
     GENERATION_COLORS,
     GENERATION_ROMAN,
     GENERATION_YEARS,
     GENERATION_NAMES_ES,
-} from "@/lib/constants/generations.constants";
+} from "@/lib/constants/generations/generations.constants";
 import { GenerationCard } from "@/components/generations/generation-card";
-import { PageTransitionGenerations } from "@/components/shared/page-transition-generations";
+import { PageTransitionGenerations } from "@/components/shared/page-transitions/generations/page-transition-generations";
 import { GenerationsTimeline } from "@/components/home/generations-timeline";
 import { Layers, Home } from "lucide-react";
 

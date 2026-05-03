@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
 import * as HoverCard from "@radix-ui/react-hover-card"
-import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_COLORS, POCKET_META } from "@/lib/constants/items/items.constants"
 import { Coins, Package } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 

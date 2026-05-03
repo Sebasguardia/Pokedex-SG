@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import * as Select from "@radix-ui/react-select";
 import { ChevronDown, Check, X } from "lucide-react";
-import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS, FLAVOR_META, FIRMNESS_COLORS, BERRY_CATEGORIES } from "@/lib/constants/berries/berries.constants";
 
 const FIRMNESS_OPTIONS = [
   { value: "very-soft", label: "Muy blanda", rank: 1 },

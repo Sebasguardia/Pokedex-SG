@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion"
 import { Move } from "@/types/api/move.types"
-import { TYPE_COLORS, TYPE_ICON } from "@/lib/constants/types.constants"
-import { GEN_ROMAN } from "@/lib/constants/moves.constants"
+import { TYPE_COLORS, TYPE_ICON } from "@/lib/constants/types/types.constants"
+import { GEN_ROMAN } from "@/lib/constants/moves/moves.constants"
 import { MoveClassBadge } from "./move-class-badge"
 import Link from "next/link"
 import { GiPunchBlast } from "react-icons/gi"

@@ -4,9 +4,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, MapPin, Layers, Loader2, Key, CheckCircle } from "lucide-react";
 import { Map, Mountain, Waves, Trees, Home, Anchor, Building2 } from "lucide-react";
 import { NamedAPIResource } from "@/types/api/common.types";
-import { useLocation, useLocationArea } from "@/lib/hooks/useLocations";
+import { useLocation, useLocationArea } from "@/lib/hooks/locations/useLocations";
 import { RegionEncounterTable } from "./region-encounter-table";
-import { inferLocationType, formatLocationName, LOCATION_TYPE_META } from "@/lib/constants/locations.constants";
+import { inferLocationType, formatLocationName, LOCATION_TYPE_META } from "@/lib/constants/locations/locations.constants";
 
 const TYPE_ICON_MAP: Record<string, React.ElementType> = {
     city: Building2,

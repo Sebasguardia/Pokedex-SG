@@ -6,8 +6,8 @@ import { Grid, X, Shield } from "lucide-react"
 import * as ScrollArea from "@radix-ui/react-scroll-area"
 import * as Tooltip from "@radix-ui/react-tooltip"
 import { PokemonType } from "@/types/api/type.types"
-import { TYPE_COLORS, TYPE_ORDER } from "@/lib/constants/types.constants"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TYPE_COLORS, TYPE_ORDER } from "@/lib/constants/types/types.constants"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 interface Props {
     currentType: string

@@ -8,8 +8,8 @@ import {
     COMPARE_COLORS,
     STAT_KEYS,
     STAT_LABELS_ES,
-} from "@/lib/constants/compare.constants"
-import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder.constants"
+} from "@/lib/constants/compare/compare.constants"
+import { TYPE_COLORS, TYPE_NAMES_ES } from "@/lib/constants/team-builder/team-builder.constants"
 
 interface CompareStatsTableProps {
     pokemon:     (ComparedPokemon | null)[]

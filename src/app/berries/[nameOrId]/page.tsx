@@ -4,9 +4,9 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useBerry } from "@/lib/hooks/useBerries";
-import { usePokemonByHeldBerry } from "@/lib/hooks/usePokemonByHeldBerry";
-import { FLAVOR_COLORS, FLAVOR_META } from "@/lib/constants/berries.constants";
+import { useBerry } from "@/lib/hooks/berries/useBerries";
+import { usePokemonByHeldBerry } from "@/lib/hooks/pokemon/usePokemonByHeldBerry";
+import { FLAVOR_COLORS, FLAVOR_META } from "@/lib/constants/berries/berries.constants";
 import { getDominantFlavor, buildHeroGradient } from "@/lib/utils/berry.utils";
 import { getItemByIdOrName } from "@/lib/api/items";
 
@@ -20,8 +20,8 @@ import { BerryHeldPokemon } from "@/components/berries/berry-held-pokemon";
 import { BerryNavigationArrows } from "@/components/berries/berry-navigation-arrows";
 import { RelatedBerriesCarousel } from "@/components/berries/related-berries-carousel";
 import { GiStrawberry } from "react-icons/gi";
-import { PageTransitionBerry } from "@/components/shared/page-transition-berry";
-import { EscapedLeaves } from "@/components/shared/escaped-leaves";
+import { PageTransitionBerry } from "@/components/shared/page-transitions/berries/page-transition-berry";
+import { EscapedLeaves } from "@/components/shared/ui/escaped-leaves";
 
 export default function BerryDetailPage() {
   const { nameOrId } = useParams<{ nameOrId: string }>();

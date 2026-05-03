@@ -5,7 +5,7 @@ import Link from "next/link";
 import { CalendarDays, MapPin, Layers, ChevronRight, Sparkles, BookOpen, Map } from "lucide-react";
 import NumberFlow from "@number-flow/react";
 import { Region } from "@/types/api/location.types";
-import { GENERATION_ROMAN } from "@/lib/constants/generations.constants";
+import { GENERATION_ROMAN } from "@/lib/constants/generations/generations.constants";
 
 interface RegionDetailHeroProps {
     region: Region;

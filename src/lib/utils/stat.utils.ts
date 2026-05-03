@@ -1,4 +1,4 @@
-import { STAT_CONSTANTS, getStatColor } from "@/lib/constants/stats.constants";
+import { STAT_CONSTANTS, getStatColor } from "@/lib/constants/pokemon/stats.constants";
 
 export function getStatLabel(statName: string): string {
     return STAT_CONSTANTS[statName]?.label ?? statName;

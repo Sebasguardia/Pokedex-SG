@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Star, Loader2 } from "lucide-react";
-import { useRegionalPokedex } from "@/lib/hooks/useLocations";
-import { usePokemon } from "@/lib/hooks/usePokemon";
-import { REGION_POPULAR_POKEMON } from "@/lib/constants/region-lore.constants";
+import { useRegionalPokedex } from "@/lib/hooks/locations/useLocations";
+import { usePokemon } from "@/lib/hooks/pokemon/usePokemon";
+import { REGION_POPULAR_POKEMON } from "@/lib/constants/locations/region-lore.constants";
 import { TypeBadge } from "@/components/pokemon/type-badge";
 
 interface RegionPokedexSectionProps {

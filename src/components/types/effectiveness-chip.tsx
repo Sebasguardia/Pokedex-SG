@@ -1,9 +1,9 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import * as Tooltip from "@radix-ui/react-tooltip"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 interface EffectivenessChipProps {
     typeName: string;

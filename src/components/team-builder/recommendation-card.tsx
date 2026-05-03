@@ -8,10 +8,10 @@ import { Plus, CheckCircle, ExternalLink, Loader2, ArrowRight, ShieldCheck, Zap 
 import { PokemonRecommendation } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, PIXEL_URL, TYPE_NAMES_ES,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { TypeBadgeTeam } from "./type-badge-team";
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
-import { usePokemonForTeam } from "@/lib/hooks/useTeamBuilder";
+import { usePokemonForTeam } from "@/lib/hooks/team-builder/useTeamBuilder";
 
 interface RecommendationCardProps {
     rec: PokemonRecommendation;

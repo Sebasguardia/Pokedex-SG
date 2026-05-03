@@ -3,7 +3,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { PokemonTeam, TeamMember } from "@/types/api/team-builder.types";
-import { generateId } from "@/lib/constants/team-builder.constants";
+import { generateId } from "@/lib/constants/team-builder/team-builder.constants";
 
 interface MinimalTeam {
     n: string;                                // nombre

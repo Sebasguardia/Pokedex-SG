@@ -7,7 +7,7 @@ import { ChevronLeft, Disc, Zap, BookOpen } from "lucide-react"
 import { ItemFlavorCarousel } from "../item-flavor-carousel"
 import { RelatedItemsCarousel } from "../related-items-carousel"
 import { ItemMachinesSection } from "../item-machines-section"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 
 interface Props {
     item: any

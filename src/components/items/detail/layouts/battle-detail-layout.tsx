@@ -7,7 +7,7 @@ import { ChevronLeft, Swords, TrendingUp, Shield, Zap, Layers, BookOpen, ArrowUp
 import { ItemFlavorCarousel } from "../item-flavor-carousel"
 import { ItemHeldPokemon } from "../item-held-pokemon"
 import { RelatedItemsCarousel } from "../related-items-carousel"
-import { POCKET_META } from "@/lib/constants/items.constants"
+import { POCKET_META } from "@/lib/constants/items/items.constants"
 
 interface Props {
     item: any

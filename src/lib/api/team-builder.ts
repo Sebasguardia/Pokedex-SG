@@ -8,7 +8,7 @@ import {
 } from "@/types/api/team-builder.types";
 import {
     SPRITE_URL, ARTWORK_URL, extractId, getGenerationByPokemonId, formatPokemonName,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 import { NamedAPIResourceList } from "@/types/api/common.types";
 
 // Lista ligera de todos los Pokémon (name + url) — para la searchbar

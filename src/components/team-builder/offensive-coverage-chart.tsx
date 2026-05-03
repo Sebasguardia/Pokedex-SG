@@ -7,7 +7,7 @@ import { Zap, AlertTriangle, Info, CheckCircle2, ShieldAlert } from "lucide-reac
 import { TeamAnalysis } from "@/types/api/team-builder.types";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, PIXEL_URL, ALL_TYPES,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 interface OffensiveCoverageChartProps {
     analysis: TeamAnalysis;

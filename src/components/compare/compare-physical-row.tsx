@@ -11,7 +11,7 @@ import {
     EGG_GROUPS_ES,
     getWinners,
     getMinWinners,
-} from "@/lib/constants/compare.constants"
+} from "@/lib/constants/compare/compare.constants"
 
 interface ComparePhysicalRowProps {
     pokemon: (ComparedPokemon | null)[]

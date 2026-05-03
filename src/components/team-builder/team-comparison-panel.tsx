@@ -6,7 +6,7 @@ import { Trophy, Minus, TrendingUp, TrendingDown, Swords, Info, CheckCircle2, Al
 import { useTeamBuilderStore } from "@/lib/stores/teamBuilderStore";
 import { buildFullAnalysis } from "@/lib/utils/team-scoring";
 import { TeamMiniPreview } from "./team-mini-preview";
-import { getScoreMeta } from "@/lib/constants/team-builder.constants";
+import { getScoreMeta } from "@/lib/constants/team-builder/team-builder.constants";
 
 // ── COMPONENTE TOOLTIP PERSONALIZADO ──
 function CustomTooltip({ children, content, side = "top" }: { children: React.ReactNode; content: React.ReactNode; side?: "top" | "left" | "right" }) {

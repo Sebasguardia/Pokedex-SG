@@ -7,7 +7,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { useState } from "react";
 
-import { FLAVOR_COLORS, FIRMNESS_COLORS, FLAVOR_META } from "@/lib/constants/berries.constants";
+import { FLAVOR_COLORS, FIRMNESS_COLORS, FLAVOR_META } from "@/lib/constants/berries/berries.constants";
 import { getDominantFlavor } from "@/lib/utils/berry.utils";
 
 interface BerryCardProps {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LucideIcon, Heart, Star, Trophy, Zap, Flame, Leaf, Snowflake, Mountain, Waves, Sword, Shield, Crown, Gem, Package, BookOpen, Globe, X } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { COLLECTION_COLORS, COLLECTION_ICONS, MAX_COLLECTIONS } from "@/lib/constants/favorites.constants";
+import { COLLECTION_COLORS, COLLECTION_ICONS, MAX_COLLECTIONS } from "@/lib/constants/favorites/favorites.constants";
 import { FavoriteCollection } from "@/types/api/favorites.types";
 
 const ICON_MAP: Record<string, LucideIcon> = {

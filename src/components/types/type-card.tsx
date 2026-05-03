@@ -1,11 +1,11 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import { PokemonType } from "@/types/api/type.types"
 import { Users, Swords, ArrowUpRight } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 interface Props {
     type: PokemonType

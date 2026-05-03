@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Swords } from "lucide-react"
 import Link from "next/link"
 import * as ScrollArea from "@radix-ui/react-scroll-area"
-import { useMove } from "@/lib/hooks/useMoves"
+import { useMove } from "@/lib/hooks/moves/useMoves"
 
 interface Props {
     moves: { name: string; url: string }[]

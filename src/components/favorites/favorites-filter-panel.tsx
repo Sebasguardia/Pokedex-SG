@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Filter, X } from "lucide-react";
 import { useFavoritesStore } from "@/lib/store/favorites.store";
-import { TYPE_COLORS, TYPE_NAMES_ES, ALL_TYPES, GEN_COLORS, GEN_LABELS } from "@/lib/constants/favorites.constants";
-import { useFilteredFavorites, useAllTags, useFavorites } from "@/lib/hooks/useFavorites";
+import { TYPE_COLORS, TYPE_NAMES_ES, ALL_TYPES, GEN_COLORS, GEN_LABELS } from "@/lib/constants/favorites/favorites.constants";
+import { useFilteredFavorites, useAllTags, useFavorites } from "@/lib/hooks/favorites/useFavorites";
 
 const GEN_LIST = [1,2,3,4,5,6,7,8,9] as const;
 

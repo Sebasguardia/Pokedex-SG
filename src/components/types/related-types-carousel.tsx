@@ -3,9 +3,9 @@
 import { useRef, useEffect, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 import { PokemonType } from "@/types/api/type.types"
-import { TYPE_COLORS } from "@/lib/constants/types.constants"
+import { TYPE_COLORS } from "@/lib/constants/types/types.constants"
 import Link from "next/link"
-import { TypeSvgIcon } from "@/components/shared/type-svg-icon"
+import { TypeSvgIcon } from "@/components/shared/icons/type-svg-icon"
 
 interface Props {
     currentType: PokemonType

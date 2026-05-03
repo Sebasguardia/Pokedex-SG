@@ -1,7 +1,7 @@
 "use client";
 
-import { PokemonSprite } from "@/components/shared/pokemon-sprite";
-import { useCompare } from "@/lib/hooks/useCompare";
+import { PokemonSprite } from "@/components/shared/pokemon/pokemon-sprite";
+import { useCompare } from "@/lib/hooks/compare/useCompare";
 import { formatPokemonName } from "@/lib/utils/pokemon.utils";
 import { X } from "lucide-react";
 

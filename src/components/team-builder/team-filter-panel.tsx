@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Search, X, SlidersHorizontal, ArrowUp, ArrowDown } from "lucide-react";
 import {
     TYPE_COLORS, TYPE_NAMES_ES, GEN_COLORS,
-} from "@/lib/constants/team-builder.constants";
+} from "@/lib/constants/team-builder/team-builder.constants";
 
 const ALL_TYPES_LIST = [
     "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",

@@ -6,7 +6,7 @@ import NumberFlow from "@number-flow/react";
 import * as Accordion from "@radix-ui/react-accordion";
 import { ChevronDown } from "lucide-react";
 import { GiFlowerPot, GiStrawberry } from "react-icons/gi";
-import { FIRMNESS_COLORS } from "@/lib/constants/berries.constants";
+import { FIRMNESS_COLORS } from "@/lib/constants/berries/berries.constants";
 
 const FIRMNESS_RANK: Record<string, number> = {
     "very-soft": 1, "soft": 2, "hard": 3, "very-hard": 4, "super-hard": 5,
